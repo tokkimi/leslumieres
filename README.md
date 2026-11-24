@@ -1,23 +1,29 @@
-# Les Lumières — maquette du site de commande
+# Les Lumières — maquette de commande en ligne immersive
 
-Refonte de la page d'accueil et du parcours de commande de [restaurantleslumieres.fr](https://www.restaurantleslumieres.fr/).
-Site statique (HTML/CSS/JS, aucune dépendance) : ouvrir `index.html` ou déployer le dossier tel quel.
+Vite + React 18 + TypeScript + Tailwind CSS 4, structure shadcn (`src/components/ui`, `src/lib/utils.ts`, alias `@/`).
 
-## Ce qui est repris du site actuel
-- **Toute la carte** : 16 rubriques, 141 articles, prix identiques (`assets/data/menu.js`).
-- **Toutes les options de commande** de chaque plat : cuisson, accompagnement, frites, sauce maison,
-  sauce frites (affichée seulement si des frites sont choisies, comme sur le site actuel),
-  garniture thaï + suppléments, boissons / thés glacés / cocktails, dessert, ingrédients à retirer.
-  Les choix obligatoires sont vérifiés avant l'ajout au panier.
-- Modes **À emporter / Sur place**, paiements **CB, espèces, ticket restaurant, chèque déjeuner**,
-  connexion et création de compte (mêmes champs que l'actuel).
-- Adresse, téléphone, logo (détouré en PNG transparent : `assets/img/logo-blanc.png`, `logo-noir.png`).
+```bash
+npm install
+npm run dev      # développement
+npm run build    # build de production (dist/)
+```
 
-## Direction artistique
-Façade noire et lettrage blanc, lumière tamisée chaude (ambre), effets neumorphiques sur fond sombre.
-Polices du site actuel (Montserrat, Oxygen Mono) + une script pour la signature « depuis 2020 ».
-Écran de chargement : l'ampoule du logo s'allume en vacillant.
+## Parcours
+1. **Entrée** : la façade (store qui ondule au vent), zoom sur la porte qui s'ouvre.
+2. **Hero** (`src/components/ui/hero-section-7.tsx`) : plats flottants, bouton « Commander ».
+3. **La borne** : écrans du menu + bornes ; la borne s'ouvre en plein écran avec toute la carte.
+4. **La vitrine** : les desserts sur les étagères, un tap = ajout au panier.
+5. **Le bar** : cocktails, thés glacés, boissons chaudes, softs.
+6. **La caisse** : face au comptoir (ticket + TPE), paiement par carte (neumorphisme) ou au comptoir,
+   puis « Merci pour votre commande » : les plats apparaissent sur une table.
 
-## Limites de la maquette
-Front uniquement : la commande, la connexion et le compte sont simulés (rien n'est envoyé au logiciel de caisse).
-Le panier est conservé dans le navigateur (localStorage).
+Le **logo-panier** (en haut à droite) et la **bulle de contact** (en bas à droite) se déplacent au doigt.
+
+## Données
+`src/data/menu.json` : les 141 articles et toutes leurs options, extraits du site actuel.
+Coordonnées : `src/lib/contact.ts` (e-mail et WhatsApp à renseigner).
+
+## Crédits
+Textures : [Poly Haven](https://polyhaven.com) (CC0). Photos des plats et logo : Les Lumières.
+
+Maquette : commande, compte et paiement sont simulés, rien n'est transmis.

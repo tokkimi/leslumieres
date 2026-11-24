@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/components/Caisse.tsx","./src/components/Entrance.tsx","./src/components/Floating.tsx","./src/components/Overlays.tsx","./src/components/Scenes.tsx","./src/components/ui/hero-section-7.tsx","./src/hooks/useDraggable.ts","./src/lib/contact.ts","./src/lib/menu.ts","./src/lib/utils.ts","./vite.config.ts"],"version":"5.6.3"}
