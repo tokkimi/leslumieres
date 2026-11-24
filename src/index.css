@@ -858,3 +858,8 @@ html { scroll-snap-type: y proximity; }
 .infos-foot { width: 100%; justify-self: center; padding: 0 64px; box-sizing: border-box; }
 .infos-foot p { max-width: 34ch; margin: 0 auto; text-align: center; text-wrap: balance; overflow-wrap: anywhere; }
 .infos-foot p:last-child { font-family: var(--font-sans); font-size: 10px; letter-spacing: .02em; line-height: 1.4; color: #7d7468; }
+
+/* Panier : la liste défile, le total et le bouton restent visibles en bas */
+.drawer { height: 100%; height: 100dvh; max-height: 100dvh; min-height: 0; }
+.cart-list { min-height: 0; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+.cart-list > * { flex: none; }

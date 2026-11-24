@@ -128,7 +128,7 @@ export function CartDrawer({ cart, mode, setMode, onQty, onClose, onCheckout }: 
         <button className="close !static !m-0" type="button" onClick={onClose} aria-label="Fermer"><X size={18} /></button>
       </div>
       <ModeSwitch mode={mode} setMode={setMode} />
-      <div className="flex-1 overflow-auto flex flex-col gap-3 p-1 -mx-1">
+      <div className="cart-list flex-1 min-h-0 overflow-y-auto flex flex-col gap-3 p-1 -mx-1">
         {cart.length === 0 && (
           <div className="m-auto text-center grid gap-4 justify-items-center text-[var(--muted)] p-6">
             <img src={LOGO} alt="" className="w-32 opacity-40" />
