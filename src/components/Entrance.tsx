@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 
-type Phase = 'night' | 'lit' | 'walk' | 'open' | 'through' | 'gone'
+type Phase = 'night' | 'lit' | 'walk' | 'through' | 'gone'
 
 /* Façade réelle (photo 1672 × 941). Repères mesurés sur la photo :
    lambrequin du store y 266 → 336 (traits blancs à y ≈ 300), portes x 700 → 1001 / y 350 → 696 (milieu x 851),
    carreau sans montant de la vitrine gauche x 380 → 628 / y 345 → 580. */
 const IW = 1672, IH = 941
 const SRC = '/assets/photos/facade.webp'
-/** Logo qui apparaît quand les portes s'ouvrent (à remplacer par le nouveau logo). */
-const LOGO_PORTE = '/assets/img/logo-blanc.png'
 
 /** Place un élément sur la photo (coordonnées en pixels de la photo) et lui donne le bon morceau de photo en fond. */
 function crop(x: number, y: number, w: number, h: number, src?: { x: number; y: number; w: number; h: number }, pw = IW, ph = IH): React.CSSProperties {
@@ -41,9 +39,8 @@ export function Entrance({ onDone }: { onDone: () => void }) {
     if (doneRef.current) return
     timers.current.forEach(clearTimeout); timers.current = []
     setPhase('walk')
-    t(900, () => setPhase('open'))
-    t(2700, () => setPhase('through'))
-    t(3500, finish)
+    t(1700, () => setPhase('through'))
+    t(2500, finish)
   }
 
   useEffect(() => {
@@ -55,8 +52,6 @@ export function Entrance({ onDone }: { onDone: () => void }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // la porte et le store ont leurs propres repères internes (en pixels de la photo)
-  const DW = 301, DH = 346
   return (
     <div className={`e3 is-${phase}`} role="dialog" aria-label="Entrée du restaurant">
       <div className="e3-stage">
@@ -66,13 +61,6 @@ export function Entrance({ onDone }: { onDone: () => void }) {
         <span className="e3-night" style={box(110, 343, 522, 242)} />
         <span className="e3-night e3-night--2" style={box(1068, 343, 494, 236)} />
 
-        {/* l'embrasure de la porte : la salle derrière, puis les deux vantaux qui pivotent sur leurs gonds */}
-        <div className="e3-doorway" style={box(700, 350, DW, DH)}>
-          <span className="e3-inside" style={box(6, 6, DW - 12, DH - 6, DW, DH)}><img src={LOGO_PORTE} alt="" /></span>
-          <span className="e3-night e3-night--door" />
-          <span className="e3-leaf e3-leaf--l" style={crop(0, 0, 151, DH, { x: 700, y: 350, w: 151, h: DH }, DW, DH)}><i /></span>
-          <span className="e3-leaf e3-leaf--r" style={crop(151, 0, 150, DH, { x: 851, y: 350, w: 150, h: DH }, DW, DH)}><i /></span>
-        </div>
 
         {/* le lambrequin du store, avec le texte, qui ondule à peine */}
         <div className="e3-flap" style={crop(0, 266, IW, 70)}>
