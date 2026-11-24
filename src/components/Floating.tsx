@@ -37,7 +37,7 @@ export function CartLamp({ count, flash, onOpen }: { count: number; flash: numbe
       onPointerUp={e => { if (d.onPointerUp(e)) onOpen() }}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen() } }}
     >
-      <img src={LOGO} alt="" width={56} height={56} />
+      <img src={LOGO} alt="" />
       {count > 0 && <span className="lamp__count">{count}</span>}
       {tip && count > 0 && <span className={`lamp__tip${d.onLeftHalf ? ' left' : ''}`}>Votre panier · déplacez-moi</span>}
     </button>

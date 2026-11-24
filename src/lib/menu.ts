@@ -17,7 +17,8 @@ export const countCat = (c: Category) => c.sections.reduce((n, s) => n + s.items
 
 export const img = (id: string) => `/assets/img/plats/${id}.webp`
 export const catImg = (id: string) => `/assets/img/categories/${id}.webp`
-export const LOGO = '/assets/img/logo-blanc.png'
+export const LOGO = '/assets/img/logo/les-lumieres-clair.svg'
+export const LOGO_FONCE = '/assets/img/logo/les-lumieres-fonce.svg'
 export const eur = (n: number) => n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'
 export const lower = (s: string) => s.toLowerCase()
 

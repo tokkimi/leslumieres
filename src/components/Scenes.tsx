@@ -108,7 +108,7 @@ export function KioskOverlay({ start, mode, setMode, total, count, onClose, onPi
     <Modal onClose={onClose} ovClass="kiosk-ov" className="kiosk-dev" label="Borne de commande">
       <div className="kiosk-ui">
         <header className="flex items-center gap-3 px-4 py-3 border-b border-[var(--line)]">
-          <img src={LOGO} alt="" className="w-10 h-10" />
+          <img src={LOGO} alt="" className="h-9 w-auto" />
           <span className="hidden sm:block font-extrabold text-xs tracking-[.28em] uppercase mr-auto">Les Lumières</span>
           <div className="w-[min(300px,58vw)] ml-auto sm:ml-0"><ModeSwitch mode={mode} setMode={setMode} /></div>
           <button type="button" className="close !static !m-0 flex-none" onClick={onClose} aria-label="Fermer la borne"><X size={18} /></button>
@@ -256,7 +256,7 @@ export function BarScene({ onPick, cartQty, onFinish, count }: { onPick: Pick; c
         <div className="counter">
           <div className="counter__top" />
           <div className="counter__front gutter">
-            <button type="button" className="btn btn--light" onClick={onFinish}>{count ? 'Finaliser ma commande' : 'Voir mon panier'} <ChevronRight size={16} /></button>
+            <button type="button" className="btn" onClick={onFinish}>{count > 0 && <span className="btn__count">{count}</span>}{count ? 'Finaliser ma commande' : 'Voir mon panier'}<ChevronRight size={16} /></button>
           </div>
         </div>
       </div>

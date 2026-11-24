@@ -84,7 +84,7 @@ export default function App() {
 
       <header className="topbar">
         <div className="topbar__in">
-          <a href="#accueil" className="topbar__brand"><img src={LOGO} alt="" /><span>Les Lumières</span></a>
+          <a href="#accueil" className="topbar__brand" aria-label="Les Lumières"><img src={LOGO} alt="" /></a>
           <nav className="topbar__nav" aria-label="La salle">
             <a href="#borne">La borne</a><a href="#vitrine">La vitrine</a><a href="#bar">Le bar</a><a href="#infos">Infos</a>
           </nav>
@@ -136,7 +136,7 @@ export default function App() {
             </div>
           </div>
         <footer className="infos-foot">
-        <img src={LOGO} alt="Les Lumières" className="w-20 opacity-85" />
+        <img src={LOGO} alt="Les Lumières" className="w-40 opacity-90" />
         <p className="m-0">Les Lumières © 2026 · Tous droits réservés</p>
         <p className="m-0 mono text-[11px] text-[#6f675d]">Maquette de démonstration · aucune commande n’est réellement transmise</p>
       </footer>

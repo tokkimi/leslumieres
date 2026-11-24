@@ -124,14 +124,14 @@ export function CartDrawer({ cart, mode, setMode, onQty, onClose, onCheckout }: 
   return (
     <Modal onClose={onClose} ovClass="drawer-ov" className="drawer" label="Mon panier">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3"><img src={LOGO} alt="" className="w-10 h-10" /><h2 className="m-0 text-xl font-black uppercase tracking-[.1em]">Mon panier</h2></div>
+        <div className="flex items-center gap-3"><img src={LOGO} alt="" className="h-9 w-auto" /><h2 className="m-0 text-xl font-black uppercase tracking-[.1em]">Mon panier</h2></div>
         <button className="close !static !m-0" type="button" onClick={onClose} aria-label="Fermer"><X size={18} /></button>
       </div>
       <ModeSwitch mode={mode} setMode={setMode} />
       <div className="flex-1 overflow-auto flex flex-col gap-3 p-1 -mx-1">
         {cart.length === 0 && (
           <div className="m-auto text-center grid gap-4 justify-items-center text-[var(--muted)] p-6">
-            <img src={LOGO} alt="" className="w-20 opacity-30" />
+            <img src={LOGO} alt="" className="w-32 opacity-40" />
             <p className="m-0">Votre panier est vide.<br />La borne, la vitrine et le bar vous attendent.</p>
             <button className="btn btn--ghost" type="button" onClick={onClose}>Continuer</button>
           </div>

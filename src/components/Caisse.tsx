@@ -134,7 +134,7 @@ export function Caisse({ cart, mode, setMode, onClose, onPaid, onLogin }: { cart
           {how === 'carte' ? (<>
             <div className={`ccard${flip ? ' is-flip' : ''}`} aria-hidden="true">
               <div className="ccard__face ccard__front">
-                <div className="flex justify-between items-start"><img src={LOGO} alt="" className="w-10" /><span className="ccard__brand">{brand(digits)}</span></div>
+                <div className="flex justify-between items-start"><img src={LOGO} alt="" className="w-16" /><span className="ccard__brand">{brand(digits)}</span></div>
                 <div className="ccard__chip" />
                 <div className="ccard__num mono">{(fmtCard(card.num) || '•••• •••• •••• ••••').padEnd(19, '•')}</div>
                 <div className="flex justify-between gap-3 text-[10px] uppercase tracking-[.14em]">
