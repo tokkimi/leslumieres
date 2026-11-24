@@ -821,3 +821,11 @@ body.locked { scroll-snap-type: none; }
 .chev { width: 24px; height: 46px; background: rgba(11, 10, 9, .62); border: 1px solid rgba(231, 197, 138, .35); }
 .chev svg { stroke-width: 1.6; }
 .case .chev { background: rgba(255, 252, 245, .82); border-color: rgba(168, 120, 60, .35); }
+
+/* Défilement : aimantation douce sur ordinateur, aucune sur mobile (évite les retours en arrière) */
+html { scroll-snap-type: y proximity; }
+.screen { scroll-snap-stop: normal; }
+@media (max-width: 860px), (pointer: coarse) {
+  html { scroll-snap-type: none; }
+  .screen { scroll-snap-align: none; }
+}
