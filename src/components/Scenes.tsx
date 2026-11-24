@@ -2,27 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowDown, ChevronRight, Plus, X } from 'lucide-react'
 import { CATS, GROUPS, LOGO, catById, catImg, countCat, eur, img, type Category, type Mode, type ProductRef, PRODUCTS } from '@/lib/menu'
 import { Modal, ModeSwitch } from '@/components/Overlays'
+import { Bocaux, Boules, CadreNeon, Guirlande, Plafond } from '@/components/Lights'
 
 type Pick = (p: ProductRef, from: HTMLElement | null) => void
-
-function StringLights({ n = 24 }: { n?: number }) {
-  return (
-    <svg className="string-lights" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
-      {[0, 1].map(k => {
-        const x0 = k * 600, x1 = x0 + 600
-        return (
-          <g key={k}>
-            <path d={`M${x0} 4 Q ${x0 + 300} 70 ${x1} 4`} stroke="#140d08" strokeWidth="1.5" fill="none" />
-            {Array.from({ length: n / 2 }, (_, i) => {
-              const t = (i + .5) / (n / 2); const x = x0 + 600 * t; const y = 4 + 4 * 33 * t * (1 - t)
-              return <circle key={i} cx={x} cy={y + 5} r="3.6" fill="#ffd590" style={{ filter: 'drop-shadow(0 0 6px #ffb347)' }} />
-            })}
-          </g>
-        )
-      })}
-    </svg>
-  )
-}
 
 const qtyOf = (cartQty: Record<string, number>, id: string) => cartQty[id] ? <span className="qty-badge">{cartQty[id]}</span> : null
 
@@ -47,7 +29,9 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
 
   return (
     <section id="borne" ref={ref} className="scene wall-brick gutter pb-6">
-      <div className="ceiling" /><StringLights />
+      <Plafond /><Guirlande count={22} />
+      <Bocaux items={[{ x: '62%', drop: 150, hideSm: true }, { x: '78%', drop: 120, size: .85, hideSm: true }, { x: '92%', drop: 300, size: .8 }]} />
+      <CadreNeon src={LOGO} className="right-[4%] top-[220px] hidden lg:grid" />
       <div className="scene__head">
         <span className="scene__eyebrow">Étape 1 · La borne</span>
         <h2 className="scene__title">Commandez à la borne</h2>
@@ -159,7 +143,8 @@ export function VitrineScene({ onPick, cartQty, next }: { onPick: Pick; cartQty:
   ]
   return (
     <section id="vitrine" className="scene wall-brick gutter pb-6">
-      <div className="ceiling" />
+      <Plafond /><Guirlande count={20} top={92} />
+      <CadreNeon src={LOGO} className="left-[4%] top-[150px] hidden xl:grid" />
       <div className="scene__head">
         <span className="scene__eyebrow">Étape 2 · La vitrine</span>
         <h2 className="scene__title">Une douceur ?</h2>
@@ -200,8 +185,8 @@ export function BarScene({ onPick, cartQty, onFinish, count }: { onPick: Pick; c
   const secs = order.map(t => b.sections.find(s => s.t === t)!).filter(Boolean)
   return (
     <section id="bar" className="scene wall-bar gutter pb-0">
-      <div className="ceiling" />
-      <div className="globes" aria-hidden="true"><span className="globe" /><span className="globe" /><span className="globe" /></div>
+      <Plafond /><Boules />
+      <Bocaux items={[{ x: '6%', drop: 120, size: .8 }, { x: '94%', drop: 100, size: .8 }]} />
       <div className="scene__head" style={{ paddingTop: 260 }}>
         <span className="scene__eyebrow">Étape 3 · Le bar</span>
         <h2 className="scene__title">Et à boire ?</h2>

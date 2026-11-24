@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { ArrowLeft, Banknote, Check, CreditCard, Lock, Ticket, X } from 'lucide-react'
 import { LOGO, MODE_LABEL, eur, img, lower, store, type Line, type Mode } from '@/lib/menu'
 import { Modal, ModeSwitch } from '@/components/Overlays'
+import { Boules, Guirlande, Plafond } from '@/components/Lights'
 
 type Profile = { nom: string; prenom: string; tel: string; mail: string }
 type Step = 'comptoir' | 'paiement' | 'merci'
@@ -68,8 +69,7 @@ export function Caisse({ cart, mode, setMode, onClose, onPaid, onLogin }: { cart
     <Modal onClose={onClose} ovClass="caisse-ov" className={`caisse caisse--${step}`} label="La caisse">
       {/* Le décor : face au comptoir */}
       <div className="caisse__decor" aria-hidden="true">
-        <div className="ceiling" />
-        <div className="globes"><span className="globe" /><span className="globe" /><span className="globe" /></div>
+        <Plafond /><Guirlande count={16} top={88} /><Boules drops={[60, 24, 80]} />
         {step !== 'merci' && (
           <div className="comptoir">
             <div className="ticket">
