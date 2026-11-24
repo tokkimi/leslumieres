@@ -100,6 +100,7 @@ export default function App() {
             title="Les Lumières"
             description="Cuisine du monde faite maison, entre Asie et Europe. Burgers, wok thaï, currys, pâtes et grillades, à emporter ou sur place."
             images={heroImages}
+            logo={LOGO}
           >
             <p className="script text-[var(--ambre)] text-3xl mt-3 mb-0" style={{ textShadow: '0 0 18px rgba(240,189,110,.45)' }}>depuis 2020</p>
             <div className="mx-auto mt-7 w-[min(340px,100%)]"><ModeSwitch mode={mode} setMode={setMode} /></div>

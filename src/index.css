@@ -722,3 +722,42 @@ body.locked { scroll-snap-type: none; }
 .counter__front .btn:active { transform: translateY(1px); box-shadow: inset 0 2px 4px rgba(90, 55, 15, .4); }
 .counter__front .btn svg { width: 18px; height: 18px; padding: 3px; border-radius: 50%; background: rgba(36, 23, 10, .12); box-sizing: content-box; }
 .counter__front .btn .btn__count { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0; padding: 3px 8px; border-radius: 999px; background: #24170a; color: #f3e3c3; }
+
+/* ================= Écran de chargement : logo et lumière ================= */
+.e3-logo { position: absolute; left: 50%; top: 50%; width: min(56vw, 460px); transform: translate(-50%, -50%); z-index: 4; pointer-events: none; display: grid; place-items: center; transition: opacity .8s ease, transform 1.6s cubic-bezier(.3, 0, .2, 1); }
+.e3-logo img { position: relative; width: 100%; height: auto; opacity: 0; transform: scale(.94); filter: drop-shadow(0 0 0 rgba(255, 200, 120, 0)); animation: e3logoIn 2.4s cubic-bezier(.2, .8, .2, 1) .3s forwards; }
+@keyframes e3logoIn {
+  0% { opacity: 0; transform: scale(.94); filter: drop-shadow(0 0 0 rgba(255, 200, 120, 0)) brightness(.6); }
+  18% { opacity: .55; } 26% { opacity: .2; } 36% { opacity: .9; } 44% { opacity: .5; }
+  60%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 18px rgba(255, 200, 120, .55)) drop-shadow(0 0 2px rgba(255, 236, 200, .9)) brightness(1.08); }
+}
+/* halo chaud derrière le logo, qui respire */
+.e3-logo__halo { position: absolute; inset: -40% -30%; border-radius: 50%; background: radial-gradient(ellipse at 50% 48%, rgba(255, 205, 135, .42), rgba(240, 170, 90, .16) 38%, rgba(11, 10, 9, 0) 68%); opacity: 0; animation: e3halo 1.8s ease .6s forwards, e3breathe 5s ease-in-out 2.4s infinite; }
+@keyframes e3halo { to { opacity: 1; } }
+@keyframes e3breathe { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.06); opacity: .8; } }
+/* fond assombri sous le logo pour qu'il ressorte de la façade */
+.e3-logo::before { content: ""; position: absolute; inset: -55% -45%; border-radius: 50%; background: radial-gradient(ellipse, rgba(8, 6, 4, .72), rgba(8, 6, 4, 0) 66%); }
+/* rayons qui partent de l'ampoule (centre du logo) */
+.e3-logo__rays { position: absolute; left: 50%; top: 45%; width: 230%; aspect-ratio: 1; transform: translate(-50%, -50%) rotate(0deg); border-radius: 50%; opacity: 0;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 214, 150, .1) 0deg 3deg, rgba(255, 214, 150, 0) 3deg 15deg);
+  -webkit-mask: radial-gradient(circle, #000 0, rgba(0, 0, 0, .55) 22%, transparent 58%); mask: radial-gradient(circle, #000 0, rgba(0, 0, 0, .55) 22%, transparent 58%);
+  animation: e3halo 2s ease 1.1s forwards, e3spin 60s linear infinite; }
+@keyframes e3spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+/* reflet qui traverse le logo une fois allumé */
+.e3-logo__shine { position: absolute; inset: 0; overflow: hidden; -webkit-mask: url(/assets/img/logo/les-lumieres-clair.svg) center / contain no-repeat; mask: url(/assets/img/logo/les-lumieres-clair.svg) center / contain no-repeat; }
+.e3-logo__shine::after { content: ""; position: absolute; top: -20%; bottom: -20%; width: 30%; left: -40%; background: linear-gradient(100deg, transparent, rgba(255, 250, 235, .85), transparent); animation: e3shine 1.6s ease-in-out 2.3s forwards; }
+@keyframes e3shine { to { left: 120%; } }
+.e3.is-walk .e3-logo, .e3.is-through .e3-logo, .e3.is-gone .e3-logo { opacity: 0; transform: translate(-50%, -50%) scale(1.12); }
+@media (max-width: 640px) { .e3-logo { width: 78vw; top: 46%; } }
+
+/* ================= Hero : le logo à la place du titre ================= */
+.hero-logo { display: flex; justify-content: center; }
+.hero-logo img { width: min(78vw, 460px); height: auto; filter: drop-shadow(0 0 22px rgba(240, 189, 110, .35)); }
+@media (max-width: 640px) { .hero-logo img { width: min(84vw, 340px); } }
+@media (max-width: 640px) {
+  .hero-logo img { width: min(64vw, 250px); }
+  .hero-ll p.mt-6 { margin-top: 12px; font-size: 14px; line-height: 1.5; }
+  .hero-ll .script { font-size: 22px; margin-top: 6px; }
+  .hero-ll .mt-7 { margin-top: 14px; }
+}
+@media (max-height: 600px) and (max-width: 640px) { .hero-ll p.mt-6 { display: none; } }

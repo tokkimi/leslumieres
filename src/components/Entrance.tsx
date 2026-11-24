@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { LOGO } from '@/lib/menu'
 
 type Phase = 'night' | 'lit' | 'walk' | 'through' | 'gone'
 
@@ -74,6 +75,12 @@ export function Entrance({ onDone }: { onDone: () => void }) {
       </div>
 
       <div className="e3-veil" />
+      <div className="e3-logo" aria-hidden="true">
+        <span className="e3-logo__halo" />
+        <span className="e3-logo__rays" />
+        <img src={LOGO} alt="" />
+        <span className="e3-logo__shine" />
+      </div>
       <div className="e3-ui">
         <span className="e3-hint">31-33 avenue Ampère · Champs-sur-Marne</span>
         <button type="button" className="e3-btn" onClick={enter}>Entrer</button>

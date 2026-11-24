@@ -21,6 +21,7 @@ interface FloatingImageProps {
  * @property {string} [className] - Optional additional classes for the section container.
  * @property {string} [swirlClassName] - Optional color classes for the background swirls (ajout Les Lumières).
  * @property {React.ReactNode} [children] - Optional content under the description, e.g. a CTA (ajout Les Lumières).
+ * @property {string} [logo] - Optional logo shown instead of the text title; the title stays as its alt text (ajout Les Lumières).
  */
 export interface FloatingFoodHeroProps {
   title: string;
@@ -29,6 +30,7 @@ export interface FloatingFoodHeroProps {
   className?: string;
   swirlClassName?: string;
   children?: React.ReactNode;
+  logo?: string;
 }
 
 /**
@@ -81,6 +83,7 @@ export function FloatingFoodHero({
   className,
   swirlClassName,
   children,
+  logo,
 }: FloatingFoodHeroProps) {
   return (
     <section
@@ -108,9 +111,13 @@ export function FloatingFoodHero({
 
       {/* Text Content */}
       <div className="relative z-20 container mx-auto px-4 text-center max-w-2xl">
-        <h1 className="text-4xl font-bold tracking-tight text-primary sm:text-5xl md:text-6xl">
-          {title}
-        </h1>
+        {logo ? (
+          <h1 className="hero-logo m-0"><img src={logo} alt={title} /></h1>
+        ) : (
+          <h1 className="text-4xl font-bold tracking-tight text-primary sm:text-5xl md:text-6xl">
+            {title}
+          </h1>
+        )}
         <p className="mt-6 text-lg leading-8 text-muted-foreground">
           {description}
         </p>
