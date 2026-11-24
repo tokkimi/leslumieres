@@ -7,6 +7,8 @@ type Phase = 'night' | 'lit' | 'walk' | 'open' | 'through' | 'gone'
    carreau sans montant de la vitrine gauche x 380 → 628 / y 345 → 580. */
 const IW = 1672, IH = 941
 const SRC = '/assets/photos/facade.webp'
+/** Logo qui apparaît quand les portes s'ouvrent (à remplacer par le nouveau logo). */
+const LOGO_PORTE = '/assets/img/logo-blanc.png'
 
 /** Place un élément sur la photo (coordonnées en pixels de la photo) et lui donne le bon morceau de photo en fond. */
 function crop(x: number, y: number, w: number, h: number, src?: { x: number; y: number; w: number; h: number }, pw = IW, ph = IH): React.CSSProperties {
@@ -66,7 +68,7 @@ export function Entrance({ onDone }: { onDone: () => void }) {
 
         {/* l'embrasure de la porte : la salle derrière, puis les deux vantaux qui pivotent sur leurs gonds */}
         <div className="e3-doorway" style={box(700, 350, DW, DH)}>
-          <span className="e3-inside" style={crop(6, 6, DW - 12, DH - 6, { x: 380, y: 345, w: 248, h: 235 }, DW, DH)} />
+          <span className="e3-inside" style={box(6, 6, DW - 12, DH - 6, DW, DH)}><img src={LOGO_PORTE} alt="" /></span>
           <span className="e3-night e3-night--door" />
           <span className="e3-leaf e3-leaf--l" style={crop(0, 0, 151, DH, { x: 700, y: 350, w: 151, h: DH }, DW, DH)}><i /></span>
           <span className="e3-leaf e3-leaf--r" style={crop(151, 0, 150, DH, { x: 851, y: 350, w: 150, h: DH }, DW, DH)}><i /></span>

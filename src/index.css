@@ -693,3 +693,40 @@ body.locked { scroll-snap-type: none; }
 .kiosk--big::before { width: 60px; height: 8px; bottom: 3.2%; }
 .kiosk--big::after { width: 8px; height: 8px; bottom: 6%; }
 @media (max-width: 860px) { #borne-kiosk .next-step { display: none; } #borne-kiosk .kiosk-stage { padding-bottom: 6px; } }
+
+/* Écrans du menu et borne : un seul mur continu, on « descend » le long du mur */
+.wall-run { position: relative; isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(14, 9, 6, .78) 0, rgba(30, 18, 10, .3) 12%, rgba(30, 18, 10, .18) 60%, rgba(10, 7, 5, .72) 100%),
+    url(/assets/textures/brique.webp) 0 0 / 460px auto repeat; }
+.wall-run > .screen { background: none; }
+/* Portes : derrière, un fond sombre et le logo, plus de photo floue */
+.e3-inside { display: grid; place-items: center; background: radial-gradient(ellipse at 50% 45%, #1e1712, #0b0a09 70%); overflow: hidden; }
+.e3-inside img { width: 62%; max-width: 100%; opacity: 0; transform: scale(.92); transition: opacity 1.2s ease .5s, transform 1.6s cubic-bezier(.2, .8, .2, 1) .4s; filter: drop-shadow(0 0 14px rgba(240, 189, 110, .45)); }
+.e3.is-open .e3-inside img, .e3.is-through .e3-inside img { opacity: 1; transform: none; }
+
+/* Borne : silhouette fine et réaliste (cadre mat, bords fins, ombre portée sur le mur) */
+.kiosk-stage { display: grid; place-items: center; }
+.screen .kiosk--big { position: relative; left: auto; top: auto; bottom: auto; transform: none; height: min(84%, 720px); aspect-ratio: 300 / 560;
+  padding: 2.6% 2.6% 7.5%; border-radius: 16px;
+  background: linear-gradient(160deg, #f7f6f3 0%, #eceae5 55%, #dedbd4 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7), inset 0 -2px 0 rgba(0, 0, 0, .06), 0 1px 0 rgba(0, 0, 0, .25), 18px 26px 40px -18px rgba(0, 0, 0, .75), 0 0 0 1px rgba(0, 0, 0, .18); }
+.screen .kiosk--big:hover { transform: translateY(-3px); }
+.kiosk--big .kiosk__screen { border-radius: 6px; box-shadow: inset 0 0 0 1px #000, 0 0 0 1px rgba(0, 0, 0, .25); }
+.kiosk--big::before { width: 34px; height: 4px; bottom: 3.4%; border-radius: 2px; background: #c9c5bd; box-shadow: none; }
+.kiosk--big::after { width: 5px; height: 5px; bottom: auto; top: 1.2%; background: #2a2a2a; box-shadow: inset 0 0 0 1px #555; }
+
+/* Bar : une catégorie à la fois, deux étagères bien rangées, boissons plus grandes */
+.bar-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.bar-tabs button { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 16px; border-radius: 999px; background: var(--neu-face); box-shadow: var(--neu-sm); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); transition: color .2s, box-shadow .2s; }
+.bar-tabs button small { font-family: var(--font-mono); font-size: 10px; opacity: .7; }
+.bar-tabs button[aria-selected="true"] { color: var(--ambre); box-shadow: var(--neu-in); }
+.bar-stage { --it: clamp(64px, calc((100svh - 400px) / 2 - 64px), 150px); }
+#bar .backbar { justify-content: space-evenly; animation: fade .35s ease; }
+#bar .shelf__row { gap: clamp(10px, 2vw, 26px); padding-top: 10px; }
+#bar .shelf__plank { height: 12px; }
+#bar .tag { height: 42px; } #bar .tag__n { font-size: 8.5px; } #bar .tag__p { font-size: 10px; }
+@media (max-width: 860px) {
+  .bar-stage { --it: clamp(60px, calc((100svh - 380px) / 2 - 60px), 110px); }
+  .bar-tabs { gap: 6px; } .bar-tabs button { height: 34px; padding: 0 11px; font-size: 10px; letter-spacing: .04em; }
+}

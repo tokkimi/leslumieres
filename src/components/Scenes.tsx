@@ -46,8 +46,8 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
   const toKiosk = () => document.getElementById('borne-kiosk')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   return (
-    <>
-      <section id="borne" className="scene screen wall-brick gutter">
+    <div className="wall-run wall-brick">
+      <section id="borne" className="scene screen gutter">
         <Plafond /><Guirlande count={22} />
         <Bocaux items={[{ x: '7%', drop: 260, size: .8, hideSm: true }, { x: '93%', drop: 230, size: .8 }]} />
         <div className="scene__head">
@@ -79,12 +79,9 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
           </div>
         </div>
         <div className="next-step"><button type="button" onClick={toKiosk}>La borne <ArrowDown size={15} /></button></div>
-        <div className="floor" />
       </section>
 
-      <section id="borne-kiosk" ref={ref} className="scene screen wall-brick gutter">
-        <Plafond /><Guirlande count={22} />
-        <Bocaux items={[{ x: '12%', drop: 200, size: .9, hideSm: true }, { x: '88%', drop: 170, size: .9, hideSm: true }]} />
+      <section id="borne-kiosk" ref={ref} className="scene screen gutter">
         <div className="kiosk-stage">
           <button type="button" className={`kiosk kiosk--big${awake ? ' is-awake' : ''}`} onClick={() => openKiosk()} aria-label="Ouvrir la borne de commande">
             <div className="kiosk__screen">
@@ -98,7 +95,7 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
         <div className="next-step"><button type="button" onClick={next}>Ensuite, la vitrine des desserts <ArrowDown size={15} /></button></div>
         <div className="floor" />
       </section>
-    </>
+    </div>
   )
 }
 
@@ -215,44 +212,53 @@ export function VitrineScene({ onPick, cartQty, next }: { onPick: Pick; cartQty:
 }
 
 /* ================= Le bar ================= */
+const BAR_TABS: [string, string][] = [['Cocktails sans alcool', 'Cocktails'], ['Thés glacés', 'Thés glacés'], ['Boissons chaudes', 'Chaudes'], ['Softs', 'Softs']]
+
 export function BarScene({ onPick, cartQty, onFinish, count }: { onPick: Pick; cartQty: Record<string, number>; onFinish: () => void; count: number }) {
   const b = catById('boissons')
-  const order = ['Cocktails sans alcool', 'Thés glacés', 'Boissons chaudes', 'Softs']
-  const secs = order.map(t => b.sections.find(s => s.t === t)!).filter(Boolean)
+  const [tab, setTab] = useState(BAR_TABS[0][0])
+  const sec = b.sections.find(s => s.t === tab)!
+  // deux étagères bien rangées : la moitié des boissons sur chacune
+  const half = Math.ceil(sec.items.length / 2)
+  const shelves = [sec.items.slice(0, half), sec.items.slice(half)].filter(r => r.length)
   return (
     <section id="bar" className="scene screen wall-bar gutter">
       <Plafond /><Boules drops={[40, 16, 56]} />
-      <Bocaux items={[{ x: '6%', drop: 120, size: .8 }, { x: '94%', drop: 100, size: .8 }]} />
+      <Bocaux items={[{ x: '6%', drop: 120, size: .8, hideSm: true }, { x: '94%', drop: 100, size: .8, hideSm: true }]} />
       <div className="scene__head">
         <span className="scene__eyebrow">Étape 3 · Le bar</span>
         <h2 className="scene__title">Et à boire ?</h2>
-        <p className="scene__lead">Cocktails sans alcool, thés glacés maison, cafés et softs : servez-vous sur les étagères.</p>
-      </div>
-      <div className="bar-stage">
-      <div className="backbar">
-        {secs.map(s => (
-          <div key={s.id} className="shelf">
-            <span className="shelf__plaque">{s.t}</span>
-            <div className="shelf__row">
-              {s.items.map(p => (
-                <button key={p.id} type="button" className="item item--drink" onClick={e => onPick(PRODUCTS[p.id], e.currentTarget.querySelector('img'))} aria-label={`Ajouter ${p.n.toLowerCase()}, ${eur(p.p)}`}>
-                  {qtyOf(cartQty, p.id)}
-                  <span className="item__img"><img src={img(p.id)} alt="" loading="lazy" /></span>
-                  <PriceTag name={p.n} price={p.p} />
-                  <span className="add-badge"><Plus size={14} /></span>
-                </button>
-              ))}
-            </div>
-            <div className="shelf__plank" />
-          </div>
-        ))}
-      </div>
-      <div className="counter">
-        <div className="counter__top" />
-        <div className="counter__front gutter">
-          <button type="button" className="btn btn--light" onClick={onFinish}>{count ? 'Finaliser ma commande' : 'Voir mon panier'} <ChevronRight size={16} /></button>
+        <div className="bar-tabs" role="tablist" aria-label="Boissons">
+          {BAR_TABS.map(([key, label]) => {
+            const n = b.sections.find(s => s.t === key)?.items.length ?? 0
+            return <button key={key} type="button" role="tab" aria-selected={tab === key} onClick={() => setTab(key)}>{label}<small>{n}</small></button>
+          })}
         </div>
       </div>
+      <div className="bar-stage">
+        <div className="backbar" key={tab}>
+          {shelves.map((row, i) => (
+            <div key={i} className="shelf">
+              <div className="shelf__row">
+                {row.map(p => (
+                  <button key={p.id} type="button" className="item item--drink" onClick={e => onPick(PRODUCTS[p.id], e.currentTarget.querySelector('img'))} aria-label={`Ajouter ${p.n.toLowerCase()}, ${eur(p.p)}`}>
+                    {qtyOf(cartQty, p.id)}
+                    <span className="item__img"><img src={img(p.id)} alt="" loading="lazy" /></span>
+                    <PriceTag name={p.n} price={p.p} />
+                    <span className="add-badge"><Plus size={14} /></span>
+                  </button>
+                ))}
+              </div>
+              <div className="shelf__plank" />
+            </div>
+          ))}
+        </div>
+        <div className="counter">
+          <div className="counter__top" />
+          <div className="counter__front gutter">
+            <button type="button" className="btn btn--light" onClick={onFinish}>{count ? 'Finaliser ma commande' : 'Voir mon panier'} <ChevronRight size={16} /></button>
+          </div>
+        </div>
       </div>
     </section>
   )
