@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { ArrowLeft, Banknote, Check, CreditCard, Lock, X } from 'lucide-react'
 import { LOGO, MODE_LABEL, eur, img, lower, store, type Line, type Mode } from '@/lib/menu'
 import { Modal, ModeSwitch } from '@/components/Overlays'
-import { PAIEMENTS } from '@/lib/contact'
+import { PayLogos } from '@/components/PayLogos'
 import { Boules, Guirlande, Plafond } from '@/components/Lights'
 
 type Profile = { nom: string; prenom: string; tel: string; mail: string }
@@ -156,11 +156,7 @@ export function Caisse({ cart, mode, setMode, onClose, onPaid, onLogin }: { cart
           </>) : (
             <div className="grid gap-2">
               <p className="m-0 text-sm text-[var(--muted)]">Vous réglez {mode === 'emporter' ? 'au retrait' : 'au comptoir'} :</p>
-              <div className="paylogos">
-                {PAIEMENTS.map(p => (
-                  <label key={p.label} className="paypick"><input type="radio" checked={counterPay === p.label} onChange={() => setCounterPay(p.label)} /><span className="paylogo"><span><img src={p.logo} alt="" /></span><small>{p.label}</small></span></label>
-                ))}
-              </div>
+              <PayLogos value={counterPay} onChange={setCounterPay} />
             </div>
           )}
           {bad.length > 0 && how === 'carte' && <p className="acc__err" role="alert">Vérifiez les informations de la carte.</p>}

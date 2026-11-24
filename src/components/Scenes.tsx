@@ -44,7 +44,7 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
   }, [])
 
   return (
-    <section id="borne" ref={ref} className="scene wall-brick gutter pb-6">
+    <section id="borne" ref={ref} className="scene screen wall-brick gutter">
       <Plafond /><Guirlande count={22} />
       <Bocaux items={[{ x: '7%', drop: 260, size: .8, hideSm: true }, { x: '93%', drop: 230, size: .8 }]} />
       <div className="scene__head">
@@ -81,7 +81,7 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
               <video className="kiosk__video" src="/assets/video/borne.mp4" poster="/assets/video/borne-poster.webp" muted loop playsInline preload="metadata" aria-hidden="true" />
               <span className="kiosk__shade" />
               <img src={LOGO} alt="" className="kiosk__logo" />
-              <span className="kiosk__touch">Touchez pour commander</span>
+              <span className="kiosk__touch"><span className="kt-long">Touchez pour commander</span><span className="kt-short">Commander</span></span>
             </div>
           </button>
 
@@ -168,7 +168,7 @@ export function VitrineScene({ onPick, cartQty, next }: { onPick: Pick; cartQty:
     ['Gourmandises', items.filter(p => !/TIRAMISU|CHEESECAKE|TARTELETTE|SUCCES|TRILECE/.test(p.n))],
   ]
   return (
-    <section id="vitrine" className="scene wall-brick gutter pb-6">
+    <section id="vitrine" className="scene screen wall-brick gutter">
       <Plafond /><Guirlande count={20} top={92} />
       <CadreNeon src={LOGO} className="right-[4%] top-[150px] hidden xl:grid" />
       <div className="scene__head">
@@ -211,14 +211,15 @@ export function BarScene({ onPick, cartQty, onFinish, count }: { onPick: Pick; c
   const order = ['Cocktails sans alcool', 'Thés glacés', 'Boissons chaudes', 'Softs']
   const secs = order.map(t => b.sections.find(s => s.t === t)!).filter(Boolean)
   return (
-    <section id="bar" className="scene wall-bar gutter pb-0">
-      <Plafond /><Boules />
+    <section id="bar" className="scene screen wall-bar gutter">
+      <Plafond /><Boules drops={[40, 16, 56]} />
       <Bocaux items={[{ x: '6%', drop: 120, size: .8 }, { x: '94%', drop: 100, size: .8 }]} />
-      <div className="scene__head" style={{ paddingTop: 260 }}>
+      <div className="scene__head">
         <span className="scene__eyebrow">Étape 3 · Le bar</span>
         <h2 className="scene__title">Et à boire ?</h2>
         <p className="scene__lead">Cocktails sans alcool, thés glacés maison, cafés et softs : servez-vous sur les étagères.</p>
       </div>
+      <div className="bar-stage">
       <div className="backbar">
         {secs.map(s => (
           <div key={s.id} className="shelf">
@@ -242,6 +243,7 @@ export function BarScene({ onPick, cartQty, onFinish, count }: { onPick: Pick; c
         <div className="counter__front gutter">
           <button type="button" className="btn btn--light" onClick={onFinish}>{count ? 'Finaliser ma commande' : 'Voir mon panier'} <ChevronRight size={16} /></button>
         </div>
+      </div>
       </div>
     </section>
   )

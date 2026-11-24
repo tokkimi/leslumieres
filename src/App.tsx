@@ -7,7 +7,8 @@ import { Account, CartDrawer, ModeSwitch, ProductSheet } from '@/components/Over
 import { Caisse } from '@/components/Caisse'
 import { BarScene, BorneScene, KioskOverlay, VitrineScene } from '@/components/Scenes'
 import { LOGO, img, lower, store, type Chosen, type Line, type Mode, type ProductRef } from '@/lib/menu'
-import { CONTACT, PAIEMENTS } from '@/lib/contact'
+import { CONTACT } from '@/lib/contact'
+import { PayLogos } from '@/components/PayLogos'
 
 const heroImages = [
   { src: img('159935'), alt: 'Burger burrata', className: 'w-28 sm:w-56 md:w-64 lg:w-80 top-[9%] left-[-7%] sm:left-[4%] md:top-[12%] md:left-[8%] animate-float' },
@@ -98,7 +99,7 @@ export default function App() {
       </header>
 
       <main id="accueil">
-        <div className="relative">
+        <div className="relative screen screen--hero">
           <FloatingFoodHero
             className="hero-ll min-h-[100svh] lg:min-h-[100svh]"
             swirlClassName="text-[rgba(240,189,110,.18)]"
@@ -121,7 +122,7 @@ export default function App() {
         <VitrineScene onPick={pick} cartQty={cartQty} next={() => go('bar')} />
         <BarScene onPick={pick} cartQty={cartQty} count={count} onFinish={() => setPanel(count ? 'caisse' : 'cart')} />
 
-        <section id="infos" className="scene wall-facade gutter py-16">
+        <section id="infos" className="scene screen wall-facade gutter">
           <div className="max-w-[1100px] mx-auto grid md:grid-cols-3 gap-5">
             <div className="neu p-7 md:col-span-1 grid gap-3 content-start">
               <h2 className="m-0 text-3xl font-black uppercase tracking-[.06em]">Nous trouver</h2>
@@ -129,7 +130,7 @@ export default function App() {
               <a href={CONTACT.phoneHref} className="m-0 text-lg flex gap-2 items-center no-underline text-[var(--blanc)]"><Phone size={17} className="text-[var(--ambre)]" /><span className="mono select-all">{CONTACT.phone}</span></a>
               <a className="btn btn--light mt-2 justify-self-start" href={CONTACT.maps} target="_blank" rel="noopener">Itinéraire</a>
             </div>
-            <div className="neu p-7 grid gap-3 content-start">
+            <div className="neu p-7 grid gap-3 content-start infos-cmd">
               <h3 className="m-0 text-sm font-extrabold uppercase tracking-[.16em]">Commander</h3>
               <p className="m-0 text-[#cfc7bb]"><b className="text-[var(--blanc)]">En ligne</b>, à emporter ou sur place</p>
               <p className="m-0 text-[#cfc7bb]"><b className="text-[var(--blanc)]">En salle</b>, sur nos bornes</p>
@@ -137,17 +138,18 @@ export default function App() {
             </div>
             <div className="neu p-7 grid gap-3 content-start">
               <h3 className="m-0 text-sm font-extrabold uppercase tracking-[.16em]">Paiements acceptés</h3>
-              <div className="paylogos paylogos--2">{PAIEMENTS.map(p => <span key={p.label} className="paylogo"><span><img src={p.logo} alt="" /></span><small>{p.label}</small></span>)}</div>
+              <PayLogos />
             </div>
           </div>
-        </section>
-      </main>
-
-      <footer className="gutter py-10 pb-28 border-t border-[var(--line)] text-center text-[var(--muted)] text-[13px] grid gap-2 justify-items-center">
+        <footer className="infos-foot">
         <img src={LOGO} alt="Les Lumières" className="w-20 opacity-85" />
         <p className="m-0">Les Lumières © 2026 · Tous droits réservés</p>
         <p className="m-0 mono text-[11px] text-[#6f675d]">Maquette de démonstration · aucune commande n’est réellement transmise</p>
       </footer>
+        </section>
+      </main>
+
+
 
       <CartLamp count={count} flash={flash} onOpen={() => setPanel('cart')} />
       <ContactBubble toast={toast} />

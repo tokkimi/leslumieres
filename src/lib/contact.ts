@@ -8,9 +8,10 @@ export const CONTACT = {
   maps: 'https://www.google.com/maps/search/?api=1&query=31-33+Avenue+Amp%C3%A8re+77420+Champs-sur-Marne',
 }
 
-export const PAIEMENTS = [
-  { label: 'Carte bancaire', logo: '/assets/img/paiement/CB.png' },
-  { label: 'Espèces', logo: '/assets/img/paiement/espece.png' },
-  { label: 'Ticket Restaurant', logo: '/assets/img/paiement/ticket-resto.png' },
-  { label: 'Chèque Déjeuner', logo: '/assets/img/paiement/cheque-dejeuner.png' },
+/** Moyens de paiement. Logos officiels détourés (Wikimedia Commons) ; Chèque Déjeuner : logo officiel à fournir. */
+export const PAIEMENTS: { label: string; logos: string[]; icon?: 'cash'; wordmark?: string }[] = [
+  { label: 'Carte bancaire', logos: ['/assets/img/paiement/cb.svg', '/assets/img/paiement/visa.svg', '/assets/img/paiement/mastercard.svg'] },
+  { label: 'Espèces', logos: [], icon: 'cash' },
+  { label: 'Ticket Restaurant', logos: ['/assets/img/paiement/edenred.svg'] },
+  { label: 'Chèque Déjeuner', logos: [], wordmark: 'Chèque Déjeuner' },
 ]
