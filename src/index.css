@@ -854,3 +854,7 @@ html { scroll-snap-type: y proximity; }
 .e3-logo__shine::after { animation-delay: 1.8s; }
 @media (max-width: 760px) { .e3-logo__rays { animation: e3halo .9s ease 1.15s forwards; } }
 .caisse__edit { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--ambre); text-decoration: underline; text-underline-offset: 3px; }
+/* Pied de page : tout centré, la mention de maquette ne passe plus sous la bulle */
+.infos-foot { width: 100%; justify-self: center; padding: 0 64px; box-sizing: border-box; }
+.infos-foot p { max-width: 34ch; margin: 0 auto; text-align: center; text-wrap: balance; overflow-wrap: anywhere; }
+.infos-foot p:last-child { font-family: var(--font-sans); font-size: 10px; letter-spacing: .02em; line-height: 1.4; color: #7d7468; }
