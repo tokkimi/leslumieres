@@ -11,12 +11,12 @@ import { CONTACT } from '@/lib/contact'
 import { PayLogos } from '@/components/PayLogos'
 
 const heroImages = [
-  { src: img('170559'), alt: 'Burger burrata', className: 'w-32 sm:w-52 md:w-60 lg:w-72 top-[9%] left-[-8%] sm:left-[4%] md:top-[11%] md:left-[7%] animate-float' },
-  { src: img('159942'), alt: 'Pad thaï', className: 'w-28 sm:w-44 md:w-56 bottom-[19%] right-[-8%] sm:bottom-auto sm:top-[10%] sm:right-[6%] md:top-[11%] md:right-[9%] animate-float' },
-  { src: img('159954'), alt: 'Virgin mojito', className: 'hidden sm:block w-36 md:w-48 bottom-[10%] right-[10%] md:bottom-[12%] md:right-[14%] animate-float' },
-  { src: img('170323'), alt: 'Tiramisu caramel', className: 'w-24 sm:w-36 md:w-44 bottom-[18%] left-[-7%] sm:bottom-[9%] sm:left-[9%] md:bottom-[12%] md:left-[13%] animate-float' },
-  { src: img('159941'), alt: 'Tigre qui pleure', className: 'hidden md:block w-40 lg:w-52 top-1/2 -translate-y-1/2 right-[1%] animate-float' },
-  { src: img('1641620'), alt: 'Carbonara', className: 'hidden md:block w-32 lg:w-44 top-1/2 left-[1%] animate-float' },
+  { src: img('159920'), alt: 'Burrata', className: 'w-32 sm:w-52 md:w-60 lg:w-72 top-[9%] left-[-8%] sm:left-[4%] md:top-[11%] md:left-[7%] animate-float' },
+  { src: img('159946'), alt: 'Brochettes de poulet satay', className: 'w-28 sm:w-44 md:w-56 bottom-[19%] right-[-8%] sm:bottom-auto sm:top-[10%] sm:right-[6%] md:top-[11%] md:right-[9%] animate-float' },
+  { src: img('1640752'), alt: 'Curry vert aux crevettes', className: 'hidden sm:block w-36 md:w-48 bottom-[10%] right-[10%] md:bottom-[12%] md:right-[14%] animate-float' },
+  { src: img('159921'), alt: 'Carpaccio de bœuf', className: 'w-24 sm:w-36 md:w-44 bottom-[18%] left-[-7%] sm:bottom-[9%] sm:left-[9%] md:bottom-[12%] md:left-[13%] animate-float' },
+  { src: img('1640754'), alt: 'Bœuf basilic thaï', className: 'hidden md:block w-40 lg:w-52 top-1/2 -translate-y-1/2 right-[1%] animate-float' },
+  { src: img('1584512'), alt: 'Nems au poulet', className: 'hidden md:block w-32 lg:w-44 top-1/2 left-[1%] animate-float' },
 ]
 
 let toastTimer = 0
