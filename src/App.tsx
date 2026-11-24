@@ -152,7 +152,7 @@ export default function App() {
       {kiosk && <KioskOverlay start={kiosk.start} mode={mode} setMode={setMode} total={total} count={count} cartQty={cartQty} onClose={() => setKiosk(null)} onPick={pick} onCart={() => { setKiosk(null); setPanel('cart') }} />}
       {product && <ProductSheet p={product} toast={toast} onClose={() => setProduct(null)} onAdd={(o, n, q, from) => { addToCart(product, o, n, q, from); setProduct(null) }} />}
       {panel === 'cart' && <CartDrawer cart={cart} mode={mode} setMode={setMode} onQty={changeQty} onClose={() => setPanel(null)} onCheckout={() => setPanel('caisse')} />}
-      {panel === 'caisse' && <Caisse cart={cart} mode={mode} setMode={setMode} onClose={() => setPanel(null)} onPaid={() => setCart([])} onLogin={() => setAccount(true)} />}
+      {panel === 'caisse' && <Caisse cart={cart} mode={mode} setMode={setMode} onClose={() => setPanel(null)} onPaid={() => setCart([])} onLogin={() => setAccount(true)} onBack={() => setPanel('cart')} />}
       {account && <Account toast={toast} onClose={() => setAccount(false)} />}
 
       <div className={`toast${toastMsg ? ' is-on' : ''}`} role="status" aria-live="polite">{toastMsg}</div>

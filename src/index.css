@@ -853,3 +853,4 @@ html { scroll-snap-type: y proximity; }
 .e3-logo__rays { animation: e3halo .9s ease 1.15s forwards, e3spin 60s linear 1.15s infinite; }
 .e3-logo__shine::after { animation-delay: 1.8s; }
 @media (max-width: 760px) { .e3-logo__rays { animation: e3halo .9s ease 1.15s forwards; } }
+.caisse__edit { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--ambre); text-decoration: underline; text-underline-offset: 3px; }

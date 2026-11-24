@@ -14,7 +14,7 @@ const luhn = (n: string) => { const d = n.replace(/\D/g, ''); let s = 0; for (le
 const brand = (n: string) => /^4/.test(n) ? 'VISA' : /^(5[1-5]|2[2-7])/.test(n) ? 'Mastercard' : /^3[47]/.test(n) ? 'Amex' : 'CB'
 
 /** La caisse : comptoir → paiement → merci (la commande arrive sur une table). */
-export function Caisse({ cart, mode, setMode, onClose, onPaid, onLogin }: { cart: Line[]; mode: Mode; setMode: (m: Mode) => void; onClose: () => void; onPaid: () => void; onLogin: () => void }) {
+export function Caisse({ cart, mode, setMode, onClose, onPaid, onLogin, onBack }: { cart: Line[]; mode: Mode; setMode: (m: Mode) => void; onClose: () => void; onPaid: () => void; onLogin: () => void; onBack: () => void }) {
   const total = cart.reduce((s, l) => s + l.unit * l.qty, 0)
   const [served] = useState(cart) // garde la commande pour l'écran de remerciement
   const [step, setStep] = useState<Step>('comptoir')
@@ -103,7 +103,11 @@ export function Caisse({ cart, mode, setMode, onClose, onPaid, onLogin }: { cart
 
       {step === 'comptoir' && (
         <form className="caisse__panel" onSubmit={toPay} noValidate>
-          <p className="caisse__eyebrow">La caisse · 1/2</p>
+          <div className="flex items-center gap-2">
+            <button type="button" className="caisse__back" onClick={onBack} aria-label="Retour au panier"><ArrowLeft size={16} /></button>
+            <p className="caisse__eyebrow m-0">La caisse · 1/2</p>
+            <button type="button" className="caisse__edit" onClick={onBack}>Modifier ma commande</button>
+          </div>
           <h2 className="caisse__t">Au comptoir</h2>
           <ModeSwitch mode={mode} setMode={setMode} />
           <p className="m-0 text-sm text-[var(--muted)]">Déjà client ? <button type="button" className="text-[var(--ambre)] underline underline-offset-2 font-semibold" onClick={onLogin}>Se connecter</button></p>
