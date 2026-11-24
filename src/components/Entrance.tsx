@@ -47,8 +47,8 @@ export function Entrance({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     document.body.classList.add('locked')
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { t(300, finish); return () => timers.current.forEach(clearTimeout) }
-    t(400, () => setPhase('lit'))
-    t(2600, enter)
+    t(300, () => setPhase('lit'))
+    t(3600, enter)
     return () => { timers.current.forEach(clearTimeout); document.body.classList.remove('locked') }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
