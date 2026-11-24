@@ -7,7 +7,7 @@ import { Account, CartDrawer, ModeSwitch, ProductSheet } from '@/components/Over
 import { Caisse } from '@/components/Caisse'
 import { BarScene, BorneScene, KioskOverlay, VitrineScene } from '@/components/Scenes'
 import { LOGO, img, lower, store, type Chosen, type Line, type Mode, type ProductRef } from '@/lib/menu'
-import { CONTACT } from '@/lib/contact'
+import { CONTACT, PAIEMENTS } from '@/lib/contact'
 
 const heroImages = [
   { src: img('159935'), alt: 'Burger burrata', className: 'w-28 sm:w-56 md:w-64 lg:w-80 top-[9%] left-[-7%] sm:left-[4%] md:top-[12%] md:left-[8%] animate-float' },
@@ -137,7 +137,7 @@ export default function App() {
             </div>
             <div className="neu p-7 grid gap-3 content-start">
               <h3 className="m-0 text-sm font-extrabold uppercase tracking-[.16em]">Paiements acceptés</h3>
-              <div className="flex flex-wrap gap-2">{['Carte bancaire', 'Espèces', 'Ticket restaurant', 'Chèque déjeuner'].map(p => <span key={p} className="neu-in rounded-full px-3.5 py-2 text-xs font-semibold">{p}</span>)}</div>
+              <div className="paylogos paylogos--2">{PAIEMENTS.map(p => <span key={p.label} className="paylogo"><span><img src={p.logo} alt="" /></span><small>{p.label}</small></span>)}</div>
             </div>
           </div>
         </section>

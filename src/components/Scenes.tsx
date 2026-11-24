@@ -9,58 +9,87 @@ type Pick = (p: ProductRef, from: HTMLElement | null) => void
 const qtyOf = (cartQty: Record<string, number>, id: string) => cartQty[id] ? <span className="qty-badge">{cartQty[id]}</span> : null
 
 /* ================= La borne ================= */
+type BoardLine = { id: string; n: string; p: number; p2?: number }
+type Board = { t: string; cat: string; head?: [string, string]; groups: { t?: string; lines: BoardLine[] }[] }
+const pretty = (n: string) => n.toLowerCase().replace(/^burger /, '')
+const price = (n: number) => n.toFixed(2).replace('.', ',')
+
+function buildBoards(): Board[] {
+  const items = (id: string) => catById(id).sections.flatMap(s => s.items).map(p => ({ id: p.id, n: p.n, p: p.p }))
+  const b = catById('burgers')
+  const seul = b.sections[0].items, menu = b.sections[1].items
+  return [
+    { t: 'Pour commencer', cat: 'entrees', groups: [{ t: 'Entrées', lines: items('entrees') }, { t: 'Salades', lines: items('salades') }, { t: 'Nos créations', lines: items('creations') }] },
+    { t: 'Saveurs d’Asie', cat: 'thai', groups: [{ t: 'Thaï', lines: items('thai') }, { t: 'Indien', lines: items('indien') }] },
+    { t: 'Les classiques', cat: 'brasserie', groups: [{ t: 'Brasserie', lines: items('brasserie') }, { t: 'Pâtes', lines: items('pates') }] },
+    { t: 'Burgers maison', cat: 'burgers', head: ['seul', 'menu'], groups: [{ lines: seul.map(p => ({ id: p.id, n: p.n, p: p.p, p2: menu.find(m => m.n === p.n)?.p })) }, { t: 'Menu enfant', lines: items('enfant').slice(0, 2) }] },
+  ]
+}
+
 export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => void; next: () => void }) {
-  const dishes = useMemo(() => ['159935', '159942', '159930', '1640752', '159947', '1641620', '170564', '159917'], [])
-  const [i, setI] = useState(0)
+  const boards = useMemo(buildBoards, [])
   const [awake, setAwake] = useState(false)
   const ref = useRef<HTMLElement>(null)
   useEffect(() => {
-    const io = new IntersectionObserver(([e]) => setAwake(e.isIntersecting), { threshold: .35 })
+    // la vidéo ne tourne que lorsque la borne est à l'écran (batterie et fluidité sur mobile)
+    const io = new IntersectionObserver(([e]) => {
+      setAwake(e.isIntersecting)
+      ref.current?.querySelectorAll('video').forEach(v => {
+        if (e.isIntersecting && v.offsetParent) v.play().catch(() => { /* lecture auto refusée : l'affiche reste visible */ })
+        else v.pause()
+      })
+    }, { threshold: .2 })
     if (ref.current) io.observe(ref.current)
     return () => io.disconnect()
   }, [])
-  useEffect(() => {
-    if (!awake) return
-    const t = setInterval(() => setI(x => (x + 1) % dishes.length), 2400)
-    return () => clearInterval(t)
-  }, [awake, dishes.length])
-
-  const boards: [string, string[]][] = [['Cuisine', ['entrees', 'salades', 'creations']], ['Asie', ['thai', 'indien']], ['Classiques', ['pates', 'brasserie']], ['Burgers', ['burgers', 'enfant', 'accompagnements']]]
 
   return (
     <section id="borne" ref={ref} className="scene wall-brick gutter pb-6">
       <Plafond /><Guirlande count={22} />
-      <Bocaux items={[{ x: '62%', drop: 150, hideSm: true }, { x: '78%', drop: 120, size: .85, hideSm: true }, { x: '92%', drop: 300, size: .8 }]} />
-      <CadreNeon src={LOGO} className="right-[4%] top-[220px] hidden lg:grid" />
+      <Bocaux items={[{ x: '7%', drop: 260, size: .8, hideSm: true }, { x: '93%', drop: 230, size: .8 }]} />
       <div className="scene__head">
         <span className="scene__eyebrow">Étape 1 · La borne</span>
         <h2 className="scene__title">Commandez à la borne</h2>
         <p className="scene__lead">Comme en salle : touchez l’écran, composez vos plats (cuisson, accompagnement, sauces, sans tomate…) et retrouvez tout dans le panier lumineux.</p>
       </div>
-      <div className="borne-stage">
+
+      <div className="borne-wall">
         <div className="boards" aria-label="Écrans du menu">
-          {boards.map(([t, ids]) => (
-            <button key={t} type="button" className="board" onClick={() => openKiosk(ids[0])} aria-label={`Voir ${t}`}>
-              <span className="board__t">{t}</span>
-              {ids.flatMap(id => catById(id).sections.flatMap(s => s.items)).slice(0, 9).map(p => (
-                <span key={p.id} className="board__item"><span>{p.n.toLowerCase()}</span><span>{p.p.toFixed(2).replace('.', ',')}</span></span>
+          {boards.map(bd => (
+            <button key={bd.t} type="button" className="board" onClick={() => openKiosk(bd.cat)} aria-label={`Commander : ${bd.t}`}>
+              <span className="board__t">{bd.t}</span>
+              {bd.head && <span className="board__head"><span /><span>{bd.head[0]}</span><span>{bd.head[1]}</span></span>}
+              {bd.groups.map((g, gi) => (
+                <span key={gi} className="board__grp">
+                  {g.t && <span className="board__g">{g.t}</span>}
+                  {g.lines.map(l => (
+                    <span key={l.id} className={`board__item${bd.head ? ' has-2' : ''}`}>
+                      <span className="board__n">{pretty(l.n)}</span>
+                      <span className="board__p">{price(l.p)}</span>
+                      {bd.head && <span className="board__p">{l.p2 ? price(l.p2) : ''}</span>}
+                    </span>
+                  ))}
+                </span>
               ))}
             </button>
           ))}
         </div>
+
         <div className="kiosks">
           <button type="button" className={`kiosk${awake ? ' is-awake' : ''}`} onClick={() => openKiosk()} aria-label="Ouvrir la borne de commande">
             <div className="kiosk__screen">
+              <video className="kiosk__video" src="/assets/video/borne.mp4" poster="/assets/video/borne-poster.webp" muted loop playsInline preload="metadata" aria-hidden="true" />
+              <span className="kiosk__shade" />
               <img src={LOGO} alt="" className="kiosk__logo" />
-              <img key={i} src={img(dishes[i])} alt="" className="kiosk__dish" />
               <span className="kiosk__touch">Touchez pour commander</span>
             </div>
           </button>
           <button type="button" className="kiosk kiosk--2" onClick={() => openKiosk('burgers')} aria-label="Ouvrir la borne sur les burgers">
             <div className="kiosk__screen">
-              <span className="kiosk__label">Choisissez</span>
-              <div className="kiosk__mini">{CATS.slice(0, 8).map(c => <span key={c.id} style={{ backgroundImage: `url(${catImg(c.img)})` }} />)}</div>
-              <span className="kiosk__label">{CATS.length} rubriques</span>
+              <video className="kiosk__video" src="/assets/video/borne.mp4#t=9" poster="/assets/video/borne-poster.webp" muted loop playsInline preload="none" aria-hidden="true" />
+              <span className="kiosk__shade" />
+              <img src={LOGO} alt="" className="kiosk__logo" />
+              <span className="kiosk__touch">Touchez pour commander</span>
             </div>
           </button>
         </div>
@@ -134,43 +163,48 @@ export function KioskOverlay({ start, mode, setMode, total, count, onClose, onPi
 }
 
 /* ================= La vitrine des desserts ================= */
+function PriceTag({ name, price: pr }: { name: string; price: number }) {
+  return <span className="tag"><span className="tag__n">{name}</span><span className="tag__p">{eur(pr)}</span></span>
+}
+
 export function VitrineScene({ onPick, cartQty, next }: { onPick: Pick; cartQty: Record<string, number>; next: () => void }) {
   const items = catById('desserts').sections.flatMap(s => s.items)
   const shelves: [string, typeof items][] = [
     ['Tiramisus maison', items.filter(p => p.n.includes('TIRAMISU'))],
-    ['Cheesecakes & tartelettes', items.filter(p => /CHEESECAKE|TARTELETTE/.test(p.n))],
-    ['Gourmandises', items.filter(p => !/TIRAMISU|CHEESECAKE|TARTELETTE/.test(p.n))],
+    ['Cheesecakes & tartelettes', items.filter(p => /CHEESECAKE|TARTELETTE|SUCCES|TRILECE/.test(p.n))],
+    ['Gourmandises', items.filter(p => !/TIRAMISU|CHEESECAKE|TARTELETTE|SUCCES|TRILECE/.test(p.n))],
   ]
   return (
     <section id="vitrine" className="scene wall-brick gutter pb-6">
       <Plafond /><Guirlande count={20} top={92} />
-      <CadreNeon src={LOGO} className="left-[4%] top-[150px] hidden xl:grid" />
+      <CadreNeon src={LOGO} className="right-[4%] top-[150px] hidden xl:grid" />
       <div className="scene__head">
         <span className="scene__eyebrow">Étape 2 · La vitrine</span>
         <h2 className="scene__title">Une douceur ?</h2>
         <p className="scene__lead">Nos desserts maison vous attendent derrière la vitre. Touchez celui qui vous fait envie, il file dans votre panier.</p>
       </div>
-      <div className="vitrine">
-        <div className="vt-top"><b>Les Lumières</b><small>Pâtisseries maison</small></div>
-        <div className="vt-glass">
+      <div className="case">
+        <div className="case__top"><span>Pâtisseries maison</span></div>
+        <div className="case__body">
           {shelves.map(([t, list]) => (
-            <div key={t} className="vt-shelf">
-              <span className="vt-shelf__label">{t}</span>
-              <div className="vt-row">
+            <div key={t} className="case__level">
+              <span className="case__label">{t}</span>
+              <div className="case__row">
                 {list.map(p => (
-                  <button key={p.id} type="button" className="dessert" onClick={e => onPick(PRODUCTS[p.id], e.currentTarget.querySelector('img'))} aria-label={`Ajouter ${p.n.toLowerCase()}, ${eur(p.p)}`}>
+                  <button key={p.id} type="button" className="item" onClick={e => onPick(PRODUCTS[p.id], e.currentTarget.querySelector('img'))} aria-label={`Ajouter ${p.n.toLowerCase()}, ${eur(p.p)}`}>
                     {qtyOf(cartQty, p.id)}
-                    <img src={img(p.id)} alt="" loading="lazy" />
-                    <span className="slate"><span>{p.n.replace('TIRAMISU ', '')}</span><em>{eur(p.p)}</em></span>
+                    <span className="item__img"><img src={img(p.id)} alt="" loading="lazy" /></span>
+                    <PriceTag name={p.n.replace('TIRAMISU ', 'Tiramisu ')} price={p.p} />
                     <span className="add-badge"><Plus size={14} /></span>
                   </button>
                 ))}
               </div>
-              <div className="vt-plate" />
+              <div className="case__glass-shelf" />
             </div>
           ))}
+          <span className="case__reflect" aria-hidden="true" />
         </div>
-        <div className="vt-base" />
+        <div className="case__base"><span className="case__kick" /></div>
       </div>
       <div className="next-step"><button type="button" onClick={next}>Ensuite, le bar <ArrowDown size={15} /></button></div>
       <div className="floor" />
@@ -198,10 +232,10 @@ export function BarScene({ onPick, cartQty, onFinish, count }: { onPick: Pick; c
             <span className="shelf__plaque">{s.t}</span>
             <div className="shelf__row">
               {s.items.map(p => (
-                <button key={p.id} type="button" className="drink" onClick={e => onPick(PRODUCTS[p.id], e.currentTarget.querySelector('img'))} aria-label={`Ajouter ${p.n.toLowerCase()}, ${eur(p.p)}`}>
+                <button key={p.id} type="button" className="item item--drink" onClick={e => onPick(PRODUCTS[p.id], e.currentTarget.querySelector('img'))} aria-label={`Ajouter ${p.n.toLowerCase()}, ${eur(p.p)}`}>
                   {qtyOf(cartQty, p.id)}
-                  <img src={img(p.id)} alt="" loading="lazy" />
-                  <span className="slate"><span>{p.n}</span><em>{eur(p.p)}</em></span>
+                  <span className="item__img"><img src={img(p.id)} alt="" loading="lazy" /></span>
+                  <PriceTag name={p.n} price={p.p} />
                   <span className="add-badge"><Plus size={14} /></span>
                 </button>
               ))}

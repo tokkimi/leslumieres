@@ -27,3 +27,7 @@ Coordonnées : `src/lib/contact.ts` (e-mail et WhatsApp à renseigner).
 Textures : [Poly Haven](https://polyhaven.com) (CC0). Photos des plats et logo : Les Lumières.
 
 Maquette : commande, compte et paiement sont simulés, rien n'est transmis.
+
+Vidéo de la borne : extraits [Pexels](https://www.pexels.com/license/) (licence libre, usage commercial autorisé),
+montés en boucle 9:16 au ralenti (`public/assets/video/borne.mp4`).
+Photos de la salle (floutées derrière les vitrines) : Les Lumières.

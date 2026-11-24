@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
-import { ArrowLeft, Banknote, Check, CreditCard, Lock, Ticket, X } from 'lucide-react'
+import { ArrowLeft, Banknote, Check, CreditCard, Lock, X } from 'lucide-react'
 import { LOGO, MODE_LABEL, eur, img, lower, store, type Line, type Mode } from '@/lib/menu'
 import { Modal, ModeSwitch } from '@/components/Overlays'
+import { PAIEMENTS } from '@/lib/contact'
 import { Boules, Guirlande, Plafond } from '@/components/Lights'
 
 type Profile = { nom: string; prenom: string; tel: string; mail: string }
@@ -155,11 +156,10 @@ export function Caisse({ cart, mode, setMode, onClose, onPaid, onLogin }: { cart
           </>) : (
             <div className="grid gap-2">
               <p className="m-0 text-sm text-[var(--muted)]">Vous réglez {mode === 'emporter' ? 'au retrait' : 'au comptoir'} :</p>
-              <div className="flex flex-wrap gap-2">
-                {[['Espèces', Banknote], ['Ticket restaurant', Ticket], ['Chèque déjeuner', Ticket], ['Carte bancaire', CreditCard]].map(([v, Icon]) => {
-                  const I = Icon as typeof Ticket
-                  return <label key={v as string} className="choice relative"><input type="radio" checked={counterPay === v} onChange={() => setCounterPay(v as string)} /><span className="gap-2"><I size={14} />{v as string}</span></label>
-                })}
+              <div className="paylogos">
+                {PAIEMENTS.map(p => (
+                  <label key={p.label} className="paypick"><input type="radio" checked={counterPay === p.label} onChange={() => setCounterPay(p.label)} /><span className="paylogo"><span><img src={p.logo} alt="" /></span><small>{p.label}</small></span></label>
+                ))}
               </div>
             </div>
           )}

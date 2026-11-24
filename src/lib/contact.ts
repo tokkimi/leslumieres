@@ -7,3 +7,10 @@ export const CONTACT = {
   address: '31-33 avenue Ampère, 77420 Champs-sur-Marne',
   maps: 'https://www.google.com/maps/search/?api=1&query=31-33+Avenue+Amp%C3%A8re+77420+Champs-sur-Marne',
 }
+
+export const PAIEMENTS = [
+  { label: 'Carte bancaire', logo: '/assets/img/paiement/CB.png' },
+  { label: 'Espèces', logo: '/assets/img/paiement/espece.png' },
+  { label: 'Ticket Restaurant', logo: '/assets/img/paiement/ticket-resto.png' },
+  { label: 'Chèque Déjeuner', logo: '/assets/img/paiement/cheque-dejeuner.png' },
+]

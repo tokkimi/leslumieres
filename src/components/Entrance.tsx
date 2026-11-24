@@ -3,55 +3,20 @@ import { LOGO } from '@/lib/menu'
 
 type Phase = 'night' | 'lit' | 'zoom' | 'open' | 'flash' | 'gone'
 
-/* Guirlande : ampoules réparties sur une chaînette entre x0 et x1 */
-function Garland({ x0, x1, y, sag, n }: { x0: number; x1: number; y: number; sag: number; n: number }) {
-  const pts = Array.from({ length: n }, (_, i) => {
-    const t = (i + .5) / n
-    return { x: x0 + (x1 - x0) * t, y: y + 4 * sag * t * (1 - t) }
-  })
-  return (
-    <g>
-      <path d={`M${x0} ${y} Q ${(x0 + x1) / 2} ${y + 2 * sag} ${x1} ${y}`} stroke="#1a120b" strokeWidth="1.5" fill="none" />
-      {pts.map((p, i) => <circle key={i} className="bulb" cx={p.x} cy={p.y + 6} r="4.5" fill="#ffd590" filter="url(#glow)" />)}
-    </g>
-  )
-}
-
-/* Intérieur vu à travers une vitrine */
-function Interior({ x, w, logo }: { x: number; w: number; logo?: boolean }) {
+/* Intérieur vu à travers une vitrine : photo réelle de la salle, floutée par le verre */
+function Interior({ x, w, photo, logo }: { x: number; w: number; photo: string; logo?: boolean }) {
   const y = 420, h = 470
   return (
-    <g className="interior">
-      <rect x={x} y={y} width={w} height={h} fill="url(#pBrick)" />
-      <rect x={x} y={y} width={w} height={h} fill="url(#gWarm)" />
-      <rect x={x} y={y} width={w} height="18" fill="#2a1a10" />
-      <rect x={x} y={y + 16} width={w} height="3" fill="#ffe0a8" filter="url(#glow)" />
-      <Garland x0={x + 10} x1={x + w - 10} y={y + 40} sag={22} n={Math.round(w / 34)} />
-      {[.25, .7].map((f, i) => (
-        <g key={i}>
-          <line x1={x + w * f} y1={y} x2={x + w * f} y2={y + 92 + i * 16} stroke="#111" strokeWidth="1.5" />
-          <circle cx={x + w * f} cy={y + 110 + i * 16} r="22" fill="url(#gGlobe)" filter="url(#glow)" />
-        </g>
-      ))}
-      {/* tables et chaises */}
-      {Array.from({ length: Math.round(w / 140) }, (_, i) => {
-        const cx = x + 70 + i * 140
-        return (
-          <g key={i} opacity=".92">
-            <rect x={cx - 46} y={y + 330} width="92" height="10" rx="2" fill="url(#pOak)" />
-            <rect x={cx - 3} y={y + 340} width="6" height="70" fill="#141010" />
-            <path d={`M${cx - 70} ${y + 300} v110 M${cx - 70} ${y + 350} h28 v60`} stroke="#120d0a" strokeWidth="6" fill="none" />
-            <path d={`M${cx + 70} ${y + 300} v110 M${cx + 70} ${y + 350} h-28 v60`} stroke="#120d0a" strokeWidth="6" fill="none" />
-          </g>
-        )
-      })}
+    <g>
+      <rect x={x} y={y} width={w} height={h} fill="#0c0806" />
+      <image className="interior" href={photo} x={x} y={y} width={w} height={h} preserveAspectRatio="xMidYMid slice" />
+      <rect x={x} y={y} width={w} height={h} fill="url(#gNightGlass)" />
       {logo && (
-        <g>
-          <rect x={x + w / 2 - 105} y={y + 120} width="210" height="170" rx="14" fill="none" stroke="#f5efe5" strokeWidth="3" opacity=".9" />
-          <image href={LOGO} x={x + w / 2 - 80} y={y + 122} width="160" height="160" opacity=".95" />
+        <g opacity=".92">
+          <rect x={x + w / 2 - 105} y={y + 110} width="210" height="170" rx="14" fill="none" stroke="#f5efe5" strokeWidth="2.5" />
+          <image href={LOGO} x={x + w / 2 - 80} y={y + 112} width="160" height="160" />
         </g>
       )}
-      <rect x={x} y={y + h - 80} width={w} height="80" fill="url(#gFloorFade)" />
     </g>
   )
 }
@@ -114,14 +79,9 @@ export function Entrance({ onDone }: { onDone: () => void }) {
             <pattern id="pPlaster" patternUnits="userSpaceOnUse" width="420" height="420"><image href="/assets/textures/enduit.webp" width="420" height="420" /></pattern>
             <pattern id="pFacade" patternUnits="userSpaceOnUse" width="360" height="360"><image href="/assets/textures/facade.webp" width="360" height="360" /></pattern>
             <pattern id="pPavers" patternUnits="userSpaceOnUse" width="240" height="240"><image href="/assets/textures/trottoir.webp" width="240" height="240" /></pattern>
-            <pattern id="pBrick" patternUnits="userSpaceOnUse" width="300" height="300"><image href="/assets/textures/brique.webp" width="300" height="300" /></pattern>
-            <pattern id="pOak" patternUnits="userSpaceOnUse" width="300" height="300"><image href="/assets/textures/chene.webp" width="300" height="300" /></pattern>
-            <linearGradient id="gWarm" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#ffb866" stopOpacity=".55" />
-              <stop offset=".5" stopColor="#c46a26" stopOpacity=".35" />
-              <stop offset="1" stopColor="#140a04" stopOpacity=".85" />
-            </linearGradient>
-            <radialGradient id="gGlobe" cx=".4" cy=".35"><stop offset="0" stopColor="#fff" /><stop offset=".6" stopColor="#fff2da" /><stop offset="1" stopColor="#e9c99a" /></radialGradient>
+            <pattern id="pDoor" patternUnits="userSpaceOnUse" x="676" y="416" width="248" height="476"><image href="/assets/photos/salle-c.webp" width="248" height="476" preserveAspectRatio="xMidYMid slice" /></pattern>
+            <linearGradient id="gNightGlass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#120a04" stopOpacity=".15" /><stop offset=".7" stopColor="#0b0604" stopOpacity=".1" /><stop offset="1" stopColor="#050302" stopOpacity=".6" /></linearGradient>
+            <linearGradient id="gSteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#8d8a84" /><stop offset=".5" stopColor="#e9e6df" /><stop offset="1" stopColor="#77736c" /></linearGradient>
             <linearGradient id="gFloorFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#000" stopOpacity="0" /><stop offset="1" stopColor="#000" stopOpacity=".7" /></linearGradient>
             <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stopColor="#fff" stopOpacity=".12" /><stop offset=".25" stopColor="#fff" stopOpacity=".03" />
@@ -132,7 +92,6 @@ export function Entrance({ onDone }: { onDone: () => void }) {
             <radialGradient id="gDoorLight" cx=".5" cy=".6"><stop offset="0" stopColor="#fff3dd" /><stop offset=".55" stopColor="#f6c37a" /><stop offset="1" stopColor="#8a4a18" /></radialGradient>
             <radialGradient id="gVignette" cx=".5" cy=".55" r=".75"><stop offset=".55" stopColor="#000" stopOpacity="0" /><stop offset="1" stopColor="#000" stopOpacity=".85" /></radialGradient>
             <linearGradient id="gTrunk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#4a4136" /><stop offset=".5" stopColor="#8c8170" /><stop offset="1" stopColor="#3b342b" /></linearGradient>
-            <filter id="glow" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="4" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
           </defs>
 
           {/* Étage : enduit, balcon et plantes */}
@@ -155,8 +114,8 @@ export function Entrance({ onDone }: { onDone: () => void }) {
           <rect y="240" width="1600" height="660" fill="#09090a" opacity=".55" />
 
           {/* Vitrines et porte */}
-          <Interior x={80} w={570} />
-          <Interior x={950} w={570} logo />
+          <Interior x={80} w={570} photo="/assets/photos/salle-a.webp" />
+          <Interior x={950} w={570} photo="/assets/photos/salle-b.webp" logo />
           <rect x={80} y={420} width={570} height={470} fill="url(#gGlass)" />
           <rect x={950} y={420} width={570} height={470} fill="url(#gGlass)" />
           {[80, 270, 460, 650, 950, 1140, 1330, 1520].map(x => <rect key={x} x={x - 6} y={412} width="12" height="486" fill="#0b0b0c" />)}
@@ -167,18 +126,18 @@ export function Entrance({ onDone }: { onDone: () => void }) {
           <rect x="676" y="416" width="248" height="476" fill="url(#gDoorLight)" className="door-light" />
           <rect ref={door} x="676" y="416" width="248" height="476" fill="none" />
           <g className="door-leaf door-l">
-            <rect x="676" y="416" width="124" height="476" fill="#0d0d0e" />
-            <rect x="688" y="430" width="100" height="448" fill="url(#pBrick)" />
-            <rect x="688" y="430" width="100" height="448" fill="url(#gWarm)" className="interior" />
-            <rect x="688" y="430" width="100" height="448" fill="url(#gGlass)" />
-            <rect x="780" y="600" width="6" height="120" rx="3" fill="#b9b2a6" />
+            <rect x="676" y="416" width="124" height="476" fill="#0a0a0b" />
+            <rect x="686" y="428" width="104" height="452" fill="url(#pDoor)" className="interior" />
+            <rect x="686" y="428" width="104" height="452" fill="url(#gNightGlass)" />
+            <rect x="686" y="428" width="104" height="452" fill="url(#gGlass)" />
+            <rect x="770" y="560" width="7" height="170" rx="3.5" fill="url(#gSteel)" />
           </g>
           <g className="door-leaf door-r">
-            <rect x="800" y="416" width="124" height="476" fill="#0d0d0e" />
-            <rect x="812" y="430" width="100" height="448" fill="url(#pBrick)" />
-            <rect x="812" y="430" width="100" height="448" fill="url(#gWarm)" className="interior" />
-            <rect x="812" y="430" width="100" height="448" fill="url(#gGlass)" />
-            <rect x="814" y="600" width="6" height="120" rx="3" fill="#b9b2a6" />
+            <rect x="800" y="416" width="124" height="476" fill="#0a0a0b" />
+            <rect x="810" y="428" width="104" height="452" fill="url(#pDoor)" className="interior" />
+            <rect x="810" y="428" width="104" height="452" fill="url(#gNightGlass)" />
+            <rect x="810" y="428" width="104" height="452" fill="url(#gGlass)" />
+            <rect x="823" y="560" width="7" height="170" rx="3.5" fill="url(#gSteel)" />
           </g>
           <rect x="666" y="404" width="268" height="14" fill="#0b0b0c" />
           <rect x="666" y="404" width="10" height="492" fill="#0b0b0c" /><rect x="924" y="404" width="10" height="492" fill="#0b0b0c" />
