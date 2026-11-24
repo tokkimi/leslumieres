@@ -829,3 +829,27 @@ html { scroll-snap-type: y proximity; }
   html { scroll-snap-type: none; }
   .screen { scroll-snap-align: none; }
 }
+
+/* Logo de chargement : s'allume comme un néon (clignotements secs, aucun glissement), puis halo */
+.e3-logo { transition: opacity .8s ease; }
+.e3.is-through .e3-logo, .e3.is-gone .e3-logo { transform: translate(-50%, -50%); }
+.e3-logo img { transform: none !important; opacity: 0; filter: brightness(.35); animation: e3neon 1.5s linear .25s forwards; }
+@keyframes e3neon {
+  0%   { opacity: 0;   filter: brightness(.35); }
+  6%   { opacity: 1;   filter: brightness(1.25) drop-shadow(0 0 10px rgba(255, 210, 140, .8)); }
+  10%  { opacity: .08; filter: brightness(.35); }
+  22%  { opacity: .08; }
+  25%  { opacity: 1;   filter: brightness(1.2) drop-shadow(0 0 12px rgba(255, 210, 140, .8)); }
+  28%  { opacity: .15; filter: brightness(.4); }
+  31%  { opacity: 1;   filter: brightness(1.15) drop-shadow(0 0 10px rgba(255, 210, 140, .7)); }
+  46%  { opacity: 1; }
+  48%  { opacity: .35; filter: brightness(.6); }
+  51%  { opacity: 1;   filter: brightness(1.1) drop-shadow(0 0 14px rgba(255, 205, 135, .7)); }
+  100% { opacity: 1;   filter: brightness(1.08) drop-shadow(0 0 2px rgba(255, 236, 200, .9)) drop-shadow(0 0 22px rgba(255, 200, 120, .6)); }
+}
+/* le halo jaillit une fois le néon stabilisé */
+.e3-logo__halo { opacity: 0; transform: scale(.6); animation: e3burst .9s cubic-bezier(.15, .9, .3, 1) 1.05s forwards, e3breathe 5s ease-in-out 2s infinite; }
+@keyframes e3burst { 0% { opacity: 0; transform: scale(.6); } 45% { opacity: 1; transform: scale(1.12); } 100% { opacity: 1; transform: scale(1); } }
+.e3-logo__rays { animation: e3halo .9s ease 1.15s forwards, e3spin 60s linear 1.15s infinite; }
+.e3-logo__shine::after { animation-delay: 1.8s; }
+@media (max-width: 760px) { .e3-logo__rays { animation: e3halo .9s ease 1.15s forwards; } }
