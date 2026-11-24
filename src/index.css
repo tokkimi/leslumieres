@@ -88,9 +88,6 @@
 .cta-order__arrow { animation: nudge 1.8s ease-in-out infinite; color: var(--ambre); }
 @keyframes nudge { 0%, 100% { transform: translateY(0); opacity: .6 } 50% { transform: translateY(7px); opacity: 1 } }
 
-.warp { position: fixed; inset: 0; z-index: 95; pointer-events: none; background: radial-gradient(circle at 50% 100%, #fff1d8, #f0bd6e 30%, rgba(80, 40, 12, .9) 65%, #0b0a09); opacity: 0; }
-.warp.is-on { animation: warp 1.3s var(--ease) forwards; }
-@keyframes warp { 0% { opacity: 0; clip-path: circle(0% at 50% 100%) } 45% { opacity: 1; clip-path: circle(150% at 50% 100%) } 100% { opacity: 0; clip-path: circle(150% at 50% 100%) } }
 
 /* ================= Décor commun ================= */
 .scene { position: relative; overflow: hidden; isolation: isolate; }
@@ -503,39 +500,51 @@
 @media (min-width: 861px) { .case__row { gap: 8px; } .case .item { width: 114px; } .case .item__img { width: 108px; height: 108px; } .case .tag { width: 110px; } }
 
 /* ================= Entrée : la façade réelle, animée ================= */
-.entrance2 { position: fixed; inset: 0; z-index: 100; background: #0b0a09; overflow: hidden; transition: opacity .7s ease, visibility .7s; }
-.entrance2.is-gone { opacity: 0; visibility: hidden; pointer-events: none; }
-.entrance2__cam { position: absolute; inset: 0; transition: transform 2.6s cubic-bezier(.55, 0, .2, 1); will-change: transform; animation: e2drift 9s ease-out both; }
-@keyframes e2drift { from { transform: scale(1.06) } to { transform: scale(1) } }
-.entrance2.is-zoom .entrance2__cam { animation: none; }
-.entrance2 svg { width: 100%; height: 100%; display: block; }
+.e3 { position: fixed; inset: 0; z-index: 100; overflow: hidden; background: #0b0a09; transition: opacity .7s ease, visibility .7s; }
+.e3.is-gone { opacity: 0; visibility: hidden; pointer-events: none; }
+/* la photo garde ses proportions et couvre l'écran ; la caméra avance vers la porte (centre x 851, y 523) */
+.e3-stage { position: absolute; left: 50%; top: 50%; width: max(100vw, calc(100vh * 1672 / 941)); aspect-ratio: 1672 / 941; container-type: inline-size;
+  transform-origin: 50.9% 55.6%; transform: translate(-50%, -50%) scale(1); will-change: transform;
+  transition: transform 6s cubic-bezier(.2, .6, .3, 1), filter .9s ease; }
+.e3.is-lit .e3-stage { transform: translate(-50%, -50%) scale(1.05); }
+.e3.is-walk .e3-stage { transform: translate(-50%, -50%) scale(1.3); transition: transform 2.6s cubic-bezier(.42, 0, .3, 1); }
+.e3.is-open .e3-stage { transform: translate(-50%, -50%) scale(1.48); transition: transform 1.9s cubic-bezier(.3, 0, .3, 1); }
+.e3.is-through .e3-stage, .e3.is-gone .e3-stage { transform: translate(-50%, -50%) scale(1.8); filter: blur(2px); transition: transform 1s cubic-bezier(.5, 0, .7, .4), filter .9s ease; }
+.e3-photo { position: absolute; inset: 0; background: url(/assets/photos/facade.webp) center / 100% 100% no-repeat; }
+.e3-stage > span, .e3-doorway, .e3-doorway > span, .e3-flap { position: absolute; background-repeat: no-repeat; }
 /* lumières intérieures : éteintes puis allumées en vacillant */
-.e2-night rect { fill: #060403; opacity: .78; transition: opacity 1.4s ease; }
-.entrance2.is-lit .e2-night rect { opacity: 0; animation: e2on 1.2s steps(1, end); }
-.entrance2.is-lit .e2-night rect:nth-child(2) { animation-delay: .25s; }
-.entrance2.is-lit .e2-night rect:nth-child(3) { animation-delay: .12s; }
-@keyframes e2on { 0% { opacity: .78 } 12% { opacity: .25 } 20% { opacity: .7 } 32% { opacity: .1 } 40% { opacity: .5 } 55%, 100% { opacity: 0 } }
-/* store : un tout petit peu de vent */
-.e2-flap { transform-box: view-box; transform-origin: 836px 268px; animation: e2wind 6.5s ease-in-out infinite; }
-@keyframes e2wind { 0%, 100% { transform: skewX(0) scaleY(1) } 22% { transform: skewX(.5deg) scaleY(1.018) } 48% { transform: skewX(-.35deg) scaleY(.994) } 74% { transform: skewX(.25deg) scaleY(1.01) } }
-/* portes qui pivotent sur leurs gonds, sans flash */
-.e2-leaf { transform-box: view-box; transition: transform 1.5s cubic-bezier(.6, 0, .25, 1); }
-.e2-leaf--l { transform-origin: 700px 523px; }
-.e2-leaf--r { transform-origin: 1001px 523px; }
-.e2-shade { opacity: 0; transition: opacity 1.5s ease; }
-.entrance2.is-open .e2-leaf--l { transform: scaleX(.12) skewY(5deg); }
-.entrance2.is-open .e2-leaf--r { transform: scaleX(.12) skewY(-5deg); }
-.entrance2.is-open .e2-shade { opacity: 1; }
-.e2-inside { opacity: 0; transition: opacity .6s ease .2s; }
-.entrance2.is-open .e2-inside { opacity: 1; }
-/* sortie : fondu doux et chaud vers la salle */
-.entrance2__veil { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 55%, rgba(60, 34, 14, .2), #0b0a09 75%); opacity: 0; transition: opacity .8s ease; }
-.entrance2.is-fade .entrance2__veil { opacity: 1; }
-.entrance2__ui { position: absolute; left: 0; right: 0; bottom: calc(26px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; align-items: center; gap: 10px; transition: opacity .4s; }
-.entrance2.is-zoom .entrance2__ui { opacity: 0; pointer-events: none; }
-.entrance2__hint { font-family: var(--font-mono); font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: #efe6d8; text-shadow: 0 1px 8px #000; }
-.entrance2__btn { height: 44px; padding: 0 26px; border-radius: 999px; border: 1px solid rgba(245, 239, 229, .4); background: rgba(10, 9, 8, .5); color: var(--blanc); font-weight: 700; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; backdrop-filter: blur(6px); }
-.entrance2__btn:hover { background: var(--blanc); color: var(--noir); }
+.e3-night { background: #060403 !important; opacity: .8; }
+.e3-night--door { inset: 0; z-index: 1; }
+.e3.is-lit .e3-night, .e3.is-walk .e3-night, .e3.is-open .e3-night, .e3.is-through .e3-night { opacity: 0; animation: e3on 1.3s steps(1, end); }
+.e3-night--2 { animation-delay: .25s !important; } .e3-night--door { animation-delay: .1s !important; }
+@keyframes e3on { 0% { opacity: .8 } 12% { opacity: .25 } 22% { opacity: .7 } 34% { opacity: .1 } 44% { opacity: .5 } 56%, 100% { opacity: 0 } }
+/* la porte : de vrais panneaux en 3D */
+.e3-doorway { perspective: 1400px; perspective-origin: 50% 50%; overflow: visible; }
+.e3-inside { z-index: 0; filter: brightness(1.04); }
+.e3-leaf { z-index: 2; top: 0; transform-style: preserve-3d; transition: transform 1.8s cubic-bezier(.38, 0, .22, 1); box-shadow: 0 0 0 .5px rgba(0, 0, 0, .6); }
+.e3-leaf--l { transform-origin: left center; }
+.e3-leaf--r { transform-origin: right center; }
+.e3-leaf i { position: absolute; inset: 0; opacity: 0; transition: opacity 1.8s ease; }
+.e3-leaf--l i { background: linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, .65)); }
+.e3-leaf--r i { background: linear-gradient(270deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, .65)); }
+.e3.is-open .e3-leaf--l, .e3.is-through .e3-leaf--l, .e3.is-gone .e3-leaf--l { transform: rotateY(76deg); }
+.e3.is-open .e3-leaf--r, .e3.is-through .e3-leaf--r, .e3.is-gone .e3-leaf--r { transform: rotateY(-76deg); }
+.e3.is-open .e3-leaf i, .e3.is-through .e3-leaf i { opacity: 1; }
+/* le store : un tout petit peu de vent, texte posé sur le tissu */
+.e3-flap { left: 0; width: 100%; z-index: 3; transform-origin: 50% 0; animation: e3wind 6.5s ease-in-out infinite; }
+@keyframes e3wind { 0%, 100% { transform: skewX(0) scaleY(1) } 22% { transform: skewX(.5deg) scaleY(1.018) } 48% { transform: skewX(-.35deg) scaleY(.994) } 74% { transform: skewX(.25deg) scaleY(1.01) } }
+.e3-patch { position: absolute; background: #2c2926; }
+.e3-txt { position: absolute; top: 50%; transform: translate(-50%, -50%); white-space: nowrap; color: #f4efe6; }
+.e3-txt--side { font-family: var(--font-sans); font-weight: 600; font-size: 1.02cqw; letter-spacing: .3cqw; padding-left: .3cqw; }
+.e3-txt--name { font-family: var(--font-script); font-size: 2.3cqw; top: 54%; }
+/* passage de la porte : fondu doux, sans lumière */
+.e3-veil { position: absolute; inset: 0; pointer-events: none; background: #0b0a09; opacity: 0; transition: opacity .9s ease; }
+.e3.is-through .e3-veil, .e3.is-gone .e3-veil { opacity: 1; }
+.e3-ui { position: absolute; left: 0; right: 0; bottom: calc(26px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; align-items: center; gap: 10px; transition: opacity .4s; }
+.e3.is-walk .e3-ui, .e3.is-open .e3-ui, .e3.is-through .e3-ui { opacity: 0; pointer-events: none; }
+.e3-hint { font-family: var(--font-mono); font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: #efe6d8; text-shadow: 0 1px 8px #000; text-align: center; padding: 0 16px; }
+.e3-btn { height: 44px; padding: 0 26px; border-radius: 999px; border: 1px solid rgba(245, 239, 229, .4); background: rgba(10, 9, 8, .5); color: var(--blanc); font-weight: 700; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; backdrop-filter: blur(6px); }
+.e3-btn:hover { background: var(--blanc); color: var(--noir); }
 
 /* ================= Un écran par partie ================= */
 html { scroll-snap-type: y mandatory; }
@@ -672,3 +681,15 @@ body.locked { scroll-snap-type: none; }
 .kiosk-ui__dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .5; flex: none; }
 .kiosk-ui__cat[aria-current="true"] .kiosk-ui__dot { opacity: 1; box-shadow: 0 0 8px var(--ambre); }
 @media (max-width: 860px) { .kiosk-ui__cat { flex-direction: row; min-height: 36px; white-space: nowrap; } }
+
+/* Borne : écran des menus, puis la borne en grand sur son propre écran */
+.borne-wall--boards { display: flex !important; align-items: center; justify-content: center; }
+.borne-wall--boards .boards { width: 100%; }
+@media (min-width: 861px) { .borne-wall--boards .board { padding: 18px 18px 20px; gap: 10px; } .borne-wall--boards .board__item, .borne-wall--boards .board__p { font-size: 11px; } .borne-wall--boards .board__t { font-size: 26px; } }
+.kiosk-stage { position: relative; z-index: 3; flex: 1; min-height: 0; width: 100%; padding-top: 18px; }
+.screen .kiosk--big { position: absolute; left: 50%; bottom: 0; top: 18px; height: auto; max-height: none; transform: translateX(-50%); padding: 3% 2.8% 9%; border-radius: 30px 30px 24px 24px; }
+.screen .kiosk--big:hover { transform: translateX(-50%) translateY(-4px); }
+.kiosk--big .kiosk__screen { border-radius: 12px; }
+.kiosk--big::before { width: 60px; height: 8px; bottom: 3.2%; }
+.kiosk--big::after { width: 8px; height: 8px; bottom: 6%; }
+@media (max-width: 860px) { #borne-kiosk .next-step { display: none; } #borne-kiosk .kiosk-stage { padding-bottom: 6px; } }

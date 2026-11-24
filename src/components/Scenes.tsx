@@ -43,40 +43,50 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
     return () => io.disconnect()
   }, [])
 
-  return (
-    <section id="borne" ref={ref} className="scene screen wall-brick gutter">
-      <Plafond /><Guirlande count={22} />
-      <Bocaux items={[{ x: '7%', drop: 260, size: .8, hideSm: true }, { x: '93%', drop: 230, size: .8 }]} />
-      <div className="scene__head">
-        <span className="scene__eyebrow">Étape 1 · La borne</span>
-        <h2 className="scene__title">Commandez à la borne</h2>
-        <p className="scene__lead">Comme en salle : touchez l’écran, composez vos plats (cuisson, accompagnement, sauces, sans tomate…) et retrouvez tout dans le panier lumineux.</p>
-      </div>
+  const toKiosk = () => document.getElementById('borne-kiosk')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
-      <div className="borne-wall">
-        <div className="boards" aria-label="Écrans du menu">
-          {boards.map(bd => (
-            <button key={bd.t} type="button" className="board" onClick={() => openKiosk(bd.cat)} aria-label={`Commander : ${bd.t}`}>
-              <span className="board__t">{bd.t}</span>
-              {bd.head && <span className="board__head"><span /><span>{bd.head[0]}</span><span>{bd.head[1]}</span></span>}
-              {bd.groups.map((g, gi) => (
-                <span key={gi} className="board__grp">
-                  {g.t && <span className="board__g">{g.t}</span>}
-                  {g.lines.map(l => (
-                    <span key={l.id} className={`board__item${bd.head ? ' has-2' : ''}`}>
-                      <span className="board__n">{pretty(l.n)}</span>
-                      <span className="board__p">{price(l.p)}</span>
-                      {bd.head && <span className="board__p">{l.p2 ? price(l.p2) : ''}</span>}
-                    </span>
-                  ))}
-                </span>
-              ))}
-            </button>
-          ))}
+  return (
+    <>
+      <section id="borne" className="scene screen wall-brick gutter">
+        <Plafond /><Guirlande count={22} />
+        <Bocaux items={[{ x: '7%', drop: 260, size: .8, hideSm: true }, { x: '93%', drop: 230, size: .8 }]} />
+        <div className="scene__head">
+          <span className="scene__eyebrow">Étape 1 · La borne</span>
+          <h2 className="scene__title">Commandez à la borne</h2>
+          <p className="scene__lead">Comme en salle : touchez l’écran, composez vos plats (cuisson, accompagnement, sauces, sans tomate…) et retrouvez tout dans le panier lumineux.</p>
         </div>
 
-        <div className="kiosks">
-          <button type="button" className={`kiosk${awake ? ' is-awake' : ''}`} onClick={() => openKiosk()} aria-label="Ouvrir la borne de commande">
+        <div className="borne-wall borne-wall--boards">
+          <div className="boards" aria-label="Écrans du menu">
+            {boards.map(bd => (
+              <button key={bd.t} type="button" className="board" onClick={() => openKiosk(bd.cat)} aria-label={`Commander : ${bd.t}`}>
+                <span className="board__t">{bd.t}</span>
+                {bd.head && <span className="board__head"><span /><span>{bd.head[0]}</span><span>{bd.head[1]}</span></span>}
+                {bd.groups.map((g, gi) => (
+                  <span key={gi} className="board__grp">
+                    {g.t && <span className="board__g">{g.t}</span>}
+                    {g.lines.map(l => (
+                      <span key={l.id} className={`board__item${bd.head ? ' has-2' : ''}`}>
+                        <span className="board__n">{pretty(l.n)}</span>
+                        <span className="board__p">{price(l.p)}</span>
+                        {bd.head && <span className="board__p">{l.p2 ? price(l.p2) : ''}</span>}
+                      </span>
+                    ))}
+                  </span>
+                ))}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="next-step"><button type="button" onClick={toKiosk}>La borne <ArrowDown size={15} /></button></div>
+        <div className="floor" />
+      </section>
+
+      <section id="borne-kiosk" ref={ref} className="scene screen wall-brick gutter">
+        <Plafond /><Guirlande count={22} />
+        <Bocaux items={[{ x: '12%', drop: 200, size: .9, hideSm: true }, { x: '88%', drop: 170, size: .9, hideSm: true }]} />
+        <div className="kiosk-stage">
+          <button type="button" className={`kiosk kiosk--big${awake ? ' is-awake' : ''}`} onClick={() => openKiosk()} aria-label="Ouvrir la borne de commande">
             <div className="kiosk__screen">
               <video className="kiosk__video" src="/assets/video/borne.mp4" poster="/assets/video/borne-poster.webp" muted loop playsInline preload="metadata" aria-hidden="true" />
               <span className="kiosk__shade" />
@@ -84,12 +94,11 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
               <span className="kiosk__touch"><span className="kt-long">Touchez pour commander</span><span className="kt-short">Commander</span></span>
             </div>
           </button>
-
         </div>
-      </div>
-      <div className="next-step"><button type="button" onClick={next}>Ensuite, la vitrine des desserts <ArrowDown size={15} /></button></div>
-      <div className="floor" />
-    </section>
+        <div className="next-step"><button type="button" onClick={next}>Ensuite, la vitrine des desserts <ArrowDown size={15} /></button></div>
+        <div className="floor" />
+      </section>
+    </>
   )
 }
 

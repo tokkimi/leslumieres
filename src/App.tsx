@@ -31,7 +31,6 @@ export default function App() {
   const [panel, setPanel] = useState<null | 'cart' | 'caisse'>(null)
   const [account, setAccount] = useState(false)
   const [toastMsg, setToastMsg] = useState('')
-  const [warp, setWarp] = useState(false)
 
   const setMode = (m: Mode) => { setModeState(m); store.set('mode', m) }
   useEffect(() => { store.set('cart', cart) }, [cart])
@@ -77,16 +76,11 @@ export default function App() {
   const changeQty = (i: number, d: number) => setCart(c => c.flatMap((l, k) => k !== i ? [l] : l.qty + d <= 0 ? [] : [{ ...l, qty: l.qty + d }]))
 
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  const startExperience = () => {
-    setWarp(true)
-    setTimeout(() => { document.getElementById('borne')?.scrollIntoView({ behavior: 'auto' }) }, 520)
-    setTimeout(() => setWarp(false), 1350)
-  }
+  const startExperience = () => go('borne')
 
   return (
     <>
       {!entered && <Entrance onDone={() => setEntered(true)} />}
-      <div className={`warp${warp ? ' is-on' : ''}`} aria-hidden="true" />
 
       <header className="topbar">
         <div className="topbar__in">
