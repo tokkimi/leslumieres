@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les Lumières</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Les Lumières, restaurant avec du caractère à Champs-sur-Marne. Cuisine du monde faite maison : burgers, thaï, pâtes, brasserie, salades. Commandez en ligne, à emporter ou sur place.">
+<meta name="theme-color" content="#0b0a09">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Oxygen+Mono&family=Yesteryear&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<!--LL:BODY-->
+<!-- ===== Écran de chargement : l'ampoule s'allume ===== -->
+<div class="loader" id="loader" role="status" aria-label="Chargement">
+  <div class="loader__halo"></div>
+  <img class="loader__logo" src="assets/img/logo-blanc.png" alt="" width="220" height="220">
+  <div class="loader__bar"><span></span></div>
+  <p class="loader__txt">On allume les lumières…</p>
+</div>
+
+<div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<!-- ===== En-tête ===== -->
+<header class="top" id="top">
+  <div class="top__in">
+    <a class="brand" href="#accueil" aria-label="Les Lumières, accueil">
+      <img src="assets/img/logo-blanc.png" alt="" width="44" height="44">
+      <span class="brand__name">Les Lumières</span>
+    </a>
+    <nav class="top__nav" aria-label="Navigation principale">
+      <a href="#carte">La carte</a>
+      <a href="#infos">Infos</a>
+      <span class="top__tel">01 60 05 25 08</span>
+    </nav>
+    <div class="top__actions">
+      <button class="iconbtn neu" id="btnAccount" type="button" aria-label="Connexion">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+      </button>
+      <button class="cartbtn neu" id="btnCart" type="button" aria-label="Voir le panier">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="cartbtn__total" id="cartTotalTop">0,00 €</span>
+        <span class="cartbtn__count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="accueil">
+  <!-- ===== Hero : la façade ===== -->
+  <section class="hero">
+    <div class="hero__in">
+      <div class="hero__copy">
+        <p class="eyebrow"><span class="dot"></span>Cuisine du monde · Champs-sur-Marne</p>
+        <h1 class="hero__title">
+          <span class="hero__l1">Les</span>
+          <span class="hero__l2">Lumières</span>
+        </h1>
+        <p class="hero__script">depuis 2020</p>
+        <p class="hero__lead">Restaurant avec du caractère. Cuisine du monde faite maison, entre Asie et Europe&nbsp;: burgers, wok thaï, currys, pâtes fraîches et grillades de brasserie.</p>
+
+        <div class="mode neu-in" role="radiogroup" aria-label="Mode de commande" id="modeHero">
+          <button type="button" role="radio" data-mode="emporter" class="mode__opt">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+            À emporter
+          </button>
+          <button type="button" role="radio" data-mode="surplace" class="mode__opt">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v8M5 3v4a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 0-3 2.5-3 6h3v12"/></svg>
+            Sur place
+          </button>
+          <span class="mode__thumb" aria-hidden="true"></span>
+        </div>
+
+        <div class="hero__cta">
+          <a class="btn btn--light" href="#carte">Commander en ligne</a>
+          <a class="btn btn--ghost" href="#infos">Nous trouver</a>
+        </div>
+      </div>
+
+      <div class="hero__visual" aria-hidden="true">
+        <div class="plate plate--main"><img src="assets/img/plats/159935.webp" alt=""></div>
+        <div class="plate plate--a"><img src="assets/img/plats/159942.webp" alt=""></div>
+        <div class="plate plate--b"><img src="assets/img/plats/159954.webp" alt=""></div>
+        <div class="bulb"><i></i></div>
+      </div>
+    </div>
+
+    <ul class="facts" aria-label="En bref">
+      <li><strong>141</strong><span>plats &amp; boissons</span></li>
+      <li><strong>Fait maison</strong><span>burgers, pâtes, desserts</span></li>
+      <li><strong>Bornes</strong><span>commande en salle</span></li>
+      <li><strong>CB · Espèces</strong><span>tickets resto acceptés</span></li>
+    </ul>
+  </section>
+
+  <!-- ===== La carte en images ===== -->
+  <section class="univers" aria-labelledby="univers-t">
+    <div class="wrap">
+      <div class="sechead">
+        <h2 id="univers-t">La carte</h2>
+        <p>Douze univers, une seule cuisine. Choisissez, personnalisez, on s’occupe du reste.</p>
+      </div>
+      <div class="univers__grid" id="universGrid"></div>
+    </div>
+  </section>
+
+  <!-- ===== Menu complet ===== -->
+  <section class="menu" id="carte" aria-label="Menu complet">
+    <div class="rail" id="rail">
+      <div class="rail__in" id="railIn"></div>
+    </div>
+    <div class="wrap" id="menuRoot"></div>
+  </section>
+
+  <!-- ===== Infos ===== -->
+  <section class="infos" id="infos" aria-labelledby="infos-t">
+    <div class="wrap infos__grid">
+      <div class="infos__card neu">
+        <h2 id="infos-t">Nous trouver</h2>
+        <p class="infos__addr">31-33 Avenue Ampère<br>77420 Champs-sur-Marne</p>
+        <p class="infos__tel"><span class="mono">01 60 05 25 08</span>
+          <button class="chip" type="button" data-copy="01 60 05 25 08">Copier</button></p>
+        <a class="btn btn--light" href="https://www.google.com/maps/search/?api=1&query=31-33+Avenue+Amp%C3%A8re+77420+Champs-sur-Marne" target="_blank" rel="noopener">Itinéraire</a>
+      </div>
+      <div class="infos__card neu">
+        <h3>Commander</h3>
+        <ul class="list">
+          <li><b>En ligne</b> ici, à emporter ou sur place</li>
+          <li><b>En salle</b> sur nos bornes de commande</li>
+          <li><b>Par téléphone</b> au 01 60 05 25 08</li>
+        </ul>
+      </div>
+      <div class="infos__card neu">
+        <h3>Paiements acceptés</h3>
+        <ul class="pay">
+          <li>Carte bancaire</li><li>Espèces</li><li>Ticket restaurant</li><li>Chèque déjeuner</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <img src="assets/img/logo-blanc.png" alt="Les Lumières" width="96" height="96">
+    <p>Les Lumières © 2026 · Tous droits réservés</p>
+    <p class="mono foot__note">Maquette de démonstration · aucune commande n’est réellement transmise</p>
+  </div>
+</footer>
+
+<!-- Barre panier mobile -->
+<button class="cartbar" id="cartBar" type="button" hidden>
+  <span class="cartbar__count" id="cartBarCount">0</span>
+  <span>Voir mon panier</span>
+  <span class="mono" id="cartBarTotal">0,00 €</span>
+</button>
+
+<!-- ===== Fiche produit ===== -->
+<div class="overlay" id="productOverlay" hidden>
+  <div class="sheet sheet--product" role="dialog" aria-modal="true" aria-labelledby="pTitle">
+    <button class="close neu" type="button" data-close aria-label="Fermer">×</button>
+    <div class="pd__head">
+      <div class="pd__img"><img id="pImg" src="" alt=""></div>
+      <div class="pd__meta">
+        <p class="eyebrow" id="pCat"></p>
+        <h2 id="pTitle"></h2>
+        <p class="pd__desc" id="pDesc"></p>
+        <p class="pd__price mono" id="pPrice"></p>
+      </div>
+    </div>
+    <form id="pForm" novalidate>
+      <div id="pGroups"></div>
+      <label class="note" for="pNote">Une précision pour la cuisine&nbsp;?
+        <textarea id="pNote" rows="2" placeholder="Allergie, sauce à part…"></textarea>
+      </label>
+    </form>
+    <div class="pd__foot">
+      <div class="qty neu-in">
+        <button type="button" id="qMinus" aria-label="Retirer un">−</button>
+        <output id="qVal">1</output>
+        <button type="button" id="qPlus" aria-label="Ajouter un">+</button>
+      </div>
+      <button class="btn btn--light btn--wide" type="button" id="pAdd">Ajouter · <span class="mono" id="pTotal"></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Panier ===== -->
+<div class="overlay overlay--side" id="cartOverlay" hidden>
+  <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="cartT">
+    <div class="drawer__head">
+      <h2 id="cartT">Mon panier</h2>
+      <button class="close neu" type="button" data-close aria-label="Fermer">×</button>
+    </div>
+    <div class="mode mode--sm neu-in" role="radiogroup" aria-label="Mode de commande" id="modeCart">
+      <button type="button" role="radio" data-mode="emporter" class="mode__opt">À emporter</button>
+      <button type="button" role="radio" data-mode="surplace" class="mode__opt">Sur place</button>
+      <span class="mode__thumb" aria-hidden="true"></span>
+    </div>
+    <div class="drawer__body" id="cartList"></div>
+    <div class="drawer__foot">
+      <div class="sum"><span>Total</span><strong class="mono" id="cartTotal">0,00 €</strong></div>
+      <button class="btn btn--light btn--wide" type="button" id="btnCheckout">Valider ma commande</button>
+    </div>
+  </aside>
+</div>
+
+<!-- ===== Validation commande ===== -->
+<div class="overlay" id="checkoutOverlay" hidden>
+  <div class="sheet sheet--checkout" role="dialog" aria-modal="true" aria-labelledby="coT">
+    <button class="close neu" type="button" data-close aria-label="Fermer">×</button>
+    <h2 id="coT">Finaliser la commande</h2>
+    <form id="coForm" novalidate>
+      <fieldset class="co__block">
+        <legend>Mode</legend>
+        <div class="mode mode--sm neu-in" role="radiogroup" aria-label="Mode de commande" id="modeCo">
+          <button type="button" role="radio" data-mode="emporter" class="mode__opt">À emporter</button>
+          <button type="button" role="radio" data-mode="surplace" class="mode__opt">Sur place</button>
+          <span class="mode__thumb" aria-hidden="true"></span>
+        </div>
+      </fieldset>
+      <fieldset class="co__block">
+        <legend>Vos coordonnées</legend>
+        <p class="co__hint">Déjà client&nbsp;? <button type="button" class="linkbtn" id="coLogin">Se connecter</button></p>
+        <div class="fields">
+          <label for="coNom">Nom<input id="coNom" required autocomplete="family-name"></label>
+          <label for="coPrenom">Prénom<input id="coPrenom" required autocomplete="given-name"></label>
+          <label for="coTel">Téléphone<input id="coTel" type="tel" required autocomplete="tel" placeholder="06 12 34 56 78"></label>
+          <label for="coMail">E-mail<input id="coMail" type="email" required autocomplete="email"></label>
+        </div>
+      </fieldset>
+      <fieldset class="co__block">
+        <legend>Quand&nbsp;?</legend>
+        <div class="choices" id="coWhen">
+          <label class="opt"><input type="radio" name="when" value="asap" checked><span>Dès que possible</span></label>
+          <label class="opt"><input type="radio" name="when" value="later"><span>Choisir un horaire</span></label>
+        </div>
+        <label for="coTime" class="time" hidden id="coTimeWrap">Horaire<select id="coTime"></select></label>
+      </fieldset>
+      <fieldset class="co__block">
+        <legend>Paiement</legend>
+        <div class="choices choices--pay">
+          <label class="opt"><input type="radio" name="pay" value="Carte bancaire" checked><span>Carte bancaire</span></label>
+          <label class="opt"><input type="radio" name="pay" value="Espèces"><span>Espèces</span></label>
+          <label class="opt"><input type="radio" name="pay" value="Ticket restaurant"><span>Ticket restaurant</span></label>
+          <label class="opt"><input type="radio" name="pay" value="Chèque déjeuner"><span>Chèque déjeuner</span></label>
+        </div>
+      </fieldset>
+      <div class="co__recap" id="coRecap"></div>
+      <p class="co__err" id="coErr" role="alert"></p>
+      <button class="btn btn--light btn--wide" type="submit">Confirmer · <span class="mono" id="coTotal"></span></button>
+    </form>
+    <div class="co__done" id="coDone" hidden>
+      <div class="bulb bulb--on"><i></i></div>
+      <h2>Commande reçue</h2>
+      <p>Commande <b class="mono" id="coNum"></b> · <span id="coDoneMode"></span></p>
+      <p class="co__hint" id="coDoneTxt"></p>
+      <p class="mono foot__note">Maquette : la commande n’est pas envoyée au restaurant.</p>
+      <button class="btn btn--light" type="button" data-close>Retour à la carte</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Compte ===== -->
+<div class="overlay" id="accountOverlay" hidden>
+  <div class="sheet sheet--account" role="dialog" aria-modal="true" aria-labelledby="acT">
+    <button class="close neu" type="button" data-close aria-label="Fermer">×</button>
+    <h2 id="acT">Mon compte</h2>
+    <div class="tabs neu-in" role="tablist">
+      <button type="button" role="tab" aria-selected="true" data-tab="login">Je suis déjà client</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="signup">Créer un compte</button>
+    </div>
+    <form class="fields" id="loginForm" data-panel="login" novalidate>
+      <label for="lgId">Identifiant ou e-mail<input id="lgId" autocomplete="username" required></label>
+      <label for="lgPw">Mot de passe<input id="lgPw" type="password" autocomplete="current-password" required></label>
+      <button class="btn btn--light btn--wide" type="submit">Se connecter</button>
+      <p class="co__hint" id="lgMsg" role="status"></p>
+    </form>
+    <form class="fields" id="signupForm" data-panel="signup" hidden novalidate>
+      <label for="suNom">Nom<input id="suNom" required></label>
+      <label for="suPrenom">Prénom<input id="suPrenom" required></label>
+      <label class="full" for="suAdr">Adresse<textarea id="suAdr" rows="2" required></textarea></label>
+      <div class="full mini4">
+        <label for="suEtage">Étage<input id="suEtage"></label>
+        <label for="suSonnette">Sonnette<input id="suSonnette"></label>
+        <label for="suBat">Bâtiment<input id="suBat"></label>
+        <label for="suCode">Code<input id="suCode"></label>
+      </div>
+      <label for="suTel">Téléphone<input id="suTel" type="tel" required></label>
+      <label for="suMail">E-mail<input id="suMail" type="email" required></label>
+      <label for="suLogin">Identifiant<input id="suLogin" required></label>
+      <label for="suPw">Mot de passe<input id="suPw" type="password" required></label>
+      <label for="suPw2">Confirmer le mot de passe<input id="suPw2" type="password" required></label>
+      <button class="btn btn--light btn--wide full" type="submit">Créer mon compte</button>
+      <p class="co__hint full" id="suMsg" role="status"></p>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<!--LL:END-->
+<script src="assets/data/menu.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
