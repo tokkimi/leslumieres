@@ -3,6 +3,7 @@ import { ArrowDown, ChevronRight, Plus, X } from 'lucide-react'
 import { CATS, GROUPS, LOGO, catById, countCat, eur, img, type Category, type Mode, type ProductRef, PRODUCTS } from '@/lib/menu'
 import { Modal, ModeSwitch } from '@/components/Overlays'
 import { Bocaux, Boules, CadreNeon, Guirlande, Plafond } from '@/components/Lights'
+import { Scroller } from '@/components/Scroller'
 
 type Pick = (p: ProductRef, from: HTMLElement | null) => void
 
@@ -58,7 +59,7 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
         </div>
 
         <div className="borne-wall borne-wall--boards">
-          <div className="boards" aria-label="Écrans du menu" onScroll={e => { const el = e.currentTarget; setBoardIdx(Math.round(el.scrollLeft / Math.max(1, el.clientWidth))) }}>
+          <Scroller className="boards" label="Écrans du menu" onScroll={el => setBoardIdx(Math.round(el.scrollLeft / Math.max(1, el.clientWidth)))}>
             {boards.map(bd => (
               <button key={bd.t} type="button" className="board" onClick={() => openKiosk(bd.cat)} aria-label={`Commander : ${bd.t}`}>
                 <span className="board__t">{bd.t}</span>
@@ -77,10 +78,10 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
                 ))}
               </button>
             ))}
-          </div>
+          </Scroller>
           <div className="boards__dots" aria-hidden="true">{boards.map((bd, i) => <i key={bd.t} className={i === boardIdx ? 'on' : ''} />)}</div>
         </div>
-        <div className="next-step"><button type="button" onClick={toKiosk}>La borne <ArrowDown size={15} /></button></div>
+        <div className="next-step next-step--kiosk"><button type="button" onClick={toKiosk}><span className="mini-kiosk" aria-hidden="true"><i /></span>Commander à la borne <ArrowDown size={15} /></button></div>
       </section>
 
       <section id="borne-kiosk" ref={ref} className="scene screen gutter">
@@ -190,7 +191,7 @@ export function VitrineScene({ onPick, cartQty, next }: { onPick: Pick; cartQty:
           {shelves.map(([t, list]) => (
             <div key={t} className="case__level">
               <span className="case__label">{t}</span>
-              <div className="case__row">
+              <Scroller className="case__row">
                 {list.map(p => (
                   <button key={p.id} type="button" className="item" onClick={e => onPick(PRODUCTS[p.id], e.currentTarget.querySelector('img'))} aria-label={`Ajouter ${p.n.toLowerCase()}, ${eur(p.p)}`}>
                     {qtyOf(cartQty, p.id)}
@@ -199,7 +200,7 @@ export function VitrineScene({ onPick, cartQty, next }: { onPick: Pick; cartQty:
                     <span className="add-badge"><Plus size={14} /></span>
                   </button>
                 ))}
-              </div>
+              </Scroller>
               <div className="case__glass-shelf" />
             </div>
           ))}
@@ -241,7 +242,7 @@ export function BarScene({ onPick, cartQty, onFinish, count }: { onPick: Pick; c
         <div className="backbar" key={tab}>
           {shelves.map((row, i) => (
             <div key={i} className="shelf">
-              <div className="shelf__row">
+              <Scroller className="shelf__row">
                 {row.map(p => (
                   <button key={p.id} type="button" className="item item--drink" onClick={e => onPick(PRODUCTS[p.id], e.currentTarget.querySelector('img'))} aria-label={`Ajouter ${p.n.toLowerCase()}, ${eur(p.p)}`}>
                     {qtyOf(cartQty, p.id)}
@@ -250,7 +251,7 @@ export function BarScene({ onPick, cartQty, onFinish, count }: { onPick: Pick; c
                     <span className="add-badge"><Plus size={14} /></span>
                   </button>
                 ))}
-              </div>
+              </Scroller>
               <div className="shelf__plank" />
             </div>
           ))}
