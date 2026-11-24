@@ -84,14 +84,7 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
               <span className="kiosk__touch">Touchez pour commander</span>
             </div>
           </button>
-          <button type="button" className="kiosk kiosk--2" onClick={() => openKiosk('burgers')} aria-label="Ouvrir la borne sur les burgers">
-            <div className="kiosk__screen">
-              <video className="kiosk__video" src="/assets/video/borne.mp4#t=9" poster="/assets/video/borne-poster.webp" muted loop playsInline preload="none" aria-hidden="true" />
-              <span className="kiosk__shade" />
-              <img src={LOGO} alt="" className="kiosk__logo" />
-              <span className="kiosk__touch">Touchez pour commander</span>
-            </div>
-          </button>
+
         </div>
       </div>
       <div className="next-step"><button type="button" onClick={next}>Ensuite, la vitrine des desserts <ArrowDown size={15} /></button></div>
