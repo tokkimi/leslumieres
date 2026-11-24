@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ArrowLeft, Banknote, Check, CreditCard, Lock, X } from 'lucide-react'
 import { LOGO, MODE_LABEL, eur, img, lower, store, type Line, type Mode } from '@/lib/menu'
 import { Modal, ModeSwitch } from '@/components/Overlays'
@@ -32,6 +32,12 @@ export function Caisse({ cart, mode, setMode, onClose, onPaid, onLogin, onBack }
     const d = new Date(Date.now() + 25 * 60000); d.setMinutes(Math.ceil(d.getMinutes() / 15) * 15, 0, 0)
     return Array.from({ length: 14 }, (_, i) => new Date(d.getTime() + i * 900000).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }))
   }, [])
+  // à chaque étape : retour en haut, sans décalage latéral (si le téléphone avait zoomé sur un champ)
+  useEffect(() => {
+    (document.activeElement as HTMLElement | null)?.blur?.()
+    const el = document.querySelector('.caisse'); if (el) { el.scrollTo({ top: 0, left: 0 }) }
+    window.scrollTo({ left: 0, top: window.scrollY })
+  }, [step])
   const whenTxt = when === 'asap' ? 'dès que possible' : 'pour ' + (time || times[0])
 
   const toPay = (e: React.FormEvent) => {
