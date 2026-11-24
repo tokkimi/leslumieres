@@ -15,7 +15,8 @@ CATS.forEach(c => c.sections.forEach(s => s.items.forEach(p => { PRODUCTS[p.id] 
 export const catById = (id: string) => CATS.find(c => c.id === id)!
 export const countCat = (c: Category) => c.sections.reduce((n, s) => n + s.items.length, 0)
 
-export const img = (id: string) => `/assets/img/plats/${id}.webp`
+declare const __ASSET_V__: string
+export const img = (id: string) => `/assets/img/plats/${id}.webp?v=${__ASSET_V__}`
 export const catImg = (id: string) => `/assets/img/categories/${id}.webp`
 export const LOGO = '/assets/img/logo/les-lumieres-clair.svg'
 export const LOGO_FONCE = '/assets/img/logo/les-lumieres-fonce.svg'
