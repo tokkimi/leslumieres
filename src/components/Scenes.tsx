@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowDown, ChevronRight, Plus, X } from 'lucide-react'
-import { CATS, GROUPS, LOGO, catById, catImg, countCat, eur, img, type Category, type Mode, type ProductRef, PRODUCTS } from '@/lib/menu'
+import { CATS, GROUPS, LOGO, catById, countCat, eur, img, type Category, type Mode, type ProductRef, PRODUCTS } from '@/lib/menu'
 import { Modal, ModeSwitch } from '@/components/Overlays'
 import { Bocaux, Boules, CadreNeon, Guirlande, Plafond } from '@/components/Lights'
 
@@ -111,7 +111,7 @@ export function KioskOverlay({ start, mode, setMode, total, count, onClose, onPi
           <nav className="kiosk-ui__nav" aria-label="Rubriques">
             {CATS.map(c => (
               <button key={c.id} type="button" className="kiosk-ui__cat" aria-current={c.id === cat.id} onClick={() => setCat(c)}>
-                <img src={catImg(c.img)} alt="" loading="lazy" />{c.name}
+                <span className="kiosk-ui__dot" aria-hidden="true" />{c.name}
               </button>
             ))}
           </nav>

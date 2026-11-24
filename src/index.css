@@ -668,3 +668,7 @@ body.locked { scroll-snap-type: none; }
 @container (max-width: 150px) { .kt-long { display: none; } .kt-short { display: inline; } }
 .screen .kiosk__touch { white-space: nowrap; overflow: hidden; text-overflow: clip; }
 .screen .kiosk__touch { font-size: clamp(6px, 8.5cqi, 10px); letter-spacing: .08em; padding: .7em .9em; }
+.kiosk-ui__cat { min-height: 40px; }
+.kiosk-ui__dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .5; flex: none; }
+.kiosk-ui__cat[aria-current="true"] .kiosk-ui__dot { opacity: 1; box-shadow: 0 0 8px var(--ambre); }
+@media (max-width: 860px) { .kiosk-ui__cat { flex-direction: row; min-height: 36px; white-space: nowrap; } }
