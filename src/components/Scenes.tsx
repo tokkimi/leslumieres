@@ -43,6 +43,7 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
     return () => io.disconnect()
   }, [])
 
+  const [boardIdx, setBoardIdx] = useState(0)
   const toKiosk = () => document.getElementById('borne-kiosk')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   return (
@@ -57,7 +58,7 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
         </div>
 
         <div className="borne-wall borne-wall--boards">
-          <div className="boards" aria-label="Écrans du menu">
+          <div className="boards" aria-label="Écrans du menu" onScroll={e => { const el = e.currentTarget; setBoardIdx(Math.round(el.scrollLeft / Math.max(1, el.clientWidth))) }}>
             {boards.map(bd => (
               <button key={bd.t} type="button" className="board" onClick={() => openKiosk(bd.cat)} aria-label={`Commander : ${bd.t}`}>
                 <span className="board__t">{bd.t}</span>
@@ -77,6 +78,7 @@ export function BorneScene({ openKiosk, next }: { openKiosk: (cat?: string) => v
               </button>
             ))}
           </div>
+          <div className="boards__dots" aria-hidden="true">{boards.map((bd, i) => <i key={bd.t} className={i === boardIdx ? 'on' : ''} />)}</div>
         </div>
         <div className="next-step"><button type="button" onClick={toKiosk}>La borne <ArrowDown size={15} /></button></div>
       </section>
