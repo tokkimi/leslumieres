@@ -193,7 +193,7 @@ export function Account({ onClose, toast }: { onClose: () => void; toast: (m: st
     toast('Compte créé'); onClose()
   }
   return (
-    <Modal onClose={onClose} className="acc" label="Mon compte">
+    <Modal onClose={onClose} className="acc" ovClass="overlay--center" label="Mon compte">
       <button className="acc__x" type="button" onClick={onClose} aria-label="Fermer"><X size={16} /></button>
       <img src={LOGO} alt="" className="acc__logo" />
       <p className="acc__hello">{tab === 'login' ? 'Bon retour' : 'Bienvenue'}</p>
