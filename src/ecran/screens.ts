@@ -175,6 +175,22 @@ export const BRUNCH = {
   price: '25 €',
   priceLabel: 'la formule',
   contents: ['Boisson chaude', 'Jus frais', 'Salé', 'Sucré', 'Dessert'],
+  /* écrans par partie de la formule (écran divisé synchronisé avec la vidéo) */
+  cats: [
+    { title: 'Boisson chaude', script: 'une au choix', rows: [
+      { id: '159960', name: 'Expresso' }, { id: '159962', name: 'Café allongé' }, { id: '159967', name: 'Noisette' },
+      { id: '159965', name: 'Cappuccino' }, { id: '159964', name: 'Latte macchiato' }, { id: '159963', name: 'Chocolat chaud' }, { id: '159966', name: 'Thé parfumé' }] },
+    { title: 'Jus frais', script: 'un au choix', rows: [
+      { id: '159986', name: 'Jus mangue' }, { id: '169338', name: 'Citronnade' }, { id: '159951', name: 'Thé glacé ananas coco' },
+      { id: '159952', name: 'Thé glacé fraise framboise' }, { id: '159949', name: 'Thé glacé mangue passion' }, { id: '159953', name: 'Thé glacé Marrakech' }, { id: '159950', name: 'Thé glacé pêche litchi' }] },
+    { title: 'Salé', script: 'une assiette au choix', rows: [
+      { id: '1670503', name: 'Salade Les Lumières' }, { id: '159917', name: 'Salade César' }, { id: '159918', name: 'Salade chèvre chaud' }, { id: '159920', name: 'Burrata' }] },
+    { title: 'Sucré', script: 'une douceur au choix', rows: [
+      { id: '170320', name: 'Gaufre' }, { id: '704740', name: 'Salade de fruits' }, { id: '170321', name: 'Riz gluant mangue' }] },
+    { title: 'Dessert', script: 'un dessert au choix', rows: [
+      { id: '170326', name: 'Tiramisu maison' }, { id: '1603920', name: 'Cheesecake fraise' }, { id: '159970', name: 'Cheesecake citron' },
+      { id: '159971', name: 'Crème brûlée vanille' }, { id: '170319', name: 'Tartelette citron' }, { id: '1674503', name: 'Tartelette choco-caramel' }, { id: '173344', name: 'Le Succès' }] },
+  ],
   /* carte explicative */
   details: [
     { t: 'Une boisson chaude', d: 'au choix' },

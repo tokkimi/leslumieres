@@ -295,6 +295,31 @@ function BrunchCarte({ side }: { side: number }) {
   )
 }
 
+/* Une partie de la formule : tous les choix, en mini visuels */
+function BrunchCat({ k }: { k: number }) {
+  const c = BRUNCH.cats[k]
+  const n = c.rows.length
+  return (
+    <section className={`half half--bcat n${n}`}>
+      <Deco />
+      <header className="bk__head">
+        <span className="orn"><i />Formule brunch · {['I', 'II', 'III', 'IV', 'V'][k]}<i /></span>
+        <h3>{c.title}</h3>
+        <span className="script">{c.script}</span>
+      </header>
+      <ul className="bk__list">
+        {c.rows.map((r, i) => (
+          <li key={r.id} style={{ animationDelay: `${0.2 + i * 0.08}s` }}>
+            <img src={img(r.id)} alt="" />
+            <span className="g-name">{r.name}</span>
+          </li>
+        ))}
+      </ul>
+      <footer className="bk__foot"><span>compris dans la formule</span><b className="gold">{BRUNCH.price}</b></footer>
+    </section>
+  )
+}
+
 /* Visuel photo du brunch, sur une moitié d'écran */
 function BrunchVisuel({ side }: { side: number }) {
   return (
@@ -396,6 +421,7 @@ function FullList({ id }: { id: string }) {
 function panelOf(id: string, side: number) {
   if (id === 'brunch') return <BrunchPanel key={side} side={side} />
   if (id === 'brunchCarte') return <BrunchCarte key={side} side={side} />
+  if (id.startsWith('brunchCat')) return <BrunchCat key={side} k={Number(id.slice(9))} />
   if (id === 'brunchVisuel') return <BrunchVisuel key={side} side={side} />
   const L = LISTS[id]
   return <Half key={side} side={side} d={{ title: L.title, script: L.script, rows: L.rows, hero: L.hero[0], price: L.price, unit: L.unit }} />
