@@ -175,6 +175,14 @@ export const BRUNCH = {
   price: '25 €',
   priceLabel: 'la formule',
   contents: ['Boisson chaude', 'Jus frais', 'Salé', 'Sucré', 'Dessert'],
+  /* carte explicative */
+  details: [
+    { t: 'Une boisson chaude', d: 'au choix' },
+    { t: 'Un jus frais', d: 'pressé pour toi' },
+    { t: 'Une assiette salée', d: 'pour bien commencer' },
+    { t: 'Une douceur sucrée', d: 'gourmande et dorée' },
+    { t: 'Un dessert maison', d: 'pour finir en beauté' },
+  ],
   /* l'assiette : visuels de la carte posés sur la table, du fond vers l'avant */
   plate: [
     { id: '159986', cls: 'b-jus' },
@@ -206,6 +214,7 @@ export type Scene =
   | { kind: 'grid'; ms: number; screen: number }
   | { kind: 'spot'; ms: number; screen: number; spot: number }
   | { kind: 'brunchShow'; ms: number }
+  | { kind: 'brunchPhoto'; ms: number }
   | { kind: 'split'; ms: number; left: string; right: string }
   | { kind: 'list'; ms: number; list: string }
 
@@ -224,17 +233,19 @@ export const LOOP = SCENES.reduce((s, x) => s + x.ms, 0)
 
 /* Programmes à choisir par écran : ecran.html?p=<id> */
 export const PROGRAMS: Record<string, { name: string; layout: string; scenes: Scene[] }> = {
-  'brunch-chaud': { name: 'Brunch + boissons chaudes', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'brunch', right: 'chaud' }] },
+  'brunch-chaud': { name: 'Brunch + boissons chaudes', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'brunchVisuel', right: 'chaud' }] },
+  'brunch-carte': { name: 'Brunch : visuel + carte', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'brunchVisuel', right: 'brunchCarte' }] },
+  'brunch-photo': { name: 'Brunch plein écran', layout: 'Écran complet', scenes: [{ kind: 'brunchPhoto', ms: 40000 }] },
   'brunch-chaud-anime': { name: 'Brunch + boissons chaudes (animé)', layout: 'Écran divisé', scenes: [
-    { kind: 'logo', ms: 5000 }, { kind: 'split', ms: 30000, left: 'brunch', right: 'chaud' }, { kind: 'brunchShow', ms: 16000 },
+    { kind: 'logo', ms: 5000 }, { kind: 'split', ms: 30000, left: 'brunchVisuel', right: 'chaud' }, { kind: 'brunchPhoto', ms: 16000 },
   ] },
   brunch: { name: 'Le brunch', layout: 'Écran complet', scenes: [
     { kind: 'intro', ms: 7000, headline: 'Le brunch', tag: 'samedi & dimanche' },
-    { kind: 'brunchShow', ms: 18000 },
-    { kind: 'showcase', ms: 10000, screen: 2 },
+    { kind: 'brunchPhoto', ms: 14000 },
+    { kind: 'split', ms: 14000, left: 'brunchVisuel', right: 'brunchCarte' },
     { kind: 'logo', ms: 5000 },
   ] },
-  'brunch-fixe': { name: 'Le brunch (fixe)', layout: 'Écran complet', scenes: [{ kind: 'brunchShow', ms: 40000 }] },
+  'brunch-fixe': { name: 'Le brunch (fixe)', layout: 'Écran complet', scenes: [{ kind: 'brunchPhoto', ms: 40000 }] },
   chaud: { name: 'Boissons chaudes', layout: 'Écran complet', scenes: [
     { kind: 'showcase', ms: 10000, screen: 3 }, { kind: 'list', ms: 16000, list: 'chaud' },
     { kind: 'spot', ms: 9000, screen: 3, spot: 0 }, { kind: 'spot', ms: 9000, screen: 3, spot: 1 },
@@ -249,5 +260,5 @@ export const PROGRAMS: Record<string, { name: string; layout: string; scenes: Sc
     { kind: 'spot', ms: 9000, screen: 2, spot: 0 }, { kind: 'split', ms: 16000, left: 'tiramisus', right: 'patisseries' },
     { kind: 'spot', ms: 9000, screen: 2, spot: 1 }, { kind: 'list', ms: 14000, list: 'patisseries' },
   ] },
-  'brunch-desserts': { name: 'Brunch + pâtisseries', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'brunch', right: 'patisseries' }] },
+  'brunch-desserts': { name: 'Brunch + pâtisseries', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'brunchVisuel', right: 'patisseries' }] },
 }

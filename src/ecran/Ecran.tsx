@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { PRODUCTS, img } from '@/lib/menu'
+import heroBrunch from './img/brunch-hero.jpg'
+import saleBrunch from './img/brunch-sale.jpg'
 import { BRUNCH, LISTS, PROGRAMS, SCREENS, loopFor, type Fx, type Row, type Scene, type Screen, type Spot } from './screens'
 
 const LOGO = '/assets/img/logo/les-lumieres-clair.svg'
@@ -261,6 +263,72 @@ function BrunchPanel({ side }: { side: number }) {
   )
 }
 
+/* Carte explicative de la formule */
+function BrunchCarte({ side }: { side: number }) {
+  return (
+    <section className="half half--carte" style={{ animationDelay: `${side * 0.25}s` }}>
+      <Deco />
+      <header className="bc__head">
+        <span className="orn"><i />{BRUNCH.days}<i /></span>
+        <h3><span>Formule</span><span className="script">brunch</span></h3>
+        <span className="bc__hours">{BRUNCH.hours}</span>
+      </header>
+      <p className="bc__intro">Ta formule comprend</p>
+      <ol className="bc__list">
+        {BRUNCH.details.map((x, i) => (
+          <li key={x.t} style={{ animationDelay: `${0.6 + i * 0.15}s` }}>
+            <span className="bc__n"><em>{['I', 'II', 'III', 'IV', 'V'][i]}</em></span>
+            <span className="bc__t">{x.t}</span>
+            <span className="bc__d">{x.d}</span>
+          </li>
+        ))}
+      </ol>
+      <footer className="bc__foot">
+        <span className="bc__rule" />
+        <span className="medal medal--inline"><small>{BRUNCH.priceLabel}</small><b>{BRUNCH.price}</b><em>par personne</em></span>
+        <span className="bc__rule" />
+      </footer>
+    </section>
+  )
+}
+
+/* Visuel photo du brunch, sur une moitié d'écran */
+function BrunchVisuel({ side }: { side: number }) {
+  return (
+    <section className="half half--visuel" style={{ animationDelay: `${side * 0.25}s` }}>
+      <div className="bv__photo" style={{ backgroundImage: `url(${saleBrunch})` }} />
+      <div className="bv__shade" />
+      <Deco />
+      <div className="bv__txt">
+        <span className="orn"><i />{BRUNCH.days}<i /></span>
+        <h3><span>Formule</span><span className="script">brunch</span></h3>
+        <span className="bv__price gold">{BRUNCH.price}</span>
+        <span className="bv__hours">{BRUNCH.hours}</span>
+      </div>
+    </section>
+  )
+}
+
+/* Brunch plein écran sur photo */
+function BrunchPhoto() {
+  return (
+    <div className="sc sc--bphoto">
+      <div className="bph__photo" style={{ backgroundImage: `url(${heroBrunch})` }} />
+      <div className="bph__shade" />
+      <Bulbs />
+      <div className="bph__txt">
+        <span className="orn"><i />{BRUNCH.days}<i /></span>
+        <h2><span>Formule</span><span className="script">brunch</span></h2>
+        <ul className="bph__list">
+          {BRUNCH.contents.map((c, i) => <li key={c} style={{ animationDelay: `${1.6 + i * 0.25}s` }}><i />{c}</li>)}
+        </ul>
+      </div>
+      <span className="medal medal--big"><small>{BRUNCH.priceLabel}</small><b>{BRUNCH.price}</b><em>{BRUNCH.hours}</em></span>
+      <div className="bs__ribbon"><span>Samedi</span><i /><span>Dimanche</span><i /><span>{BRUNCH.hours}</span></div>
+    </div>
+  )
+}
+
 /* Grande présentation du brunch, plein écran */
 function BrunchShow() {
   return (
@@ -324,6 +392,8 @@ function FullList({ id }: { id: string }) {
 
 function panelOf(id: string, side: number) {
   if (id === 'brunch') return <BrunchPanel key={side} side={side} />
+  if (id === 'brunchCarte') return <BrunchCarte key={side} side={side} />
+  if (id === 'brunchVisuel') return <BrunchVisuel key={side} side={side} />
   const L = LISTS[id]
   return <Half key={side} side={side} d={{ title: L.title, script: L.script, rows: L.rows, hero: L.hero[0], price: L.price, unit: L.unit }} />
 }
@@ -388,6 +458,7 @@ export function Ecran() {
           {sc.kind === 'showcase' && <ShowcaseScene s={scr(sc.screen)} />}
           {sc.kind === 'grid' && <Grid s={scr(sc.screen)} />}
           {sc.kind === 'brunchShow' && <BrunchShow />}
+          {sc.kind === 'brunchPhoto' && <BrunchPhoto />}
           {sc.kind === 'split' && <Split left={sc.left} right={sc.right} />}
           {sc.kind === 'list' && <FullList id={sc.list} />}
         </div>
