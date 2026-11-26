@@ -223,7 +223,7 @@ export type Scene =
 export const loopFor = (n: number): Scene[] => [
   { kind: 'intro', ms: 7000, screen: n },
   { kind: 'logo', ms: 5000 },
-  { kind: 'showcase', ms: 10000, screen: n },
+  n === 2 ? { kind: 'brunchPhoto', ms: 10000 } : { kind: 'showcase', ms: 10000, screen: n },
   { kind: 'grid', ms: 14000, screen: n },
   { kind: 'spot', ms: 10000, screen: n, spot: 0 },
   { kind: 'spot', ms: 10000, screen: n, spot: 1 },
