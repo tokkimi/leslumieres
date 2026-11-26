@@ -319,3 +319,21 @@ img { display: block; }
 .fl__cols li { grid-template-columns: 96px auto minmax(20px, 1fr) 180px; }
 .list--patisseries .fl__cols li { grid-template-columns: 76px auto minmax(20px, 1fr) 170px; }
 .fl__cols .g-price, .half__list .g-price { justify-self: end; }
+
+/* ---------- Prix : juste le chiffre en doré, sans cadre ---------- */
+.spot__price, .show__price, .half__price, .bp__price, .fl__badge, .feature__price, .band__p {
+  padding: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  background: linear-gradient(170deg, #fff1cf 0%, #f0c97f 38%, #d39a4c 70%, #f3d9a2 100%) !important;
+  -webkit-background-clip: text !important; background-clip: text !important; color: transparent !important; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 22px rgba(240, 189, 110, .35)) drop-shadow(0 4px 10px rgba(0, 0, 0, .6));
+}
+.spot__price small, .show__price small, .bp__price small { -webkit-text-fill-color: var(--creme); color: var(--creme); }
+.spot__price-e { -webkit-text-fill-color: transparent; }
+.spot__price-n { font-size: 150px; }
+.spot__price-n small { font-size: 80px; -webkit-text-fill-color: transparent; }
+.spot__price-e { font-size: 80px; }
+.show__price { font-size: 120px; align-items: baseline; gap: 20px; }
+.half__price { font-size: 84px; margin-top: 0; }
+.bp__price { font-size: 110px; margin-bottom: 6px; }
+.bp__price small { font-size: 22px; }
+.fl__badge { font-size: 72px; }
