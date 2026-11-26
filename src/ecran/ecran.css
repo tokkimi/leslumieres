@@ -1,0 +1,170 @@
+/* Écrans TV Les Lumières — scène 1920 × 1080, mise à l'échelle de l'écran réel.
+   DA : noir façade, lettrage crème, or tamisé, brique et petites lumières chaudes. */
+:root {
+  --noir: #0b0a09; --surface: #151311; --creme: #f5efe5; --muted: #a39a8e;
+  --or: #f0bd6e; --or-2: #e6c48a; --or-d: #b9792f;
+  --f-sans: "Montserrat", system-ui, Arial, sans-serif;
+  --f-mono: "Oxygen Mono", ui-monospace, Menlo, monospace;
+  --f-script: "Yesteryear", "Brush Script MT", cursive;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #000; overflow: hidden; cursor: none; }
+body { font-family: var(--f-sans); color: var(--creme); -webkit-font-smoothing: antialiased; }
+img { display: block; }
+.tv { position: fixed; inset: 0; background: #000; }
+.stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; overflow: hidden; background: var(--noir); transform-origin: center; }
+.scene { position: absolute; inset: 0; animation: sceneIn .8s ease both; }
+.scene.is-leaving { animation: sceneOut .7s ease forwards; }
+@keyframes sceneIn { from { opacity: 0 } }
+@keyframes sceneOut { to { opacity: 0 } }
+.sc { position: absolute; inset: 0; overflow: hidden; }
+.eyebrow { font-family: var(--f-mono); font-size: 22px; letter-spacing: .32em; text-transform: uppercase; color: var(--or); }
+.script { font-family: var(--f-script); color: var(--or); text-shadow: 0 0 24px rgba(240, 189, 110, .35); }
+
+/* ---------- Intro vidéo ---------- */
+.intro__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: kenburns 7s ease-out both; }
+@keyframes kenburns { from { transform: scale(1.12) } to { transform: scale(1) } }
+.intro__shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 6, 4, .88) 0%, rgba(8, 6, 4, .55) 38%, rgba(8, 6, 4, 0) 70%), linear-gradient(0deg, rgba(8, 6, 4, .6), transparent 40%); }
+.intro__txt { position: absolute; left: 130px; bottom: 170px; display: grid; gap: 14px; }
+.intro__txt h1 { margin: 0; font-size: 150px; line-height: .95; font-weight: 900; letter-spacing: .02em; text-transform: uppercase; text-shadow: 0 6px 40px rgba(0, 0, 0, .7); animation: rise 1.2s cubic-bezier(.2, .8, .2, 1) 1.2s both; }
+.intro__txt .eyebrow { animation: rise 1s ease .8s both; }
+.intro__txt .script { font-size: 72px; margin-top: -6px; animation: rise 1.2s ease 1.8s both; }
+@keyframes rise { from { opacity: 0; transform: translateY(40px) } }
+
+/* ---------- Logo néon ---------- */
+.sc--logo { display: grid; place-items: center; background: radial-gradient(ellipse 60% 55% at 50% 48%, #24180e 0%, #0b0a09 70%); }
+.logo__wrap { position: relative; width: 880px; z-index: 2; }
+.logo__wrap img { width: 100%; opacity: 0; animation: neon 1.6s linear .2s forwards; }
+@keyframes neon {
+  0% { opacity: 0; filter: brightness(.35) } 6% { opacity: 1; filter: brightness(1.3) drop-shadow(0 0 14px rgba(255, 210, 140, .8)) }
+  10% { opacity: .08 } 22% { opacity: .08 } 25% { opacity: 1; filter: brightness(1.2) drop-shadow(0 0 16px rgba(255, 210, 140, .8)) }
+  28% { opacity: .15 } 31% { opacity: 1 } 46% { opacity: 1 } 48% { opacity: .35 } 51% { opacity: 1 }
+  100% { opacity: 1; filter: brightness(1.08) drop-shadow(0 0 3px rgba(255, 236, 200, .9)) drop-shadow(0 0 34px rgba(255, 200, 120, .6)) }
+}
+.logo__halo { position: absolute; width: 1500px; height: 1100px; border-radius: 50%; background: radial-gradient(ellipse, rgba(255, 205, 135, .38), rgba(240, 170, 90, .12) 40%, transparent 68%); opacity: 0; animation: burst 1s cubic-bezier(.15, .9, .3, 1) 1.1s forwards, breathe 5s ease-in-out 2.1s infinite; }
+@keyframes burst { 0% { opacity: 0; transform: scale(.6) } 45% { opacity: 1; transform: scale(1.12) } 100% { opacity: 1; transform: scale(1) } }
+@keyframes breathe { 50% { transform: scale(1.06); opacity: .8 } }
+.logo__rays { position: absolute; width: 1800px; height: 1800px; border-radius: 50%; opacity: 0;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 214, 150, .1) 0 3deg, transparent 3deg 15deg);
+  -webkit-mask: radial-gradient(circle, #000, rgba(0, 0, 0, .5) 20%, transparent 55%); mask: radial-gradient(circle, #000, rgba(0, 0, 0, .5) 20%, transparent 55%);
+  animation: fadein 1s ease 1.2s forwards, spin 80s linear infinite; }
+@keyframes fadein { to { opacity: 1 } }
+@keyframes spin { to { transform: rotate(360deg) } }
+.logo__shine { position: absolute; inset: 0; overflow: hidden; -webkit-mask: url(/assets/img/logo/les-lumieres-clair.svg) center / contain no-repeat; mask: url(/assets/img/logo/les-lumieres-clair.svg) center / contain no-repeat; }
+.logo__shine::after { content: ""; position: absolute; top: -20%; bottom: -20%; width: 26%; left: -40%; background: linear-gradient(100deg, transparent, rgba(255, 250, 235, .9), transparent); animation: shine 1.4s ease-in-out 2s forwards; }
+@keyframes shine { to { left: 120% } }
+.logo__sub { position: absolute; bottom: 150px; margin: 0; font-family: var(--f-mono); font-size: 24px; letter-spacing: .4em; text-transform: uppercase; color: var(--muted); opacity: 0; animation: fadein 1s ease 2.4s forwards; }
+
+/* ---------- Fond commun (brique tamisée + guirlande) ---------- */
+.spot__bg, .grid__bg { position: absolute; inset: 0;
+  background: radial-gradient(ellipse 50% 70% at 72% 55%, rgba(240, 170, 90, .22), transparent 70%),
+    linear-gradient(180deg, rgba(11, 10, 9, .72), rgba(11, 10, 9, .9)),
+    url(/assets/textures/brique.webp) 0 0 / 560px auto; }
+.grid__bg { background: radial-gradient(ellipse 40% 60% at 86% 55%, rgba(240, 170, 90, .18), transparent 70%), linear-gradient(180deg, rgba(11, 10, 9, .86), rgba(11, 10, 9, .95)), url(/assets/textures/brique.webp) 0 0 / 560px auto; }
+.bulbs { position: absolute; left: 0; right: 0; top: 0; height: 80px; border-top: 3px solid #14100c; }
+.bulbs span { position: absolute; top: 0; width: 2px; background: #15100b; animation: flick 5s ease-in-out infinite; }
+.bulbs span i { position: absolute; left: 50%; top: 100%; width: 12px; height: 18px; transform: translateX(-50%); border-radius: 45% 45% 50% 50% / 40% 40% 60% 60%; background: radial-gradient(circle at 50% 55%, #fffaf0 0 25%, #ffe0ad 55%, rgba(255, 200, 130, .5) 80%); box-shadow: 0 0 6px 2px rgba(255, 220, 170, .8), 0 0 30px 8px rgba(255, 190, 110, .25); }
+@keyframes flick { 48% { opacity: .9 } 52% { opacity: 1 } }
+
+/* ---------- Mise en scène produit ---------- */
+.spot__text { position: absolute; left: 130px; top: 0; bottom: 0; width: 820px; display: flex; flex-direction: column; justify-content: center; gap: 26px; z-index: 3; }
+.spot__text .eyebrow { animation: rise .9s ease .3s both; }
+.spot__text h2 { margin: 0; font-size: 112px; line-height: .98; font-weight: 900; text-transform: uppercase; letter-spacing: .01em; text-wrap: balance; animation: rise 1s cubic-bezier(.2, .8, .2, 1) .5s both; }
+.spot__text .script { margin: 0; font-size: 58px; line-height: 1.15; max-width: 780px; animation: rise 1s ease .9s both; }
+.spot__price { display: inline-flex; align-items: flex-start; gap: 10px; align-self: flex-start; margin-top: 16px; padding: 22px 42px 22px 44px; border-radius: 26px;
+  background: linear-gradient(160deg, #f6e3bd, #d9b679 55%, #b8894a); color: #1c1208;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .7), inset 0 -3px 0 rgba(90, 55, 15, .35), 0 24px 60px -18px rgba(240, 189, 110, .7);
+  transform-origin: left center; animation: pricePop .9s cubic-bezier(.3, 1.6, .5, 1) 1.5s both; }
+@keyframes pricePop { from { opacity: 0; transform: scale(.5) rotate(-6deg) } }
+.spot__price-n { font-family: var(--f-mono); font-size: 120px; line-height: 1; letter-spacing: -.02em; }
+.spot__price-n small { font-size: 64px; }
+.spot__price-e { font-weight: 900; font-size: 60px; line-height: 1.1; }
+.spot__stage { position: absolute; right: 80px; top: 90px; width: 900px; height: 900px; z-index: 2; }
+.spot__halo { position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle, rgba(255, 210, 140, .42), rgba(240, 170, 90, .14) 45%, transparent 70%); animation: breathe 6s ease-in-out infinite; }
+.spot__shadow { position: absolute; left: 18%; right: 18%; bottom: 7%; height: 60px; border-radius: 50%; background: radial-gradient(ellipse, rgba(0, 0, 0, .7), transparent 70%); animation: shadow 6s ease-in-out infinite; }
+@keyframes shadow { 50% { transform: scaleX(.88); opacity: .75 } }
+.spot__float { position: absolute; inset: 0; display: grid; place-items: center; animation: enter 1.4s cubic-bezier(.2, .8, .2, 1) .2s both; }
+.spot__float img { width: 92%; height: 92%; object-fit: contain; filter: drop-shadow(0 40px 40px rgba(0, 0, 0, .55)); animation: float 6s ease-in-out 1.6s infinite; }
+@keyframes enter { from { opacity: 0; transform: translateY(80px) scale(.86); filter: blur(10px) } }
+@keyframes float { 0%, 100% { transform: translateY(0) rotate(0) } 50% { transform: translateY(-18px) rotate(1.2deg) } }
+.spot__sweep { position: absolute; inset: 0; overflow: hidden; border-radius: 50%; pointer-events: none; }
+.spot__sweep::after { content: ""; position: absolute; top: -10%; bottom: -10%; width: 22%; left: -40%; background: linear-gradient(100deg, transparent, rgba(255, 245, 225, .18), transparent); animation: shine 2.2s ease-in-out 2.4s forwards; }
+
+/* effets */
+.fx { position: absolute; inset: 0; pointer-events: none; }
+.fx--steam svg { position: absolute; top: -2%; width: 90px; height: 330px; fill: none; stroke: rgba(255, 250, 240, .55); stroke-width: 7; stroke-linecap: round; filter: blur(6px); opacity: 0; animation: steam 4.2s ease-in-out infinite; }
+@keyframes steam { 0% { opacity: 0; transform: translateY(60px) scaleY(.7) } 30% { opacity: .9 } 100% { opacity: 0; transform: translateY(-120px) scaleY(1.15) skewX(6deg) } }
+.fx--ice i { position: absolute; width: calc(10px * var(--s)); height: calc(10px * var(--s)); border-radius: 50%; background: radial-gradient(circle, #fff, rgba(200, 235, 255, .6) 40%, transparent 70%); opacity: 0; animation: twinkle 3s ease-in-out infinite; }
+@keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(.4) } 50% { opacity: .95; transform: scale(1.3) } }
+.fx--sugar i { position: absolute; top: -5% !important; width: calc(7px * var(--s)); height: calc(7px * var(--s)); border-radius: 50%; background: radial-gradient(circle, #fff3d6, rgba(240, 189, 110, .7) 50%, transparent 72%); opacity: 0; animation: fall 4s linear infinite; }
+@keyframes fall { 0% { opacity: 0; transform: translateY(0) } 15% { opacity: .9 } 100% { opacity: 0; transform: translateY(900px) translateX(30px) } }
+
+/* ---------- Grille de prix ---------- */
+.grid__head { position: absolute; left: 100px; right: 100px; top: 70px; display: flex; align-items: flex-end; justify-content: space-between; z-index: 2; animation: rise .8s ease .1s both; }
+.grid__head h2 { margin: 6px 0 0; font-size: 84px; line-height: 1; font-weight: 900; text-transform: uppercase; letter-spacing: .03em; }
+.grid__head .script { font-size: 46px; display: block; margin-top: 4px; }
+.grid__logo { width: 260px; filter: drop-shadow(0 0 16px rgba(240, 189, 110, .35)); }
+.grid__body { position: absolute; left: 100px; right: 100px; top: 300px; bottom: 70px; display: grid; grid-template-columns: minmax(0, 1fr) 440px; gap: 70px; z-index: 2; }
+.grid--2 .grid__body { bottom: 170px; }
+.grid__cols { display: flex; flex-direction: column; gap: 34px; min-width: 0; }
+.g-sec header { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 2px solid rgba(240, 189, 110, .35); }
+.g-sec h3 { margin: 0; font-size: 32px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--creme); }
+.g-sec header .g-price { font-family: var(--f-mono); font-size: 40px; color: var(--or); }
+.flavors { display: flex; gap: 18px; flex-wrap: wrap; }
+.flavor { width: 132px; display: grid; justify-items: center; gap: 6px; text-align: center; animation: rowIn .7s cubic-bezier(.2, .8, .2, 1) both; }
+.flavor img { width: 120px; height: 120px; object-fit: contain; filter: drop-shadow(0 10px 10px rgba(0, 0, 0, .5)); }
+.flavor span { font-size: 19px; font-weight: 700; letter-spacing: .04em; line-height: 1.15; }
+.g-sec ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px 60px; }
+.g-sec.cols-2 ul { grid-template-columns: 1fr 1fr; }
+.g-sec li { display: grid; grid-template-columns: 58px auto minmax(20px, 1fr) auto; align-items: center; gap: 16px; min-height: 62px; animation: rowIn .7s cubic-bezier(.2, .8, .2, 1) both; }
+.g-sec li img { width: 58px; height: 58px; object-fit: contain; }
+.g-name { font-size: 28px; font-weight: 700; letter-spacing: .03em; white-space: nowrap; }
+.g-dots { height: 2px; align-self: center; margin-top: 10px; background: repeating-linear-gradient(90deg, rgba(240, 189, 110, .45) 0 3px, transparent 3px 10px); }
+.g-sec li .g-price { font-family: var(--f-mono); font-size: 32px; color: var(--or); white-space: nowrap; }
+@keyframes rowIn { from { opacity: 0; transform: translateX(-30px) } }
+.feature { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 28px 26px 34px; border-radius: 30px; background: linear-gradient(170deg, rgba(36, 28, 20, .92), rgba(16, 13, 11, .92)); border: 1px solid rgba(255, 222, 172, .18); box-shadow: inset 1px 1px 0 rgba(255, 222, 172, .18), 0 40px 70px -30px #000; animation: rise 1s ease .5s both; }
+.feature__stage { position: relative; width: 380px; height: 380px; }
+.feature__float { position: absolute; inset: 0; display: grid; place-items: center; }
+.feature__float img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 24px 24px rgba(0, 0, 0, .55)); animation: float 6s ease-in-out infinite; }
+.feature h4 { margin: 6px 0 0; font-size: 40px; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; }
+.feature .script { margin: 0; font-size: 34px; }
+.feature__price { margin-top: 10px; padding: 10px 28px; border-radius: 999px; font-family: var(--f-mono); font-size: 44px; color: #1c1208; background: linear-gradient(160deg, #f6e3bd, #d9b679 55%, #b8894a); box-shadow: 0 16px 40px -14px rgba(240, 189, 110, .7); }
+
+/* bandeau brunch (écran 2) */
+.band { position: absolute; left: 0; right: 0; bottom: 0; height: 130px; display: flex; align-items: center; gap: 30px; padding: 0 100px; background: linear-gradient(90deg, #f6e3bd, #d9b679 55%, #b8894a); color: #1c1208; z-index: 3; animation: bandIn 1s cubic-bezier(.2, .8, .2, 1) .9s both; }
+@keyframes bandIn { from { transform: translateY(100%) } }
+.band__t { font-size: 48px; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; }
+.band .script { font-size: 44px; color: #6b3f12; text-shadow: none; }
+.band__txt { margin-left: auto; font-size: 30px; font-weight: 600; }
+.band__p { font-family: var(--f-mono); font-size: 64px; padding: 2px 26px; border-radius: 18px; background: #1c1208; color: var(--or); }
+
+/* ---------- Mur (aperçu des 3 écrans) ---------- */
+
+/* Ajustements : la grille tient toujours dans l'écran */
+.grid__head { top: 56px; }
+.grid__head h2 { font-size: 76px; }
+.grid__head .script { font-size: 40px; }
+.grid__logo { width: 230px; }
+.grid__body { top: 262px; bottom: 56px; }
+.grid--2 .grid__body { bottom: 156px; }
+.grid__cols { gap: 26px; }
+.flavors { gap: 12px; flex-wrap: nowrap; }
+.flavor { width: 118px; }
+.flavor img { width: 96px; height: 96px; }
+.flavor span { font-size: 18px; }
+.g-sec header { padding-bottom: 10px; margin-bottom: 10px; }
+.g-sec li { min-height: 54px; grid-template-columns: 50px auto minmax(20px, 1fr) auto; gap: 14px; }
+.g-sec li img { width: 50px; height: 50px; }
+.g-name { font-size: 27px; }
+.g-sec ul { gap: 6px 56px; }
+.feature { padding: 22px 24px 28px; justify-content: center; }
+.feature__stage { width: 340px; height: 340px; }
+/* écrans 1 et 3 : lignes plus grandes (il y a la place) */
+.grid--1 .g-sec li, .grid--3 .g-sec li { min-height: 66px; grid-template-columns: 62px auto minmax(20px, 1fr) auto; }
+.grid--1 .g-sec li img, .grid--3 .g-sec li img { width: 62px; height: 62px; }
+.grid--1 .g-name, .grid--3 .g-name { font-size: 31px; }
+.grid--1 .g-sec li .g-price, .grid--3 .g-sec li .g-price { font-size: 35px; }
+.grid--1 .flavor { width: 170px; } .grid--1 .flavor img { width: 140px; height: 140px; } .grid--1 .flavor span { font-size: 21px; }
+.grid--1 .flavors { gap: 30px; }
+.grid--3 .grid__cols { gap: 44px; }
