@@ -256,7 +256,7 @@ function BrunchPanel({ side }: { side: number }) {
       </header>
       <div className="bp__stage">
         <BrunchPlate delay={0.4} />
-        <span className="medal"><small>{BRUNCH.priceLabel}</small><b>{BRUNCH.price}</b><em>{BRUNCH.hours}</em></span>
+        <span className="bp__price2"><small>{BRUNCH.priceLabel}</small><b className="gold">{BRUNCH.price}</b></span>
       </div>
       <ul className="bp__chips">{BRUNCH.contents.map((c, i) => <li key={c} style={{ animationDelay: `${2 + i * 0.15}s` }}>{c}</li>)}</ul>
     </section>
@@ -265,8 +265,11 @@ function BrunchPanel({ side }: { side: number }) {
 
 /* Carte explicative de la formule */
 function BrunchCarte({ side }: { side: number }) {
+  // ?active=1..5 : met en avant une ligne de la formule ; 6 : le prix (montage vidéo synchronisé)
+  const act = Number(params.get('active')) || 0
+  const st = (k: number) => (act ? (act === k ? ' is-on' : ' is-dim') : '')
   return (
-    <section className="half half--carte" style={{ animationDelay: `${side * 0.25}s` }}>
+    <section className={`half half--carte${act ? ' has-active' : ''}`} style={{ animationDelay: `${side * 0.25}s` }}>
       <Deco />
       <header className="bc__head">
         <span className="orn"><i />{BRUNCH.days}<i /></span>
@@ -276,16 +279,16 @@ function BrunchCarte({ side }: { side: number }) {
       <p className="bc__intro">Ta formule comprend</p>
       <ol className="bc__list">
         {BRUNCH.details.map((x, i) => (
-          <li key={x.t} style={{ animationDelay: `${0.6 + i * 0.15}s` }}>
+          <li key={x.t} className={st(i + 1).trim()} style={{ animationDelay: `${0.6 + i * 0.15}s` }}>
             <span className="bc__n"><em>{['I', 'II', 'III', 'IV', 'V'][i]}</em></span>
             <span className="bc__t">{x.t}</span>
             <span className="bc__d">{x.d}</span>
           </li>
         ))}
       </ol>
-      <footer className="bc__foot">
+      <footer className={`bc__foot${st(6)}`}>
         <span className="bc__rule" />
-        <span className="medal medal--inline"><small>{BRUNCH.priceLabel}</small><b>{BRUNCH.price}</b><em>par personne</em></span>
+        <span className="bc__price"><small>{BRUNCH.priceLabel}</small><b className="gold">{BRUNCH.price}</b></span>
         <span className="bc__rule" />
       </footer>
     </section>
@@ -323,7 +326,7 @@ function BrunchPhoto() {
           {BRUNCH.contents.map((c, i) => <li key={c} style={{ animationDelay: `${1.6 + i * 0.25}s` }}><i />{c}</li>)}
         </ul>
       </div>
-      <span className="medal medal--big"><small>{BRUNCH.priceLabel}</small><b>{BRUNCH.price}</b><em>{BRUNCH.hours}</em></span>
+      <span className="bph__price"><small>{BRUNCH.priceLabel}</small><b className="gold">{BRUNCH.price}</b></span>
       <div className="bs__ribbon"><span>Samedi</span><i /><span>Dimanche</span><i /><span>{BRUNCH.hours}</span></div>
     </div>
   )
