@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { PRODUCTS, img } from '@/lib/menu'
-import { LOOP, SCENES, SCREENS, type Fx, type Screen, type Section, type Spot } from './screens'
+import { BRUNCH, LISTS, PROGRAMS, SCREENS, loopFor, type Fx, type Row, type Scene, type Screen, type Spot } from './screens'
 
 const LOGO = '/assets/img/logo/les-lumieres-clair.svg'
 const price = (n: number) => n.toFixed(2).replace('.', ',')
@@ -11,13 +11,13 @@ const AT = Number(params.get("at")) || 0 // départ forcé dans la boucle (ms), 
 const RATE = Number(params.get('rate')) || 1 // capture vidéo au ralenti, accélérée ensuite
 
 /** Horloge commune : en direct, l'heure réelle (les écrans restent synchronisés) ; en capture vidéo, le temps depuis le début. */
-function useClock() {
+function useClock(loop: number) {
   const start = useRef(performance.now())
   const [t, setT] = useState(0)
   useEffect(() => {
     let raf = 0
     const tick = () => {
-      setT(CAPTURE ? AT + (performance.now() - start.current) * RATE : Date.now() % LOOP)
+      setT(CAPTURE ? AT + (performance.now() - start.current) * RATE : Date.now() % loop)
       raf = requestAnimationFrame(tick)
     }
     tick()
@@ -26,14 +26,14 @@ function useClock() {
   return t
 }
 
-function sceneAt(t: number) {
-  const cycle = Math.floor(t / LOOP)
-  let r = t % LOOP
-  for (let i = 0; i < SCENES.length; i++) {
-    if (r < SCENES[i].ms) return { i, cycle, elapsed: r, left: SCENES[i].ms - r }
-    r -= SCENES[i].ms
+function sceneAt(t: number, scenes: Scene[], loop: number) {
+  const cycle = Math.floor(t / loop)
+  let r = t % loop
+  for (let i = 0; i < scenes.length; i++) {
+    if (r < scenes[i].ms) return { i, cycle, elapsed: r, left: scenes[i].ms - r }
+    r -= scenes[i].ms
   }
-  return { i: 0, cycle, elapsed: 0, left: SCENES[0].ms }
+  return { i: 0, cycle, elapsed: 0, left: scenes[0].ms }
 }
 
 /* ---------- Effets autour du produit ---------- */
@@ -72,7 +72,7 @@ function Bulbs() {
 }
 
 /* ---------- Scènes ---------- */
-function Intro({ s, elapsed }: { s: Screen; elapsed: number }) {
+function Intro({ s, elapsed, headline, tag }: { s: Screen; elapsed: number; headline?: string; tag?: string }) {
   const v = useRef<HTMLVideoElement>(null)
   useEffect(() => {
     const el = v.current
@@ -92,8 +92,8 @@ function Intro({ s, elapsed }: { s: Screen; elapsed: number }) {
       <div className="intro__shade" />
       <div className="intro__txt">
         <span className="eyebrow">Les Lumières · cuisine du monde</span>
-        <h1>{s.headline}</h1>
-        <span className="script">{s.script}</span>
+        <h1>{headline ?? s.headline}</h1>
+        <span className="script">{tag ?? s.script}</span>
       </div>
     </div>
   )
@@ -169,20 +169,21 @@ function ShowcaseScene({ s }: { s: Screen }) {
 }
 
 /* Liste de prix sur une moitié d'écran, avec son visuel */
-function Half({ sec, s, side }: { sec: Section; s: Screen; side: number }) {
-  const hero = sec.kind === 'flavors' ? sec.rows[Math.min(2, sec.rows.length - 1)] : sec.rows.find(r => r.id === s.feature.id) ?? sec.rows[0]
+type PanelData = { title: string; script: string; rows: Row[]; hero: string; price?: number }
+function Half({ d, side }: { d: PanelData; side: number }) {
+  const flavors = d.price != null
   return (
-    <section className={`half half--${sec.kind}`} style={{ animationDelay: `${side * 0.25}s` }}>
+    <section className={`half half--${flavors ? 'flavors' : 'list'}`} style={{ animationDelay: `${side * 0.25}s` }}>
       <header className="half__head">
         <div>
-          <h3>{sec.title}</h3>
-          {sec.kind === 'flavors' ? <span className="half__price">{price(sec.price)} €</span> : <span className="script">{side === 0 ? s.script : s.eyebrow.toLowerCase()}</span>}
+          <h3>{d.title}</h3>
+          {flavors ? <span className="half__price">{price(d.price!)} €</span> : <span className="script">{d.script}</span>}
         </div>
-        {sec.kind === 'list' && <div className="half__hero"><div className="spot__halo" /><img src={img(hero.id)} alt="" /></div>}
+        {!flavors && <div className="half__hero"><div className="spot__halo" /><img src={img(d.hero)} alt="" /></div>}
       </header>
-      {sec.kind === 'flavors' ? (
-        <div className={`half__flavors n${sec.rows.length}`}>
-          {sec.rows.map((r, i) => (
+      {flavors ? (
+        <div className={`half__flavors n${d.rows.length}`}>
+          {d.rows.map((r, i) => (
             <figure key={r.id} style={{ animationDelay: `${0.4 + i * 0.08}s` }}>
               <img src={img(r.id)} alt="" style={{ animationDelay: `${-i * 0.7}s` }} />
               <figcaption>{r.name}</figcaption>
@@ -190,8 +191,8 @@ function Half({ sec, s, side }: { sec: Section; s: Screen; side: number }) {
           ))}
         </div>
       ) : (
-        <ul className={`half__list n${sec.rows.length > 8 ? 'l' : 's'}`}>
-          {sec.rows.map((r, i) => (
+        <ul className={`half__list n${d.rows.length > 8 ? 'l' : 's'}`}>
+          {d.rows.map((r, i) => (
             <li key={r.id} style={{ animationDelay: `${0.4 + i * 0.07}s` }}>
               <img src={img(r.id)} alt="" />
               <span className="g-name">{r.name}</span>
@@ -210,40 +211,159 @@ function Grid({ s }: { s: Screen }) {
     <div className={`sc sc--halves grid--${s.n}`}>
       <div className="grid__bg" />
       <div className="halves">
-        {s.sections.slice(0, 2).map((sec, k) => <Half key={k} sec={sec} s={s} side={k} />)}
+        {s.sections.slice(0, 2).map((sec, k) => {
+          const hero = sec.kind === 'flavors' ? sec.rows[0].id : (sec.rows.find(r => r.id === s.feature.id) ?? sec.rows[0]).id
+          return <Half key={k} side={k} d={{ title: sec.title, script: k === 0 ? s.script : s.eyebrow.toLowerCase(), rows: sec.rows, hero, price: sec.kind === 'flavors' ? sec.price : undefined }} />
+        })}
       </div>
     </div>
   )
 }
 
+/* ---------- Brunch ---------- */
+function BrunchPlate({ big, delay = 0 }: { big?: boolean; delay?: number }) {
+  return (
+    <div className={`bplate${big ? ' bplate--big' : ''}`}>
+      <div className="bplate__light" />
+      <div className="bplate__board" style={{ animationDelay: `${delay}s` }} />
+      {BRUNCH.plate.map((it, i) => (
+        <div key={it.id} className={`bplate__it ${it.cls}`} style={{ animationDelay: `${delay + 0.35 + i * 0.32}s` }}>
+          <img src={img(it.id)} alt="" style={{ animationDelay: `${-i * 1.3}s` }} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function BrunchPanel({ side }: { side: number }) {
+  return (
+    <section className="half half--brunch" style={{ animationDelay: `${side * 0.25}s` }}>
+      <header className="bp__head">
+        <div>
+          <span className="eyebrow">{BRUNCH.days} · {BRUNCH.hours}</span>
+          <h3>{BRUNCH.title}</h3>
+          <span className="script">{BRUNCH.script}</span>
+        </div>
+        <span className="bp__price"><small>{BRUNCH.priceLabel}</small>{BRUNCH.price}</span>
+      </header>
+      <BrunchPlate delay={0.4} />
+      <ul className="bp__chips">{BRUNCH.contents.map((c, i) => <li key={c} style={{ animationDelay: `${2 + i * 0.15}s` }}>{c}</li>)}</ul>
+    </section>
+  )
+}
+
+/* Grande présentation du brunch, plein écran */
+function BrunchShow() {
+  return (
+    <div className="sc sc--brunch">
+      <div className="spot__bg" />
+      <div className="bs__cone" />
+      <Bulbs />
+      <div className="bs__text">
+        <span className="eyebrow">{BRUNCH.days}</span>
+        <h2><span>Formule</span><span>brunch</span></h2>
+        <span className="script">{BRUNCH.script}</span>
+        <ul className="bs__list">
+          {BRUNCH.contents.map((c, i) => <li key={c} style={{ animationDelay: `${4.6 + i * 0.35}s` }}><i />{c}</li>)}
+        </ul>
+      </div>
+      <div className="bs__stage">
+        <BrunchPlate big delay={1.4} />
+        <div className="bs__coin"><small>{BRUNCH.priceLabel}</small><b>{BRUNCH.price}</b><span className="bs__coin-shine" /></div>
+        <Effects fx="steam" />
+      </div>
+      <div className="bs__ribbon"><span>Samedi</span><i /><span>Dimanche</span><i /><span>{BRUNCH.hours}</span></div>
+    </div>
+  )
+}
+
+/* ---------- Liste plein écran ---------- */
+function FullList({ id }: { id: string }) {
+  const L = LISTS[id]
+  const half = Math.ceil(L.rows.length / 2)
+  const cols = [L.rows.slice(0, half), L.rows.slice(half)]
+  return (
+    <div className={`sc sc--list list--${id}`}>
+      <div className="grid__bg" />
+      <Bulbs />
+      <header className="fl__head">
+        <span className="eyebrow">{L.eyebrow}</span>
+        <h2>{L.title}</h2>
+        <span className="script">{L.script}{L.price != null && <b className="fl__badge">{price(L.price)} €</b>}</span>
+      </header>
+      <div className="fl__hero">
+        <div className="spot__halo" />
+        {L.hero.map((h, i) => <img key={h} src={img(h)} alt="" className={`fl__hero-${i}`} style={{ animationDelay: `${-i * 2}s` }} />)}
+      </div>
+      <div className="fl__cols">
+        {cols.map((rows, c) => (
+          <ul key={c}>
+            {rows.map((r, i) => (
+              <li key={r.id} style={{ animationDelay: `${0.6 + (c * half + i) * 0.08}s` }}>
+                <img src={img(r.id)} alt="" />
+                <span className="g-name">{r.name}</span>
+                <span className="g-dots" />
+                <span className="g-price">{price(priceOf(r.id))} €</span>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function Split({ left, right }: { left: string; right: string }) {
+  const panel = (id: string, side: number) => {
+    if (id === 'brunch') return <BrunchPanel key={side} side={side} />
+    const L = LISTS[id]
+    return <Half key={side} side={side} d={{ title: L.title, script: L.script, rows: L.rows, hero: L.hero[0], price: L.price }} />
+  }
+  return (
+    <div className="sc sc--halves sc--split">
+      <div className="grid__bg" />
+      <Bulbs />
+      <div className="halves">{panel(left, 0)}{panel(right, 1)}</div>
+    </div>
+  )
+}
+
 /* ---------- Écran ---------- */
+const PROG = PROGRAMS[params.get('p') ?? '']
+const N = Math.min(3, Math.max(1, Number(params.get('n')) || 1))
+const PLAN: Scene[] = PROG ? PROG.scenes : loopFor(N)
+const PLAN_LOOP = PLAN.reduce((a, x) => a + x.ms, 0)
+
 export function Ecran() {
-  const n = Math.min(3, Math.max(1, Number(params.get('n')) || 1))
-  const s = SCREENS[n - 1]
-  const t = useClock()
-  const { i, cycle, elapsed, left } = sceneAt(t)
-  const sc = SCENES[i]
+  const t = useClock(PLAN_LOOP)
+  const { i, cycle, elapsed, left } = sceneAt(t, PLAN, PLAN_LOOP)
+  const sc = PLAN[i]
+  const scr = (n?: number) => SCREENS[(n ?? N) - 1]
   const [scale, setScale] = useState(1)
   useEffect(() => {
     const fit = () => setScale(Math.min(innerWidth / 1920, innerHeight / 1080))
     fit(); addEventListener('resize', fit); return () => removeEventListener('resize', fit)
   }, [])
-  // précharge les images de l'écran
+  // précharge les images utilisées
   useMemo(() => {
-    const ids = [...s.spots.map(x => x.id), s.feature.id, ...s.sections.flatMap(x => x.rows.map(r => r.id))]
+    const ids = new Set<string>(BRUNCH.plate.map(x => x.id))
+    SCREENS.forEach(s => { s.spots.forEach(x => ids.add(x.id)); s.showcase.items.forEach(x => ids.add(x.id)); s.sections.forEach(x => x.rows.forEach(r => ids.add(r.id))) })
     ids.forEach(id => { const im = new Image(); im.src = img(id) })
-  }, [s])
+  }, [])
 
-  const leaving = left < 700
+  const leaving = PLAN.length > 1 && left < 700
   return (
     <div className="tv">
       <div className="stage" style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
-        <div key={`${cycle}-${i}`} className={`scene${leaving ? ' is-leaving' : ''}`}>
-          {sc.kind === 'intro' && <Intro s={s} elapsed={elapsed} />}
+        <div key={PLAN.length > 1 ? `${cycle}-${i}` : "fixe"} className={`scene${leaving ? ' is-leaving' : ''}`}>
+          {sc.kind === 'intro' && <Intro s={scr(sc.screen ?? 2)} elapsed={elapsed} headline={sc.headline} tag={sc.tag} />}
           {sc.kind === 'logo' && <Logo />}
-          {sc.kind === 'spot' && <SpotScene s={s} spot={s.spots[sc.spot]} />}
-          {sc.kind === 'showcase' && <ShowcaseScene s={s} />}
-          {sc.kind === 'grid' && <Grid s={s} />}
+          {sc.kind === 'spot' && <SpotScene s={scr(sc.screen)} spot={scr(sc.screen).spots[sc.spot]} />}
+          {sc.kind === 'showcase' && <ShowcaseScene s={scr(sc.screen)} />}
+          {sc.kind === 'grid' && <Grid s={scr(sc.screen)} />}
+          {sc.kind === 'brunchShow' && <BrunchShow />}
+          {sc.kind === 'split' && <Split left={sc.left} right={sc.right} />}
+          {sc.kind === 'list' && <FullList id={sc.list} />}
         </div>
       </div>
     </div>

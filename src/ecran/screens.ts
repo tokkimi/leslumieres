@@ -166,14 +166,88 @@ export const SCREENS: Screen[] = [
   },
 ]
 
+/* ---------- Brunch ---------- */
+export const BRUNCH = {
+  days: 'Tous les samedis et dimanches',
+  hours: '11 h – 15 h',
+  title: 'Formule brunch',
+  script: 'compose ton brunch',
+  price: '25 €',
+  priceLabel: 'la formule',
+  contents: ['Boisson chaude', 'Jus frais', 'Salé', 'Sucré', 'Dessert'],
+  /* l'assiette : visuels de la carte posés sur la table, du fond vers l'avant */
+  plate: [
+    { id: '159986', cls: 'b-jus' },
+    { id: '159965', cls: 'b-cafe' },
+    { id: '1670503', cls: 'b-sale' },
+    { id: '170320', cls: 'b-gaufre' },
+    { id: '704740', cls: 'b-fruits' },
+  ],
+}
+
+/* ---------- Listes (moitié d'écran ou écran complet) ---------- */
+const sec = (n: number, k: number) => SCREENS[n - 1].sections[k]
+export const LISTS: Record<string, { title: string; script: string; eyebrow: string; hero: string[]; rows: Row[]; price?: number }> = {
+  chaud: {
+    eyebrow: 'Au comptoir · toute la journée', title: 'Boissons chaudes', script: 'pause gourmande', hero: ['159964', '159963'],
+    rows: [...sec(3, 0).rows, ...sec(3, 1).rows],
+  },
+  glaces: { eyebrow: 'Fait maison', title: 'Thés glacés', script: 'servis bien frais', hero: ['159949'], rows: sec(1, 0).rows, price: 3.9 },
+  cocktails: { eyebrow: 'Sans alcool', title: 'Cocktails', script: 'faits minute', hero: ['159956', '159957'], rows: sec(1, 1).rows },
+  tiramisus: { eyebrow: 'Maison', title: 'Tiramisus', script: 'neuf parfums', hero: ['170326'], rows: sec(2, 0).rows, price: 5 },
+  patisseries: { eyebrow: 'La vitrine', title: 'Pâtisseries', script: 'préparées chaque matin', hero: ['1603920', '173344'], rows: sec(2, 1).rows },
+}
+
+/* ---------- Scènes ---------- */
+export type Scene =
+  | { kind: 'intro'; ms: number; screen?: number; headline?: string; tag?: string }
+  | { kind: 'logo'; ms: number }
+  | { kind: 'showcase'; ms: number; screen: number }
+  | { kind: 'grid'; ms: number; screen: number }
+  | { kind: 'spot'; ms: number; screen: number; spot: number }
+  | { kind: 'brunchShow'; ms: number }
+  | { kind: 'split'; ms: number; left: string; right: string }
+  | { kind: 'list'; ms: number; list: string }
+
 /* Déroulé d'une boucle (ms) : identique sur les 3 écrans, qui changent de scène ensemble.
    intro vidéo → logo → écran complet de la catégorie → listes de prix (2 moitiés) → 2 produits mis en scène */
-export const SCENES = [
-  { kind: 'intro', ms: 7000 },
+export const loopFor = (n: number): Scene[] => [
+  { kind: 'intro', ms: 7000, screen: n },
   { kind: 'logo', ms: 5000 },
-  { kind: 'showcase', ms: 10000 },
-  { kind: 'grid', ms: 14000 },
-  { kind: 'spot', ms: 10000, spot: 0 },
-  { kind: 'spot', ms: 10000, spot: 1 },
-] as const
+  { kind: 'showcase', ms: 10000, screen: n },
+  { kind: 'grid', ms: 14000, screen: n },
+  { kind: 'spot', ms: 10000, screen: n, spot: 0 },
+  { kind: 'spot', ms: 10000, screen: n, spot: 1 },
+]
+export const SCENES = loopFor(1)
 export const LOOP = SCENES.reduce((s, x) => s + x.ms, 0)
+
+/* Programmes à choisir par écran : ecran.html?p=<id> */
+export const PROGRAMS: Record<string, { name: string; layout: string; scenes: Scene[] }> = {
+  'brunch-chaud': { name: 'Brunch + boissons chaudes', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'brunch', right: 'chaud' }] },
+  'brunch-chaud-anime': { name: 'Brunch + boissons chaudes (animé)', layout: 'Écran divisé', scenes: [
+    { kind: 'logo', ms: 5000 }, { kind: 'split', ms: 30000, left: 'brunch', right: 'chaud' }, { kind: 'brunchShow', ms: 16000 },
+  ] },
+  brunch: { name: 'Le brunch', layout: 'Écran complet', scenes: [
+    { kind: 'intro', ms: 7000, headline: 'Le brunch', tag: 'samedi & dimanche' },
+    { kind: 'brunchShow', ms: 18000 },
+    { kind: 'showcase', ms: 10000, screen: 2 },
+    { kind: 'logo', ms: 5000 },
+  ] },
+  'brunch-fixe': { name: 'Le brunch (fixe)', layout: 'Écran complet', scenes: [{ kind: 'brunchShow', ms: 40000 }] },
+  chaud: { name: 'Boissons chaudes', layout: 'Écran complet', scenes: [
+    { kind: 'showcase', ms: 10000, screen: 3 }, { kind: 'list', ms: 16000, list: 'chaud' },
+    { kind: 'spot', ms: 9000, screen: 3, spot: 0 }, { kind: 'spot', ms: 9000, screen: 3, spot: 1 },
+  ] },
+  'chaud-liste': { name: 'Boissons chaudes (liste fixe)', layout: 'Écran complet', scenes: [{ kind: 'list', ms: 40000, list: 'chaud' }] },
+  fraicheur: { name: 'Thés glacés & cocktails', layout: 'Écran complet + divisé', scenes: [
+    { kind: 'showcase', ms: 10000, screen: 1 }, { kind: 'split', ms: 16000, left: 'glaces', right: 'cocktails' },
+    { kind: 'spot', ms: 9000, screen: 1, spot: 0 }, { kind: 'list', ms: 14000, list: 'cocktails' },
+  ] },
+  'glaces-chaud': { name: 'Thés glacés + boissons chaudes', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'glaces', right: 'chaud' }] },
+  desserts: { name: 'Desserts', layout: 'Écran complet + divisé', scenes: [
+    { kind: 'spot', ms: 9000, screen: 2, spot: 0 }, { kind: 'split', ms: 16000, left: 'tiramisus', right: 'patisseries' },
+    { kind: 'spot', ms: 9000, screen: 2, spot: 1 }, { kind: 'list', ms: 14000, list: 'patisseries' },
+  ] },
+  'brunch-desserts': { name: 'Brunch + pâtisseries', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'brunch', right: 'patisseries' }] },
+}

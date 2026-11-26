@@ -20,6 +20,14 @@
   .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
   .links a { color: #1c1208; background: linear-gradient(160deg, #f6e3bd, #d9b679 55%, #b8894a); text-decoration: none; font-weight: 800; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; padding: 12px 18px; border-radius: 999px; }
   .counter { height: 40px; background: linear-gradient(#5c4630, #2e2216); border-radius: 0 0 6px 6px; }
+  .progs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 18px; }
+  .prog { display: grid; gap: 10px; padding: 12px; border-radius: 18px; background: linear-gradient(170deg, #1d1712, #110e0b); box-shadow: inset 1px 1px 0 rgba(255,222,172,.14), 0 16px 30px -18px #000; color: inherit; text-decoration: none; }
+  .prog .tvbox { border-width: 2px; }
+  .prog iframe { pointer-events: none; }
+  .prog b { font-size: 15px; letter-spacing: .06em; text-transform: uppercase; }
+  .prog span { font-size: 12px; color: #a39a8e; letter-spacing: .12em; text-transform: uppercase; }
+  .prog code { font-size: 12px; color: var(--or); }
+  h2 { margin: 24px 0 0; text-align: center; font-size: clamp(16px, 2.4vw, 22px); font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
   @media (max-width: 700px) { .screens { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -39,6 +47,20 @@
     <a href="/ecran.html?n=1" target="_blank" rel="noopener">Écran 1 · Fraîcheur</a>
     <a href="/ecran.html?n=2" target="_blank" rel="noopener">Écran 2 · Desserts</a>
     <a href="/ecran.html?n=3" target="_blank" rel="noopener">Écran 3 · Boissons chaudes</a>
+  </div>
+  <h2>Tous les programmes</h2>
+  <p>Chaque écran peut afficher n'importe quel programme : ouvre le lien sur la télé (navigateur en plein écran).</p>
+  <div class="progs">
+      <a class="prog" href="/ecran.html?p=brunch-chaud" target="_blank" rel="noopener"><div class="tvbox"><iframe src="/ecran.html?p=brunch-chaud" title="Brunch + boissons chaudes" loading="lazy" tabindex="-1"></iframe></div><b>Brunch + boissons chaudes</b><span>Écran divisé · fixe</span><code>/ecran.html?p=brunch-chaud</code></a>
+      <a class="prog" href="/ecran.html?p=brunch-chaud-anime" target="_blank" rel="noopener"><div class="tvbox"><iframe src="/ecran.html?p=brunch-chaud-anime" title="Brunch + boissons chaudes" loading="lazy" tabindex="-1"></iframe></div><b>Brunch + boissons chaudes</b><span>Écran divisé · animé</span><code>/ecran.html?p=brunch-chaud-anime</code></a>
+      <a class="prog" href="/ecran.html?p=brunch" target="_blank" rel="noopener"><div class="tvbox"><iframe src="/ecran.html?p=brunch" title="Le brunch" loading="lazy" tabindex="-1"></iframe></div><b>Le brunch</b><span>Écran complet · grande présentation</span><code>/ecran.html?p=brunch</code></a>
+      <a class="prog" href="/ecran.html?p=brunch-fixe" target="_blank" rel="noopener"><div class="tvbox"><iframe src="/ecran.html?p=brunch-fixe" title="Le brunch" loading="lazy" tabindex="-1"></iframe></div><b>Le brunch</b><span>Écran complet · fixe</span><code>/ecran.html?p=brunch-fixe</code></a>
+      <a class="prog" href="/ecran.html?p=chaud" target="_blank" rel="noopener"><div class="tvbox"><iframe src="/ecran.html?p=chaud" title="Boissons chaudes" loading="lazy" tabindex="-1"></iframe></div><b>Boissons chaudes</b><span>Écran complet · animé</span><code>/ecran.html?p=chaud</code></a>
+      <a class="prog" href="/ecran.html?p=chaud-liste" target="_blank" rel="noopener"><div class="tvbox"><iframe src="/ecran.html?p=chaud-liste" title="Boissons chaudes" loading="lazy" tabindex="-1"></iframe></div><b>Boissons chaudes</b><span>Écran complet · liste fixe</span><code>/ecran.html?p=chaud-liste</code></a>
+      <a class="prog" href="/ecran.html?p=fraicheur" target="_blank" rel="noopener"><div class="tvbox"><iframe src="/ecran.html?p=fraicheur" title="Thés glacés & cocktails" loading="lazy" tabindex="-1"></iframe></div><b>Thés glacés & cocktails</b><span>Complet + divisé · animé</span><code>/ecran.html?p=fraicheur</code></a>
+      <a class="prog" href="/ecran.html?p=glaces-chaud" target="_blank" rel="noopener"><div class="tvbox"><iframe src="/ecran.html?p=glaces-chaud" title="Thés glacés + boissons chaudes" loading="lazy" tabindex="-1"></iframe></div><b>Thés glacés + boissons chaudes</b><span>Écran divisé · fixe</span><code>/ecran.html?p=glaces-chaud</code></a>
+      <a class="prog" href="/ecran.html?p=desserts" target="_blank" rel="noopener"><div class="tvbox"><iframe src="/ecran.html?p=desserts" title="Desserts" loading="lazy" tabindex="-1"></iframe></div><b>Desserts</b><span>Complet + divisé · animé</span><code>/ecran.html?p=desserts</code></a>
+      <a class="prog" href="/ecran.html?p=brunch-desserts" target="_blank" rel="noopener"><div class="tvbox"><iframe src="/ecran.html?p=brunch-desserts" title="Brunch + pâtisseries" loading="lazy" tabindex="-1"></iframe></div><b>Brunch + pâtisseries</b><span>Écran divisé · fixe</span><code>/ecran.html?p=brunch-desserts</code></a>
   </div>
 </body>
 </html>
