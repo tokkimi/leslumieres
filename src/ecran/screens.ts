@@ -6,6 +6,7 @@ export type Row = { id: string; name: string }
 export type Section =
   | { kind: 'list'; title: string; rows: Row[] }
   | { kind: 'flavors'; title: string; price: number; rows: Row[] }
+export type Showcase = { eyebrow: string; title: string; script: string; line: string; price: string; priceLabel: string; items: Row[] }
 export type Screen = {
   n: number
   eyebrow: string
@@ -16,7 +17,7 @@ export type Screen = {
   spots: [Spot, Spot]
   feature: Spot
   sections: Section[]
-  band?: { title: string; script: string; text: string; price: string }
+  showcase: Showcase
   introOffset: number
 }
 
@@ -29,6 +30,13 @@ export const SCREENS: Screen[] = [
     headline: 'Fraîcheur maison',
     fx: 'ice',
     introOffset: 0,
+    showcase: {
+      eyebrow: 'Fait maison', title: 'Thés glacés', script: 'cinq saveurs, servis bien frais', line: 'Infusés chaque jour, servis sur glace', price: '3,90 €', priceLabel: 'le verre',
+      items: [
+        { id: '159951', name: 'Ananas coco' }, { id: '159952', name: 'Fraise framboise' }, { id: '159949', name: 'Mangue passion' },
+        { id: '159953', name: 'Marrakech' }, { id: '159950', name: 'Pêche litchi' },
+      ],
+    },
     spots: [
       { id: '159956', name: 'Virgin mojito fraise', phrase: 'Menthe fraîche, citron vert et fraises écrasées.' },
       { id: '159949', name: 'Thé glacé mangue passion', phrase: 'Mangue juteuse et passion, servi bien frais.' },
@@ -67,6 +75,13 @@ export const SCREENS: Screen[] = [
     headline: 'Douceurs maison',
     fx: 'sugar',
     introOffset: 2.9,
+    showcase: {
+      eyebrow: 'Tous les samedis et dimanches · 11 h – 15 h', title: 'Formule brunch', script: 'compose ton brunch', line: 'Boissons, desserts, saveurs sucrées et salées', price: '25 €', priceLabel: 'la formule',
+      items: [
+        { id: '159965', name: 'Boisson chaude' }, { id: '159959', name: 'Jus frais' }, { id: '1670503', name: 'Salé' },
+        { id: '170320', name: 'Sucré' }, { id: '1603920', name: 'Dessert' },
+      ],
+    },
     spots: [
       { id: '170326', name: 'Tiramisu pistache', phrase: 'Mascarpone onctueux et pistache torréfiée.' },
       { id: '1603920', name: 'Cheesecake fraise', phrase: 'Biscuit croquant, crème légère, coulis de fraise.' },
@@ -105,7 +120,6 @@ export const SCREENS: Screen[] = [
         ],
       },
     ],
-    band: { title: 'Formule brunch', script: 'compose ton brunch', text: 'Tous les dimanches de 11 h à 15 h', price: '25 €' },
   },
   {
     n: 3,
@@ -115,6 +129,13 @@ export const SCREENS: Screen[] = [
     headline: 'Pause chaude',
     fx: 'steam',
     introOffset: 5.6,
+    showcase: {
+      eyebrow: 'Au comptoir', title: 'Boissons chaudes', script: 'pause gourmande', line: 'Cafés, chocolat et thés, servis toute la journée', price: '1,80 €', priceLabel: 'à partir de',
+      items: [
+        { id: '159960', name: 'Expresso' }, { id: '159965', name: 'Cappuccino' }, { id: '159964', name: 'Latte macchiato' },
+        { id: '159963', name: 'Chocolat chaud' }, { id: '159966', name: 'Thé parfumé' }, { id: '173371', name: 'Théière' },
+      ],
+    },
     spots: [
       { id: '159964', name: 'Latte macchiato', phrase: 'Expresso intense et lait mousseux, tout en douceur.' },
       { id: '159963', name: 'Chocolat chaud', phrase: 'Chocolat onctueux, chantilly et copeaux.' },
@@ -145,13 +166,14 @@ export const SCREENS: Screen[] = [
   },
 ]
 
-/* Déroulé d'une boucle (ms) : identique sur les 3 écrans, qui changent de scène ensemble. */
+/* Déroulé d'une boucle (ms) : identique sur les 3 écrans, qui changent de scène ensemble.
+   intro vidéo → logo → écran complet de la catégorie → listes de prix (2 moitiés) → 2 produits mis en scène */
 export const SCENES = [
   { kind: 'intro', ms: 7000 },
   { kind: 'logo', ms: 5000 },
+  { kind: 'showcase', ms: 10000 },
+  { kind: 'grid', ms: 14000 },
   { kind: 'spot', ms: 10000, spot: 0 },
-  { kind: 'grid', ms: 14000 },
   { kind: 'spot', ms: 10000, spot: 1 },
-  { kind: 'grid', ms: 14000 },
 ] as const
 export const LOOP = SCENES.reduce((s, x) => s + x.ms, 0)

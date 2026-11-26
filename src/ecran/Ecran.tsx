@@ -139,76 +139,79 @@ function SpotScene({ s, spot }: { s: Screen; spot: Spot }) {
   )
 }
 
-function SectionView({ sec, base }: { sec: Section; base: number }) {
-  if (sec.kind === 'flavors') {
-    return (
-      <section className="g-sec g-sec--flavors">
-        <header><h3>{sec.title}</h3><span className="g-price">{price(sec.price)} €</span></header>
-        <div className="flavors">
+/* Écran complet d'une catégorie (thés glacés, brunch, boissons chaudes) */
+function ShowcaseScene({ s }: { s: Screen }) {
+  const c = s.showcase
+  return (
+    <div className={`sc sc--show show--${s.n}`}>
+      <div className="spot__bg" />
+      <Bulbs />
+      <header className="show__head">
+        <span className="eyebrow">{c.eyebrow}</span>
+        <h2>{c.title}</h2>
+        <span className="script">{c.script}</span>
+      </header>
+      <div className="show__row">
+        {c.items.map((it, i) => (
+          <figure key={it.id} className="show__item" style={{ animationDelay: `${0.5 + i * 0.18}s` }}>
+            <div className="show__img"><img src={img(it.id)} alt="" style={{ animationDelay: `${-i * 0.9}s` }} /></div>
+            <figcaption>{it.name}</figcaption>
+          </figure>
+        ))}
+        <Effects fx={s.fx} />
+      </div>
+      <footer className="show__foot">
+        <span className="show__line">{c.line}</span>
+        <span className="show__price"><small>{c.priceLabel}</small>{c.price}</span>
+      </footer>
+    </div>
+  )
+}
+
+/* Liste de prix sur une moitié d'écran, avec son visuel */
+function Half({ sec, s, side }: { sec: Section; s: Screen; side: number }) {
+  const hero = sec.kind === 'flavors' ? sec.rows[Math.min(2, sec.rows.length - 1)] : sec.rows.find(r => r.id === s.feature.id) ?? sec.rows[0]
+  return (
+    <section className={`half half--${sec.kind}`} style={{ animationDelay: `${side * 0.25}s` }}>
+      <header className="half__head">
+        <div>
+          <h3>{sec.title}</h3>
+          {sec.kind === 'flavors' ? <span className="half__price">{price(sec.price)} €</span> : <span className="script">{side === 0 ? s.script : s.eyebrow.toLowerCase()}</span>}
+        </div>
+        {sec.kind === 'list' && <div className="half__hero"><div className="spot__halo" /><img src={img(hero.id)} alt="" /></div>}
+      </header>
+      {sec.kind === 'flavors' ? (
+        <div className={`half__flavors n${sec.rows.length}`}>
           {sec.rows.map((r, i) => (
-            <div key={r.id} className="flavor" style={{ animationDelay: `${(base + i) * 70}ms` }}>
-              <img src={img(r.id)} alt="" /><span>{r.name}</span>
-            </div>
+            <figure key={r.id} style={{ animationDelay: `${0.4 + i * 0.08}s` }}>
+              <img src={img(r.id)} alt="" style={{ animationDelay: `${-i * 0.7}s` }} />
+              <figcaption>{r.name}</figcaption>
+            </figure>
           ))}
         </div>
-      </section>
-    )
-  }
-  const cols = sec.rows.length > 5 ? 2 : 1
-  return (
-    <section className={`g-sec g-sec--list cols-${cols}`}>
-      <header><h3>{sec.title}</h3></header>
-      <ul>
-        {sec.rows.map((r, i) => (
-          <li key={r.id} style={{ animationDelay: `${(base + i) * 70}ms` }}>
-            <img src={img(r.id)} alt="" />
-            <span className="g-name">{r.name}</span>
-            <span className="g-dots" />
-            <span className="g-price">{price(priceOf(r.id))} €</span>
-          </li>
-        ))}
-      </ul>
+      ) : (
+        <ul className={`half__list n${sec.rows.length > 8 ? 'l' : 's'}`}>
+          {sec.rows.map((r, i) => (
+            <li key={r.id} style={{ animationDelay: `${0.4 + i * 0.07}s` }}>
+              <img src={img(r.id)} alt="" />
+              <span className="g-name">{r.name}</span>
+              <span className="g-dots" />
+              <span className="g-price">{price(priceOf(r.id))} €</span>
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   )
 }
 
 function Grid({ s }: { s: Screen }) {
-  let base = 0
   return (
-    <div className={`sc sc--grid grid--${s.n}`}>
+    <div className={`sc sc--halves grid--${s.n}`}>
       <div className="grid__bg" />
-      <header className="grid__head">
-        <div>
-          <span className="eyebrow">{s.eyebrow}</span>
-          <h2>{s.title}</h2>
-          <span className="script">{s.script}</span>
-        </div>
-        <img src={LOGO} alt="" className="grid__logo" />
-      </header>
-      <div className="grid__body">
-        <div className="grid__cols">
-          {s.sections.map((sec, k) => { const el = <SectionView key={k} sec={sec} base={base} />; base += sec.rows.length; return el })}
-        </div>
-        <aside className="feature">
-          <span className="eyebrow">Le préféré</span>
-          <div className="feature__stage">
-            <div className="spot__halo" />
-            <div className="feature__float"><img src={img(s.feature.id)} alt="" /></div>
-            <Effects fx={s.fx} />
-          </div>
-          <h4>{s.feature.name}</h4>
-          <p className="script">{s.feature.phrase}</p>
-          <span className="feature__price">{price(priceOf(s.feature.id))} €</span>
-        </aside>
+      <div className="halves">
+        {s.sections.slice(0, 2).map((sec, k) => <Half key={k} sec={sec} s={s} side={k} />)}
       </div>
-      {s.band && (
-        <footer className="band">
-          <span className="band__t">{s.band.title}</span>
-          <span className="script">{s.band.script}</span>
-          <span className="band__txt">{s.band.text}</span>
-          <span className="band__p">{s.band.price}</span>
-        </footer>
-      )}
     </div>
   )
 }
@@ -239,6 +242,7 @@ export function Ecran() {
           {sc.kind === 'intro' && <Intro s={s} elapsed={elapsed} />}
           {sc.kind === 'logo' && <Logo />}
           {sc.kind === 'spot' && <SpotScene s={s} spot={s.spots[sc.spot]} />}
+          {sc.kind === 'showcase' && <ShowcaseScene s={s} />}
           {sc.kind === 'grid' && <Grid s={s} />}
         </div>
       </div>
