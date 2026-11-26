@@ -187,14 +187,14 @@ export const BRUNCH = {
 
 /* ---------- Listes (moitié d'écran ou écran complet) ---------- */
 const sec = (n: number, k: number) => SCREENS[n - 1].sections[k]
-export const LISTS: Record<string, { title: string; script: string; eyebrow: string; hero: string[]; rows: Row[]; price?: number }> = {
+export const LISTS: Record<string, { title: string; script: string; eyebrow: string; hero: string[]; rows: Row[]; price?: number; unit?: string }> = {
   chaud: {
     eyebrow: 'Au comptoir · toute la journée', title: 'Boissons chaudes', script: 'pause gourmande', hero: ['159964', '159963'],
     rows: [...sec(3, 0).rows, ...sec(3, 1).rows],
   },
-  glaces: { eyebrow: 'Fait maison', title: 'Thés glacés', script: 'servis bien frais', hero: ['159949'], rows: sec(1, 0).rows, price: 3.9 },
+  glaces: { eyebrow: 'Fait maison', title: 'Thés glacés', script: 'servis bien frais', hero: ['159949'], rows: sec(1, 0).rows, price: 3.9, unit: 'le verre' },
   cocktails: { eyebrow: 'Sans alcool', title: 'Cocktails', script: 'faits minute', hero: ['159956', '159957'], rows: sec(1, 1).rows },
-  tiramisus: { eyebrow: 'Maison', title: 'Tiramisus', script: 'neuf parfums', hero: ['170326'], rows: sec(2, 0).rows, price: 5 },
+  tiramisus: { eyebrow: 'Maison', title: 'Tiramisus', script: 'neuf parfums', hero: ['170326'], rows: sec(2, 0).rows, price: 5, unit: 'la part' },
   patisseries: { eyebrow: 'La vitrine', title: 'Pâtisseries', script: 'préparées chaque matin', hero: ['1603920', '173344'], rows: sec(2, 1).rows },
 }
 

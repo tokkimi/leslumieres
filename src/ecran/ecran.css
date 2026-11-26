@@ -339,3 +339,182 @@ img { display: block; }
 .fl__badge { font-size: 72px; }
 .stage--half { width: 960px; }
 .halves--one { grid-template-columns: 1fr; left: 44px; right: 44px; }
+
+/* =====================================================================
+   DA v2 — brasserie Art déco : bokeh chaud, grain, filets dorés, visuels qui débordent
+   ===================================================================== */
+:root { --gold-grad: linear-gradient(170deg, #fff1cf 0%, #f0c97f 38%, #c98f42 70%, #f3d9a2 100%); --hair: rgba(240, 189, 110, .55); }
+.stage::after { content: ""; position: absolute; inset: 0; z-index: 50; pointer-events: none; opacity: .09; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.stage::before { content: ""; position: absolute; inset: 0; z-index: 49; pointer-events: none; background: radial-gradient(ellipse 75% 70% at 50% 50%, transparent 55%, rgba(0, 0, 0, .55) 100%); }
+.spot__bg, .grid__bg {
+  background:
+    radial-gradient(circle at 8% 18%, rgba(255, 196, 120, .16) 0 60px, transparent 120px),
+    radial-gradient(circle at 92% 12%, rgba(255, 210, 150, .12) 0 90px, transparent 170px),
+    radial-gradient(circle at 78% 88%, rgba(255, 180, 100, .12) 0 70px, transparent 150px),
+    radial-gradient(circle at 22% 92%, rgba(255, 200, 130, .10) 0 110px, transparent 200px),
+    radial-gradient(circle at 50% 4%, rgba(255, 214, 150, .10) 0 40px, transparent 90px),
+    radial-gradient(ellipse 60% 70% at 50% 45%, rgba(120, 72, 30, .35), transparent 70%),
+    linear-gradient(180deg, rgba(11, 9, 7, .82), rgba(8, 7, 6, .94)),
+    url(/assets/textures/brique.webp) 0 0 / 520px auto; }
+
+/* ornement de titre : — texte — */
+.orn { display: inline-flex; align-items: center; justify-content: center; gap: 18px; font-family: var(--f-mono); font-size: 18px; letter-spacing: .34em; text-transform: uppercase; color: var(--or); white-space: nowrap; }
+.orn i { width: 56px; height: 1px; background: linear-gradient(90deg, transparent, var(--or)); position: relative; }
+.orn i:last-child { background: linear-gradient(270deg, transparent, var(--or)); }
+.orn i::after { content: ""; position: absolute; top: -3px; width: 6px; height: 6px; background: var(--or); transform: rotate(45deg); }
+.orn i:first-child::after { right: -3px; } .orn i:last-child::after { left: -3px; }
+
+/* cadre Art déco */
+.deco { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.deco::before, .deco::after { content: ""; position: absolute; border: 1px solid var(--hair); }
+.deco::before { inset: 0; }
+.deco::after { inset: 10px; border-color: rgba(240, 189, 110, .22); }
+.deco__c { position: absolute; width: 46px; height: 46px; border: 0 solid var(--or); }
+.deco__c::after { content: ""; position: absolute; width: 9px; height: 9px; background: var(--or); transform: rotate(45deg); box-shadow: 0 0 10px rgba(240, 189, 110, .8); }
+.c1 { left: -6px; top: -6px; border-left-width: 3px; border-top-width: 3px; } .c1::after { left: 12px; top: 12px; }
+.c2 { right: -6px; top: -6px; border-right-width: 3px; border-top-width: 3px; } .c2::after { right: 12px; top: 12px; }
+.c3 { left: -6px; bottom: -6px; border-left-width: 3px; border-bottom-width: 3px; } .c3::after { left: 12px; bottom: 12px; }
+.c4 { right: -6px; bottom: -6px; border-right-width: 3px; border-bottom-width: 3px; } .c4::after { right: 12px; bottom: 12px; }
+.deco__gem { position: absolute; left: 50%; top: -12px; width: 22px; height: 22px; margin-left: -11px; transform: rotate(45deg); background: var(--gold-grad); box-shadow: 0 0 0 5px #0d0b09, 0 0 0 6px var(--hair), 0 0 20px rgba(240, 189, 110, .6); }
+
+/* panneaux : plus de cartes arrondies */
+.half { border-radius: 0; border: 0; padding: 54px 52px 44px; background: linear-gradient(180deg, rgba(22, 17, 12, .78), rgba(10, 8, 7, .88)); box-shadow: 0 50px 90px -40px #000, inset 0 0 120px rgba(0, 0, 0, .45); overflow: visible; }
+.half__head { display: block; min-height: 0; text-align: center; padding-bottom: 26px; margin-bottom: 18px; border-bottom: 0; position: relative; }
+.half__head::after { content: ""; position: absolute; left: 8%; right: 8%; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--hair), transparent); }
+.half__head > div { display: grid; justify-items: center; gap: 6px; }
+.half__head h3 { max-width: none; margin: 4px 0 0; font-size: 74px; line-height: .95; letter-spacing: .04em; text-shadow: 0 6px 30px rgba(0, 0, 0, .6); }
+.half--list .half__head { padding-right: 230px; text-align: left; }
+.half--list .half__head > div { justify-items: start; }
+.half--list .half__head h3 { font-size: 66px; }
+.half__price { display: grid; justify-items: center; font-size: 92px; line-height: 1; margin-top: 6px; }
+.half__price small { font-family: var(--f-sans); font-size: 16px; font-weight: 800; letter-spacing: .3em; -webkit-text-fill-color: var(--muted); color: var(--muted); margin-bottom: 6px; }
+.half__hero { position: absolute; right: -46px; top: -70px; width: 330px; height: 330px; margin: 0; z-index: 3; }
+.half__hero img { filter: drop-shadow(0 34px 30px rgba(0, 0, 0, .7)) drop-shadow(0 0 40px rgba(240, 170, 90, .25)); }
+
+/* listes façon carte de grand café */
+.half__list { justify-content: space-around; }
+.half__list li, .fl__cols li { position: relative; grid-template-columns: 80px minmax(0, 1fr) auto !important; gap: 22px; padding: 4px 0; }
+.half__list li::after, .fl__cols li::after { content: ""; position: absolute; left: 100px; right: 0; bottom: -4px; height: 1px; background: linear-gradient(90deg, rgba(240, 189, 110, .28), rgba(240, 189, 110, .06)); }
+.half__list li:last-child::after, .fl__cols li:last-child::after { display: none; }
+.half__list li img, .fl__cols li img { width: 80px !important; height: 80px !important; padding: 7px; border-radius: 50%; background: radial-gradient(circle at 50% 35%, #3b2d20, #140f0b 72%); box-shadow: inset 0 1px 0 rgba(255, 222, 172, .28), 0 0 0 1px rgba(240, 189, 110, .25), 0 10px 18px -8px #000; }
+.half__list .g-name, .fl__cols .g-name { font-size: 29px !important; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.half__list .g-price, .fl__cols .g-price { font-size: 38px !important; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 14px rgba(240, 189, 110, .3)); }
+.half__list.nl li { gap: 18px; padding: 0; }
+.half__list.nl li img { width: 62px !important; height: 62px !important; padding: 5px; }
+.half__list.nl li { grid-template-columns: 62px minmax(0, 1fr) auto !important; }
+.half__list.nl li::after { left: 80px; }
+.half__list.nl .g-name { font-size: 24px !important; }
+.half__list.nl .g-price { font-size: 32px !important; }
+.g-dots { display: none; }
+
+/* saveurs posées sur des socles lumineux */
+.half__flavors figure { position: relative; }
+.half__flavors figure::before { content: ""; position: absolute; left: 50%; top: 58%; width: 72%; height: 46px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(ellipse, rgba(255, 200, 130, .35), rgba(240, 170, 90, .08) 55%, transparent 72%); }
+.half__flavors img { position: relative; }
+.half__flavors figcaption { font-size: 21px; letter-spacing: .14em; color: var(--creme); }
+.half__flavors figcaption::before { content: "◆ "; color: var(--or); font-size: .7em; vertical-align: middle; }
+
+/* brunch : plateau en chêne, médaillon rond */
+.half--brunch { padding: 50px 46px 40px; }
+.half--brunch .bp__head { display: grid; justify-items: center; text-align: center; gap: 8px; }
+.half--brunch .bp__head .orn { position: static; }
+.bp__head h3 { display: grid; justify-items: center; margin: 0; font-size: 96px; line-height: .9; }
+.bp__head h3 .script { font-size: 104px; text-transform: none; font-weight: 400; margin-top: -26px; letter-spacing: 0; transform: rotate(-4deg); }
+.bp__stage { position: relative; flex: 1; min-height: 0; display: flex; }
+.bp__stage .bplate { flex: 1; aspect-ratio: auto; margin: 0; }
+.bplate__board { background: radial-gradient(ellipse at 45% 30%, rgba(255, 220, 170, .22), transparent 55%), radial-gradient(ellipse, rgba(30, 18, 8, .1), rgba(20, 12, 6, .55)), url(/assets/textures/chene.webp) center / 700px auto; box-shadow: inset 0 4px 0 rgba(255, 222, 172, .22), inset 0 -14px 30px rgba(0, 0, 0, .55), 0 50px 60px -20px #000, 0 0 0 8px #2a1c10, 0 0 0 9px rgba(255, 222, 172, .25); }
+.bplate__light { background: radial-gradient(ellipse at 50% 55%, rgba(255, 205, 135, .38), rgba(240, 170, 90, .12) 45%, transparent 70%); }
+.medal { position: absolute; right: -8px; top: -6px; z-index: 6; width: 210px; height: 210px; border-radius: 50%; display: grid; place-content: center; justify-items: center; text-align: center; background: radial-gradient(circle at 40% 30%, rgba(40, 30, 20, .95), rgba(12, 10, 8, .95)); box-shadow: 0 0 0 2px var(--or), 0 0 0 9px rgba(12, 10, 8, .9), 0 0 0 10px var(--hair), 0 30px 50px -20px #000, 0 0 50px rgba(240, 189, 110, .3); animation: pricePop .9s cubic-bezier(.3, 1.6, .5, 1) 2.2s both; }
+.medal small { font-size: 15px; font-weight: 800; letter-spacing: .26em; text-transform: uppercase; color: var(--muted); }
+.medal b { font-family: var(--f-mono); font-weight: 400; font-size: 84px; line-height: 1; background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.medal em { font-style: normal; font-family: var(--f-mono); font-size: 16px; letter-spacing: .14em; color: var(--or); margin-top: 2px; }
+.bp__chips { justify-content: center; gap: 0; margin-top: 8px; flex-wrap: nowrap; }
+.bp__chips li { padding: 0; background: none; box-shadow: none; font-size: 19px; letter-spacing: .16em; color: var(--creme); }
+.bp__chips li + li::before { content: "◆"; color: var(--or); margin: 0 14px; font-size: 12px; vertical-align: middle; }
+
+/* plein écran : grande présentation brunch */
+.bs__list li { letter-spacing: .16em; }
+.bs__list i { width: 12px; height: 12px; border-radius: 0; transform: rotate(45deg); background: var(--gold-grad); }
+.bs__text h2 span:last-child { font-family: var(--f-script); text-transform: none; font-weight: 400; font-size: 1.15em; color: var(--or); margin-top: -.18em; transform: rotate(-4deg); transform-origin: left; text-shadow: 0 0 40px rgba(240, 189, 110, .4); }
+.bs__text .script { display: none; }
+.bs__ribbon { background: linear-gradient(180deg, rgba(14, 11, 8, .2), rgba(14, 11, 8, .92) 40%); color: var(--creme); box-shadow: none; border-top: 1px solid var(--hair); height: 110px; }
+.bs__ribbon::before { content: ""; position: absolute; left: 0; right: 0; top: 8px; height: 1px; background: linear-gradient(90deg, transparent, rgba(240, 189, 110, .25), transparent); }
+.bs__ribbon i { width: 10px; height: 10px; border-radius: 0; transform: rotate(45deg); background: var(--or); }
+.bs__ribbon span:last-child { color: var(--or); }
+
+/* plein écran : listes */
+.sc--list > .deco { inset: 34px; }
+.fl__head { left: 0; right: 0; top: 78px; justify-items: center; text-align: center; }
+.fl__head h2 { font-size: 112px; letter-spacing: .05em; }
+.fl__head .script { font-size: 58px; justify-content: center; }
+.fl__hero { right: auto; left: 0; width: 100%; top: 40px; height: 360px; pointer-events: none; }
+.fl__hero .spot__halo { display: none; }
+.fl__hero-0 { left: auto !important; right: 120px !important; width: 330px !important; height: 330px !important; }
+.fl__hero-1 { right: auto !important; left: 120px; width: 300px !important; height: 300px !important; }
+.fl__cols { top: 420px; left: 130px; right: 130px; bottom: 90px; gap: 140px; border-top: 0; }
+.fl__cols::before { content: ""; position: absolute; left: 50%; top: 20px; bottom: 10px; width: 1px; background: linear-gradient(180deg, transparent, var(--hair), transparent); }
+.fl__cols::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; transform: rotate(45deg); background: var(--or); box-shadow: 0 0 14px rgba(240, 189, 110, .8); }
+.fl__cols .g-name { font-size: 34px !important; }
+.fl__cols .g-price { font-size: 44px !important; }
+.fl__cols li img { width: 92px !important; height: 92px !important; }
+.fl__cols li { grid-template-columns: 92px minmax(0, 1fr) auto !important; }
+.list--patisseries .fl__cols li img { width: 70px !important; height: 70px !important; }
+.list--patisseries .fl__cols li { grid-template-columns: 70px minmax(0, 1fr) auto !important; }
+.list--patisseries .fl__cols .g-name { font-size: 27px !important; }
+.list--patisseries .fl__cols .g-price { font-size: 36px !important; }
+
+/* mise en scène produit : anneau doré, comptoir en marbre, reflet */
+.spot__ghost { position: absolute; left: -20px; top: 50%; transform: translateY(-50%); z-index: -1; font-family: var(--f-script); font-size: 300px; color: rgba(240, 189, 110, .07); white-space: nowrap; pointer-events: none; }
+.spot__text h2 { letter-spacing: .03em; }
+.spot__text .eyebrow { display: inline-flex; align-items: center; gap: 16px; }
+.spot__text .eyebrow::before { content: ""; width: 60px; height: 1px; background: var(--or); }
+.spot__ring { position: absolute; inset: 4%; border-radius: 50%; border: 1px solid rgba(240, 189, 110, .45); box-shadow: 0 0 0 14px rgba(240, 189, 110, .04), 0 0 0 15px rgba(240, 189, 110, .2); animation: spin 60s linear infinite; }
+.spot__ring::before { content: ""; position: absolute; left: 50%; top: -7px; width: 14px; height: 14px; margin-left: -7px; transform: rotate(45deg); background: var(--gold-grad); box-shadow: 0 0 16px rgba(240, 189, 110, .9); }
+.spot__counter { position: absolute; left: -40%; right: -20%; bottom: -14%; height: 26%; background: linear-gradient(180deg, rgba(255, 230, 190, .12), transparent 3%), linear-gradient(180deg, rgba(12, 10, 8, .2), rgba(8, 7, 6, .92)), url(/assets/textures/marbre.webp) center / 900px auto; filter: brightness(.45) sepia(.4); -webkit-mask: linear-gradient(90deg, transparent, #000 25%, #000 85%, transparent); mask: linear-gradient(90deg, transparent, #000 25%, #000 85%, transparent); }
+.spot__float { place-items: center; }
+.spot__float img:first-child { position: relative; z-index: 2; }
+.spot__refl { position: absolute; left: 4%; top: 77%; width: 92% !important; height: 92% !important; transform: scaleY(-1); opacity: .18; filter: blur(2px) !important; -webkit-mask: linear-gradient(0deg, #000, transparent 30%); mask: linear-gradient(0deg, #000, transparent 30%); animation: none !important; }
+.spot__shadow { bottom: 13%; }
+.spot__float img:first-child { height: 82%; margin-top: -10%; }
+
+/* écran complet de catégorie : étagère en chêne */
+.shelf { position: absolute; left: -40px; right: -40px; bottom: 50px; height: 36px; z-index: -1; background: linear-gradient(180deg, rgba(255, 225, 180, .35), transparent 12%), linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, .55)), url(/assets/textures/chene.webp) center / 600px auto; box-shadow: 0 30px 40px -10px #000, 0 -30px 60px -20px rgba(255, 200, 120, .25); }
+.show__row { align-items: flex-end; padding-bottom: 70px; height: 500px; top: 400px; }
+.show__item { position: relative; z-index: 1; }
+.show__img { height: 330px; }
+.show__item figcaption { font-size: 22px; letter-spacing: .14em; margin-top: 26px; }
+.show__head h2 { letter-spacing: .06em; }
+.show__head .eyebrow { display: inline-flex; gap: 16px; align-items: center; }
+.show__head .eyebrow::before, .show__head .eyebrow::after { content: ""; width: 60px; height: 1px; background: var(--or); }
+.show__foot { border-top: 1px solid rgba(240, 189, 110, .25); padding-top: 18px; bottom: 50px; }
+/* retouches v2 */
+.bp__chips li { white-space: nowrap; font-size: 16px; letter-spacing: .12em; }
+.bp__chips li + li::before { margin: 0 10px; }
+.fl__head h2 { font-size: 100px; }
+.fl__hero-0 { right: 60px !important; width: 280px !important; height: 280px !important; top: 30px; }
+.fl__hero-1 { left: 60px !important; width: 260px !important; height: 260px !important; }
+.fl__hero img { bottom: auto; top: 20px; }
+.fl__cols { gap: 110px; }
+.fl__cols .g-name { font-size: 31px !important; letter-spacing: .06em; }
+.half__hero { right: -60px; top: -96px; width: 290px; height: 290px; }
+.half--list .half__head { padding-right: 190px; }
+.spot__counter { left: -150%; right: -30%; bottom: -16%; height: 28%; -webkit-mask: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent); mask: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent); }
+.shelf { bottom: 34px; height: 38px; }
+.show__row { padding-bottom: 72px; }
+.show__item figcaption { position: absolute; left: -20px; right: -20px; bottom: -66px; text-align: center; margin: 0; }
+.show__item { justify-items: center; }
+.spot__counter { display: none; }
+.spot__stage::after { content: ""; position: absolute; left: 0; right: 0; bottom: 2%; height: 22%; border-radius: 50%; background: radial-gradient(ellipse 50% 40% at 50% 40%, rgba(255, 200, 130, .16), transparent 70%); z-index: 0; }
+.half__hero { top: -58px; }
+.sc--halves .halves { top: 76px; bottom: 46px; }
+.grid--2 .half { padding-top: 44px; padding-bottom: 30px; }
+.grid--2 .half__flavors.n9 img, .half__flavors.n9 img { width: 118px; height: 118px; }
+.grid--2 .half__head h3 { font-size: 60px; }
+.grid--2 .half__price { font-size: 76px; }
+.grid--2 .half__list.nl li { grid-template-columns: 50px minmax(0, 1fr) auto !important; gap: 14px; }
+.grid--2 .half__list.nl li img { width: 50px !important; height: 50px !important; padding: 4px; }
+.grid--2 .half__list.nl .g-name { font-size: 22px !important; }
+.grid--2 .half__list.nl .g-price { font-size: 28px !important; }
+.grid--2 .half__list.nl li::after { left: 64px; }
+.grid--2 .half__flavors { gap: 6px 16px; }

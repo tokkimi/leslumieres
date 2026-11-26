@@ -130,9 +130,11 @@ function SpotScene({ s, spot }: { s: Screen; spot: Spot }) {
         </div>
       </div>
       <div className="spot__stage">
+        <div className="spot__ring" />
         <div className="spot__halo" />
+        <div className="spot__counter" />
         <div className="spot__shadow" />
-        <div className="spot__float"><img src={img(spot.id)} alt="" /></div>
+        <div className="spot__float"><img src={img(spot.id)} alt="" /><img className="spot__refl" src={img(spot.id)} alt="" /></div>
         <Effects fx={s.fx} />
       </div>
     </div>
@@ -159,6 +161,7 @@ function ShowcaseScene({ s }: { s: Screen }) {
           </figure>
         ))}
         <Effects fx={s.fx} />
+        <div className="shelf" />
       </div>
       <footer className="show__foot">
         <span className="show__line">{c.line}</span>
@@ -169,18 +172,20 @@ function ShowcaseScene({ s }: { s: Screen }) {
 }
 
 /* Liste de prix sur une moitié d'écran, avec son visuel */
-type PanelData = { title: string; script: string; rows: Row[]; hero: string; price?: number }
+type PanelData = { title: string; script: string; rows: Row[]; hero: string; price?: number; unit?: string }
 function Half({ d, side }: { d: PanelData; side: number }) {
   const flavors = d.price != null
   return (
     <section className={`half half--${flavors ? 'flavors' : 'list'}`} style={{ animationDelay: `${side * 0.25}s` }}>
+      <Deco />
       <header className="half__head">
         <div>
+          <span className="orn"><i />{d.script}<i /></span>
           <h3>{d.title}</h3>
-          {flavors ? <span className="half__price">{price(d.price!)} €</span> : <span className="script">{d.script}</span>}
+          {flavors && <span className="half__price"><small>{d.unit ?? ''}</small>{price(d.price!)} €</span>}
         </div>
-        {!flavors && <div className="half__hero"><div className="spot__halo" /><img src={img(d.hero)} alt="" /></div>}
       </header>
+      {!flavors && <div className="half__hero"><div className="spot__halo" /><img src={img(d.hero)} alt="" /></div>}
       {flavors ? (
         <div className={`half__flavors n${d.rows.length}`}>
           {d.rows.map((r, i) => (
@@ -196,7 +201,6 @@ function Half({ d, side }: { d: PanelData; side: number }) {
             <li key={r.id} style={{ animationDelay: `${0.4 + i * 0.07}s` }}>
               <img src={img(r.id)} alt="" />
               <span className="g-name">{r.name}</span>
-              <span className="g-dots" />
               <span className="g-price">{price(priceOf(r.id))} €</span>
             </li>
           ))}
@@ -213,11 +217,16 @@ function Grid({ s }: { s: Screen }) {
       <div className="halves">
         {s.sections.slice(0, 2).map((sec, k) => {
           const hero = sec.kind === 'flavors' ? sec.rows[0].id : (sec.rows.find(r => r.id === s.feature.id) ?? sec.rows[0]).id
-          return <Half key={k} side={k} d={{ title: sec.title, script: k === 0 ? s.script : s.eyebrow.toLowerCase(), rows: sec.rows, hero, price: sec.kind === 'flavors' ? sec.price : undefined }} />
+          return <Half key={k} side={k} d={{ title: sec.title, script: k === 0 ? s.script : s.eyebrow.toLowerCase(), rows: sec.rows, hero, price: sec.kind === 'flavors' ? sec.price : undefined, unit: s.n === 1 ? 'le verre' : 'la part' }} />
         })}
       </div>
     </div>
   )
+}
+
+/* Cadre Art déco : double filet doré, coins et losange */
+function Deco() {
+  return <div className="deco" aria-hidden="true"><span className="deco__c c1" /><span className="deco__c c2" /><span className="deco__c c3" /><span className="deco__c c4" /><span className="deco__gem" /></div>
 }
 
 /* ---------- Brunch ---------- */
@@ -238,15 +247,15 @@ function BrunchPlate({ big, delay = 0 }: { big?: boolean; delay?: number }) {
 function BrunchPanel({ side }: { side: number }) {
   return (
     <section className="half half--brunch" style={{ animationDelay: `${side * 0.25}s` }}>
+      <Deco />
       <header className="bp__head">
-        <div>
-          <span className="eyebrow">{BRUNCH.days} · {BRUNCH.hours}</span>
-          <h3>{BRUNCH.title}</h3>
-          <span className="script">{BRUNCH.script}</span>
-        </div>
-        <span className="bp__price"><small>{BRUNCH.priceLabel}</small>{BRUNCH.price}</span>
+        <span className="orn"><i />{BRUNCH.days}<i /></span>
+        <h3><span>Formule</span><span className="script">brunch</span></h3>
       </header>
-      <BrunchPlate delay={0.4} />
+      <div className="bp__stage">
+        <BrunchPlate delay={0.4} />
+        <span className="medal"><small>{BRUNCH.priceLabel}</small><b>{BRUNCH.price}</b><em>{BRUNCH.hours}</em></span>
+      </div>
       <ul className="bp__chips">{BRUNCH.contents.map((c, i) => <li key={c} style={{ animationDelay: `${2 + i * 0.15}s` }}>{c}</li>)}</ul>
     </section>
   )
@@ -286,8 +295,9 @@ function FullList({ id }: { id: string }) {
     <div className={`sc sc--list list--${id}`}>
       <div className="grid__bg" />
       <Bulbs />
+      <Deco />
       <header className="fl__head">
-        <span className="eyebrow">{L.eyebrow}</span>
+        <span className="orn"><i />{L.eyebrow}<i /></span>
         <h2>{L.title}</h2>
         <span className="script">{L.script}{L.price != null && <b className="fl__badge">{price(L.price)} €</b>}</span>
       </header>
@@ -302,7 +312,6 @@ function FullList({ id }: { id: string }) {
               <li key={r.id} style={{ animationDelay: `${0.6 + (c * half + i) * 0.08}s` }}>
                 <img src={img(r.id)} alt="" />
                 <span className="g-name">{r.name}</span>
-                <span className="g-dots" />
                 <span className="g-price">{price(priceOf(r.id))} €</span>
               </li>
             ))}
@@ -316,7 +325,7 @@ function FullList({ id }: { id: string }) {
 function panelOf(id: string, side: number) {
   if (id === 'brunch') return <BrunchPanel key={side} side={side} />
   const L = LISTS[id]
-  return <Half key={side} side={side} d={{ title: L.title, script: L.script, rows: L.rows, hero: L.hero[0], price: L.price }} />
+  return <Half key={side} side={side} d={{ title: L.title, script: L.script, rows: L.rows, hero: L.hero[0], price: L.price, unit: L.unit }} />
 }
 
 function Split({ left, right }: { left: string; right: string }) {
