@@ -337,3 +337,5 @@ img { display: block; }
 .bp__price { font-size: 110px; margin-bottom: 6px; }
 .bp__price small { font-size: 22px; }
 .fl__badge { font-size: 72px; }
+.stage--half { width: 960px; }
+.halves--one { grid-template-columns: 1fr; left: 44px; right: 44px; }

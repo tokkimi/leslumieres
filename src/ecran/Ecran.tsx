@@ -313,12 +313,14 @@ function FullList({ id }: { id: string }) {
   )
 }
 
+function panelOf(id: string, side: number) {
+  if (id === 'brunch') return <BrunchPanel key={side} side={side} />
+  const L = LISTS[id]
+  return <Half key={side} side={side} d={{ title: L.title, script: L.script, rows: L.rows, hero: L.hero[0], price: L.price }} />
+}
+
 function Split({ left, right }: { left: string; right: string }) {
-  const panel = (id: string, side: number) => {
-    if (id === 'brunch') return <BrunchPanel key={side} side={side} />
-    const L = LISTS[id]
-    return <Half key={side} side={side} d={{ title: L.title, script: L.script, rows: L.rows, hero: L.hero[0], price: L.price }} />
-  }
+  const panel = panelOf
   return (
     <div className="sc sc--halves sc--split">
       <div className="grid__bg" />
@@ -352,6 +354,21 @@ export function Ecran() {
   }, [])
 
   const leaving = PLAN.length > 1 && left < 700
+  const panelId = params.get('panel')
+  if (panelId) {
+    // un seul panneau sur une demi-télé (960 × 1080), pour les montages vidéo écran divisé
+    return (
+      <div className="tv">
+        <div className="stage stage--half" style={{ transform: `translate(-50%, -50%) scale(${Math.min(innerWidth / 960, innerHeight / 1080)})` }}>
+          <div className="sc sc--halves sc--split">
+            <div className="grid__bg" />
+            <Bulbs />
+            <div className="halves halves--one">{panelOf(panelId, 0)}</div>
+          </div>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="tv">
       <div className="stage" style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
