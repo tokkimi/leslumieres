@@ -322,7 +322,7 @@ function DishText({ k }: { k: string }) {
       <h2>{d.name}</h2>
       <span className="script">{d.phrase}</span>
       <p className="dx__desc">{d.desc}</p>
-      {d.price != null && <b className="dx__price gold">{price(d.price)} €</b>}
+      {d.price != null && <span className="dx__pr"><b className="dx__price gold">{price(d.price)} €</b>{d.priceLabel && <small>{d.priceLabel}</small>}</span>}
     </div>
   )
 }
@@ -357,7 +357,7 @@ function DishPhoto({ k }: { k: string }) {
         <h2><span>{d.name}</span></h2>
         <span className="script dph__phrase">{d.phrase}</span>
         <p className="dx__desc">{d.desc}</p>
-        {d.price != null && <b className="dx__price gold">{price(d.price)} €</b>}
+        {d.price != null && <span className="dx__pr"><b className="dx__price gold">{price(d.price)} €</b>{d.priceLabel && <small>{d.priceLabel}</small>}</span>}
       </div>
     </div>
   )

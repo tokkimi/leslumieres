@@ -229,13 +229,13 @@ export const LISTS: Record<string, { title: string; script: string; eyebrow: str
 }
 
 /* ---------- Plats mis en scène (photos du resto, détourées par l'équipe) ---------- */
-export type Dish = { eyebrow: string; name: string; phrase: string; desc: string; price?: number; img: string; list?: string; photo?: string }
+export type Dish = { eyebrow: string; name: string; phrase: string; desc: string; price?: number; priceLabel?: string; img: string; list?: string; photo?: string }
 export const DISHES: Record<string, Dish> = {
   panang: { eyebrow: 'Cuisine thaï', name: 'Bœuf panang', phrase: 'curry rouge onctueux au lait de coco', desc: 'Bœuf, haricots verts, poivrons, basilic thaï, riz parfumé', img: 'panang', list: 'thai' },
   padthai: { eyebrow: 'Cuisine thaï', name: 'Pad thaï poulet', phrase: 'nouilles de riz sautées au wok', desc: 'Poulet, œuf, pousses de soja, cacahuètes, citron vert', price: 13.9, img: 'padthai', list: 'thai' },
   dynamite: { eyebrow: 'Cuisine thaï', name: 'Riz thaï poulet dynamite', phrase: 'croustillant et relevé', desc: 'Riz sauté, poulet pané, sauce dynamite, crudités', price: 13.9, img: 'dynamite', list: 'thai' },
   carbonara: { eyebrow: 'Nos pâtes', name: 'Carbonara', phrase: 'tagliatelles crémeuses à souhait', desc: 'Tagliatelles, sauce crème, ciboulette, tomate cerise', price: 11.5, img: 'carbonara', list: 'pates' },
-  montdor: { eyebrow: 'Spécialité d\'hiver', name: 'Mont d\'Or', phrase: 'le fromage fondant à partager', desc: 'Pommes grenaille, charcuterie, croûtons, salade', img: 'montdor', photo: 'montdor-photo' },
+  montdor: { eyebrow: 'Spécialité d\'hiver', name: 'Mont d\'Or fondant', phrase: 'à partager à deux', desc: 'Charcuterie halal, pommes de terre grenailles, croûtons et petite salade', price: 29.9, priceLabel: 'pour 2 personnes', img: 'montdor', photo: 'montdor-photo' },
 }
 
 /* ---------- Scènes ---------- */

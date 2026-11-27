@@ -678,3 +678,12 @@ img { display: block; }
 .dx h2 { font-size: 108px; }
 .dt__plate { right: 50px; top: 160px; width: 900px; height: 820px; }
 .sc--dish .dt__table { height: 58%; }
+.dx__pr { display: flex; align-items: baseline; gap: 22px; align-self: flex-start; margin-top: 26px; animation: rise 1s ease 2.1s both; }
+.dx__pr .dx__price { margin-top: 0; animation: none; }
+.dx__pr small { font-size: 24px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--creme); }
+.half--dish .dx__pr { align-self: center; }
+.sc--dphoto .bph__txt h2 { font-size: 128px; }
+.dx__price, .bv__price, .bph__price b { white-space: nowrap; }
+.dx__pr { flex-direction: column; align-items: flex-start; gap: 6px; }
+.dx__pr small { font-size: 22px; }
+.half--dish .dx__pr { align-items: center; }
