@@ -632,3 +632,49 @@ img { display: block; }
 .n4 .bk__list img { width: 128px; height: 128px; }
 .n4 .bk__list li { grid-template-columns: 128px 1fr; }
 .n4 .bk__list li + li::before { left: 162px; }
+
+/* ---------- Plat mis en scène ---------- */
+.dt { position: absolute; inset: 0; }
+.dt__table { position: absolute; left: -10%; right: -10%; bottom: -8%; height: 62%; perspective: 1400px; perspective-origin: 50% 0%; }
+.dt__wood { position: absolute; inset: 0; transform: rotateX(56deg); transform-origin: 50% 100%;
+  background: linear-gradient(180deg, rgba(8, 6, 4, .95) 0%, rgba(8, 6, 4, .35) 30%, rgba(8, 6, 4, .25) 70%, rgba(8, 6, 4, .7) 100%), url(/assets/textures/chene.webp) center / 900px auto;
+  filter: brightness(.8) saturate(1.1) sepia(.25); }
+.dt__table::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 30%; background: linear-gradient(180deg, var(--noir), transparent); }
+.dt__pool { position: absolute; left: 44%; width: 62%; top: 30%; height: 70%; border-radius: 50%; background: radial-gradient(ellipse 50% 50% at 50% 55%, rgba(255, 205, 140, .32), rgba(240, 170, 90, .1) 50%, transparent 72%); mix-blend-mode: screen; animation: breathe 7s ease-in-out infinite; }
+.dt__plate { position: absolute; right: 90px; top: 140px; width: 980px; height: 860px; display: grid; place-items: center; animation: dishIn 1.6s cubic-bezier(.2, .8, .2, 1) .2s both, dishPush 20s ease-in-out 1.8s both; }
+@keyframes dishIn { from { opacity: 0; transform: translateY(70px) scale(.9) rotate(-4deg); filter: blur(8px) } }
+@keyframes dishPush { to { transform: scale(1.06) rotate(1.5deg) } }
+.dt__plate img { position: relative; z-index: 2; max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 50px 40px rgba(0, 0, 0, .75)) drop-shadow(0 10px 12px rgba(0, 0, 0, .5)); }
+.dt__shadow { position: absolute; left: 12%; right: 12%; bottom: 6%; height: 18%; border-radius: 50%; background: radial-gradient(ellipse, rgba(0, 0, 0, .8), transparent 70%); z-index: 1; }
+.dt__steam { position: absolute; left: 25%; right: 25%; top: -8%; height: 55%; z-index: 3; pointer-events: none; }
+.dt__steam .fx--steam svg { width: 80px; height: 300px; stroke: rgba(255, 248, 235, .5); }
+.dt__sweep { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.dt__sweep::after { content: ""; position: absolute; top: -10%; bottom: -10%; width: 18%; left: -30%; background: linear-gradient(100deg, transparent, rgba(255, 240, 210, .1), transparent); animation: shine 3s ease-in-out 2.6s forwards; }
+.dx { position: absolute; left: 120px; top: 0; bottom: 0; width: 760px; display: flex; flex-direction: column; justify-content: center; gap: 12px; z-index: 4; }
+.dx .orn { justify-content: flex-start; font-size: 20px; animation: rise .9s ease .5s both; }
+.dx h2 { margin: 4px 0 0; font-size: 128px; line-height: .92; font-weight: 900; text-transform: uppercase; letter-spacing: .02em; text-wrap: balance; text-shadow: 0 10px 50px rgba(0, 0, 0, .7); animation: rise 1.1s cubic-bezier(.2, .8, .2, 1) .8s both; }
+.dx .script { font-size: 66px; line-height: 1.1; margin-top: -4px; animation: rise 1s ease 1.2s both; }
+.dx__desc { margin: 10px 0 0; max-width: 620px; font-size: 26px; font-weight: 600; letter-spacing: .06em; line-height: 1.45; color: var(--muted); text-transform: uppercase; animation: rise 1s ease 1.5s both; }
+.dx__price { margin-top: 26px; font-size: 140px; font-weight: 400; line-height: 1; align-self: flex-start; animation: rise 1s ease 2.1s both; }
+/* demi-écran */
+.half--dish { padding: 0; overflow: hidden; background: linear-gradient(180deg, rgba(22, 17, 12, .8), rgba(10, 8, 7, .9)); }
+.half--dish .deco { z-index: 6; }
+.dt--half .dt__table { height: 58%; bottom: 30%; }
+.dt--half .dt__table::after { height: 35%; }
+.dt--half .dt__plate { right: 50%; margin-right: -330px; top: 60px; width: 660px; height: 560px; }
+.dt--half .dt__pool { left: 5%; width: 90%; top: 10%; height: 60%; }
+.dt--half .dt__steam .fx--steam svg { width: 60px; height: 220px; }
+.half--dish .dx { left: 0; right: 0; top: auto; bottom: 40px; width: auto; align-items: center; text-align: center; gap: 6px; }
+.half--dish .dx .orn { justify-content: center; font-size: 16px; }
+.half--dish .dx h2 { font-size: 72px; }
+.half--dish .dx .script { font-size: 46px; }
+.half--dish .dx__desc { font-size: 18px; max-width: 760px; margin-top: 4px; }
+.half--dish .dx__price { align-self: center; font-size: 96px; margin-top: 8px; }
+/* Mont d'Or sur photo */
+.sc--dphoto .bph__txt h2 { font-size: 150px; }
+.dph__phrase { font-size: 70px; margin-top: 4px; animation: rise 1s ease 1.2s both; }
+.sc--dphoto .bph__photo { background-position: 60% 55%; }
+.dx { width: 700px; }
+.dx h2 { font-size: 108px; }
+.dt__plate { right: 50px; top: 160px; width: 900px; height: 820px; }
+.sc--dish .dt__table { height: 58%; }

@@ -218,8 +218,24 @@ export const LISTS: Record<string, { title: string; script: string; eyebrow: str
   },
   glaces: { eyebrow: 'Fait maison', title: 'Thés glacés', script: 'servis bien frais', hero: ['159949'], rows: sec(1, 0).rows, price: 3.9, unit: 'le verre' },
   cocktails: { eyebrow: 'Sans alcool', title: 'Cocktails', script: 'faits minute', hero: ['159956', '159957'], rows: sec(1, 1).rows },
+  thai: { eyebrow: 'Cuisine thaï', title: 'Cuisine thaï', script: 'au wok, minute', hero: ['159942'], rows: [
+    { id: '159942', name: 'Pad thaï' }, { id: '1640754', name: 'Bœuf basilic thaï' }, { id: '1640753', name: 'Curry vert poulet' }, { id: '1640752', name: 'Curry vert crevette' },
+    { id: '170318', name: 'Riz thaï poulet dynamite' }, { id: '159943', name: 'Poulet sel poivre' }, { id: '171032', name: 'Poulet aigre-doux' }, { id: '159944', name: 'Nouilles sautées' },
+    { id: '159945', name: 'Riz thaï' }, { id: '159946', name: 'Brochettes poulet satay' }, { id: '159941', name: 'Tigre qui pleure' }] },
+  pates: { eyebrow: 'Nos pâtes', title: 'Pâtes', script: 'généreuses et crémeuses', hero: ['1641620'], rows: [
+    { id: '1641620', name: 'Carbonara' }, { id: '159928', name: 'Bolognaise' }, { id: '159925', name: 'Norvégienne' }, { id: '159926', name: 'Forestière' }] },
   tiramisus: { eyebrow: 'Maison', title: 'Tiramisus', script: 'neuf parfums', hero: ['170326'], rows: sec(2, 0).rows, price: 5, unit: 'la part' },
   patisseries: { eyebrow: 'La vitrine', title: 'Pâtisseries', script: 'préparées chaque matin', hero: ['1603920', '173344'], rows: sec(2, 1).rows },
+}
+
+/* ---------- Plats mis en scène (photos du resto, détourées par l'équipe) ---------- */
+export type Dish = { eyebrow: string; name: string; phrase: string; desc: string; price?: number; img: string; list?: string; photo?: string }
+export const DISHES: Record<string, Dish> = {
+  panang: { eyebrow: 'Cuisine thaï', name: 'Bœuf panang', phrase: 'curry rouge onctueux au lait de coco', desc: 'Bœuf, haricots verts, poivrons, basilic thaï, riz parfumé', img: 'panang', list: 'thai' },
+  padthai: { eyebrow: 'Cuisine thaï', name: 'Pad thaï poulet', phrase: 'nouilles de riz sautées au wok', desc: 'Poulet, œuf, pousses de soja, cacahuètes, citron vert', price: 13.9, img: 'padthai', list: 'thai' },
+  dynamite: { eyebrow: 'Cuisine thaï', name: 'Riz thaï poulet dynamite', phrase: 'croustillant et relevé', desc: 'Riz sauté, poulet pané, sauce dynamite, crudités', price: 13.9, img: 'dynamite', list: 'thai' },
+  carbonara: { eyebrow: 'Nos pâtes', name: 'Carbonara', phrase: 'tagliatelles crémeuses à souhait', desc: 'Tagliatelles, sauce crème, ciboulette, tomate cerise', price: 11.5, img: 'carbonara', list: 'pates' },
+  montdor: { eyebrow: 'Spécialité d\'hiver', name: 'Mont d\'Or', phrase: 'le fromage fondant à partager', desc: 'Pommes grenaille, charcuterie, croûtons, salade', img: 'montdor', photo: 'montdor-photo' },
 }
 
 /* ---------- Scènes ---------- */
@@ -233,6 +249,8 @@ export type Scene =
   | { kind: 'brunchPhoto'; ms: number }
   | { kind: 'split'; ms: number; left: string; right: string }
   | { kind: 'list'; ms: number; list: string }
+  | { kind: 'dish'; ms: number; dish: string }
+  | { kind: 'dishPhoto'; ms: number; dish: string }
 
 /* Déroulé d'une boucle (ms) : identique sur les 3 écrans, qui changent de scène ensemble.
    intro vidéo → logo → écran complet de la catégorie → listes de prix (2 moitiés) → 2 produits mis en scène */
@@ -249,6 +267,11 @@ export const LOOP = SCENES.reduce((s, x) => s + x.ms, 0)
 
 /* Programmes à choisir par écran : ecran.html?p=<id> */
 export const PROGRAMS: Record<string, { name: string; layout: string; scenes: Scene[] }> = {
+  ...Object.fromEntries(Object.keys(DISHES).flatMap(k => [
+    [`plat-${k}`, { name: DISHES[k].name, layout: 'Écran complet', scenes: [{ kind: 'dish', ms: 20000, dish: k }] as Scene[] }],
+    ...(DISHES[k].list ? [[`plat-${k}-carte`, { name: `${DISHES[k].name} + carte`, layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 20000, left: `dish:${k}`, right: DISHES[k].list! }] as Scene[] }]] : []),
+  ])),
+  'plat-montdor-photo': { name: 'Mont d\'Or (photo)', layout: 'Écran complet', scenes: [{ kind: 'dishPhoto', ms: 20000, dish: 'montdor' }] },
   'brunch-chaud': { name: 'Brunch + boissons chaudes', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'brunchVisuel', right: 'chaud' }] },
   'brunch-carte': { name: 'Brunch : visuel + carte', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'brunchVisuel', right: 'brunchCarte' }] },
   'brunch-photo': { name: 'Brunch plein écran', layout: 'Écran complet', scenes: [{ kind: 'brunchPhoto', ms: 40000 }] },

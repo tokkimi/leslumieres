@@ -2,7 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { PRODUCTS, img } from '@/lib/menu'
 import heroBrunch from './img/brunch-hero.jpg'
 import saleBrunch from './img/brunch-sale.jpg'
-import { BRUNCH, LISTS, PROGRAMS, SCREENS, loopFor, type Fx, type Row, type Scene, type Screen, type Spot } from './screens'
+const DISH_IMG = import.meta.glob('./img/plats/*.webp', { eager: true, import: 'default' }) as Record<string, string>
+const dishImg = (n: string) => DISH_IMG[`./img/plats/${n}.webp`]
+import montdorPhoto from './img/montdor-photo.jpg'
+import { DISHES, BRUNCH, LISTS, PROGRAMS, SCREENS, loopFor, type Fx, type Row, type Scene, type Screen, type Spot } from './screens'
 
 const LOGO = '/assets/img/logo/les-lumieres-clair.svg'
 const price = (n: number) => n.toFixed(2).replace('.', ',')
@@ -295,6 +298,71 @@ function BrunchCarte({ side }: { side: number }) {
   )
 }
 
+/* ---------- Plat mis en scène : posé sur une table en chêne, vapeur, lumière chaude ---------- */
+function DishTable({ k, half }: { k: string; half?: boolean }) {
+  const d = DISHES[k]
+  return (
+    <div className={`dt${half ? ' dt--half' : ''}`}>
+      <div className="dt__table"><div className="dt__wood" /></div>
+      <div className="dt__pool" />
+      <div className="dt__plate">
+        <div className="dt__shadow" />
+        <img src={dishImg(d.img)} alt="" />
+        <div className="dt__steam"><Effects fx="steam" /></div>
+      </div>
+      <div className="dt__sweep" />
+    </div>
+  )
+}
+function DishText({ k }: { k: string }) {
+  const d = DISHES[k]
+  return (
+    <div className="dx">
+      <span className="orn"><i />{d.eyebrow}<i /></span>
+      <h2>{d.name}</h2>
+      <span className="script">{d.phrase}</span>
+      <p className="dx__desc">{d.desc}</p>
+      {d.price != null && <b className="dx__price gold">{price(d.price)} €</b>}
+    </div>
+  )
+}
+function DishScene({ k }: { k: string }) {
+  return (
+    <div className="sc sc--dish">
+      <div className="spot__bg" />
+      <Bulbs />
+      <DishTable k={k} />
+      <DishText k={k} />
+    </div>
+  )
+}
+function DishHalf({ k }: { k: string }) {
+  return (
+    <section className="half half--dish">
+      <Deco />
+      <DishTable k={k} half />
+      <DishText k={k} />
+    </section>
+  )
+}
+function DishPhoto({ k }: { k: string }) {
+  const d = DISHES[k]
+  return (
+    <div className="sc sc--bphoto sc--dphoto">
+      <div className="bph__photo" style={{ backgroundImage: `url(${montdorPhoto})` }} />
+      <div className="bph__shade" />
+      <Bulbs />
+      <div className="bph__txt">
+        <span className="orn"><i />{d.eyebrow}<i /></span>
+        <h2><span>{d.name}</span></h2>
+        <span className="script dph__phrase">{d.phrase}</span>
+        <p className="dx__desc">{d.desc}</p>
+        {d.price != null && <b className="dx__price gold">{price(d.price)} €</b>}
+      </div>
+    </div>
+  )
+}
+
 /* Une partie de la formule : tous les choix, en mini visuels */
 function BrunchCat({ k }: { k: number }) {
   const c = BRUNCH.cats[k]
@@ -421,6 +489,7 @@ function FullList({ id }: { id: string }) {
 function panelOf(id: string, side: number) {
   if (id === 'brunch') return <BrunchPanel key={side} side={side} />
   if (id === 'brunchCarte') return <BrunchCarte key={side} side={side} />
+  if (id.startsWith('dish:')) return <DishHalf key={side} k={id.slice(5)} />
   if (id.startsWith('brunchCat')) return <BrunchCat key={side} k={Number(id.slice(9))} />
   if (id === 'brunchVisuel') return <BrunchVisuel key={side} side={side} />
   const L = LISTS[id]
@@ -488,6 +557,8 @@ export function Ecran() {
           {sc.kind === 'grid' && <Grid s={scr(sc.screen)} />}
           {sc.kind === 'brunchShow' && <BrunchShow />}
           {sc.kind === 'brunchPhoto' && <BrunchPhoto />}
+          {sc.kind === 'dish' && <DishScene k={sc.dish} />}
+          {sc.kind === 'dishPhoto' && <DishPhoto k={sc.dish} />}
           {sc.kind === 'split' && <Split left={sc.left} right={sc.right} />}
           {sc.kind === 'list' && <FullList id={sc.list} />}
         </div>
