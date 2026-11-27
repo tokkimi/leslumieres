@@ -229,13 +229,14 @@ export const LISTS: Record<string, { title: string; script: string; eyebrow: str
 }
 
 /* ---------- Plats mis en scène (photos du resto, détourées par l'équipe) ---------- */
-export type Dish = { eyebrow: string; name: string; phrase: string; desc: string; price?: number; priceLabel?: string; img: string; list?: string; photo?: string }
+export type Dish = { eyebrow: string; name: string; phrase: string; desc: string; price?: number; priceLabel?: string; img: string; list?: string; photo?: string; parts?: string[] }
 export const DISHES: Record<string, Dish> = {
   panang: { eyebrow: 'Cuisine thaï', name: 'Bœuf panang', phrase: 'curry rouge onctueux au lait de coco', desc: 'Bœuf, haricots verts, poivrons, basilic thaï, riz parfumé', img: 'panang', list: 'thai' },
   padthai: { eyebrow: 'Cuisine thaï', name: 'Pad thaï poulet', phrase: 'nouilles de riz sautées au wok', desc: 'Poulet, œuf, pousses de soja, cacahuètes, citron vert', price: 13.9, img: 'padthai', list: 'thai' },
   dynamite: { eyebrow: 'Cuisine thaï', name: 'Riz thaï poulet dynamite', phrase: 'croustillant et relevé', desc: 'Riz sauté, poulet pané, sauce dynamite, crudités', price: 13.9, img: 'dynamite', list: 'thai' },
   carbonara: { eyebrow: 'Nos pâtes', name: 'Carbonara', phrase: 'tagliatelles crémeuses à souhait', desc: 'Tagliatelles, sauce crème, ciboulette, tomate cerise', price: 11.5, img: 'carbonara', list: 'pates' },
-  montdor: { eyebrow: 'Spécialité d\'hiver', name: 'Mont d\'Or fondant', phrase: 'à partager à deux', desc: 'Charcuterie halal, pommes de terre grenailles, croûtons et petite salade', price: 29.9, priceLabel: 'pour 2 personnes', img: 'montdor', photo: 'montdor-photo' },
+  montdor: { eyebrow: 'Spécialité d\'hiver', name: 'Mont d\'Or fondant', phrase: 'à partager à deux', desc: 'Charcuterie halal, pommes de terre grenailles, croûtons et petite salade', price: 29.9, priceLabel: 'pour 2 personnes', img: 'montdor', photo: 'montdor-photo',
+    parts: ['Le Mont d\'Or fondant', 'Charcuterie halal', 'Pommes de terre grenailles', 'Croûtons dorés', 'Petite salade'] },
 }
 
 /* ---------- Scènes ---------- */
@@ -271,6 +272,8 @@ export const PROGRAMS: Record<string, { name: string; layout: string; scenes: Sc
     [`plat-${k}`, { name: DISHES[k].name, layout: 'Écran complet', scenes: [{ kind: 'dish', ms: 20000, dish: k }] as Scene[] }],
     ...(DISHES[k].list ? [[`plat-${k}-carte`, { name: `${DISHES[k].name} + carte`, layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 20000, left: `dish:${k}`, right: DISHES[k].list! }] as Scene[] }]] : []),
   ])),
+  'plat-montdor-carte': { name: 'Mont d\'Or + carte', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 20000, left: 'dish:montdor', right: 'dishCarte:montdor' }] },
+  'plat-montdor-photo-carte': { name: 'Mont d\'Or photo + carte', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 20000, left: 'dishPhoto:montdor', right: 'dishCarte:montdor' }] },
   'plat-montdor-photo': { name: 'Mont d\'Or (photo)', layout: 'Écran complet', scenes: [{ kind: 'dishPhoto', ms: 20000, dish: 'montdor' }] },
   'brunch-chaud': { name: 'Brunch + boissons chaudes', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'brunchVisuel', right: 'chaud' }] },
   'brunch-carte': { name: 'Brunch : visuel + carte', layout: 'Écran divisé', scenes: [{ kind: 'split', ms: 40000, left: 'brunchVisuel', right: 'brunchCarte' }] },

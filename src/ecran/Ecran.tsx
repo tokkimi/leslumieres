@@ -5,6 +5,7 @@ import saleBrunch from './img/brunch-sale.jpg'
 const DISH_IMG = import.meta.glob('./img/plats/*.webp', { eager: true, import: 'default' }) as Record<string, string>
 const dishImg = (n: string) => DISH_IMG[`./img/plats/${n}.webp`]
 import montdorPhoto from './img/montdor-photo.jpg'
+import montdorPhoto2 from './img/montdor-photo2.jpg'
 import { DISHES, BRUNCH, LISTS, PROGRAMS, SCREENS, loopFor, type Fx, type Row, type Scene, type Screen, type Spot } from './screens'
 
 const LOGO = '/assets/img/logo/les-lumieres-clair.svg'
@@ -345,6 +346,50 @@ function DishHalf({ k }: { k: string }) {
     </section>
   )
 }
+function DishPhotoHalf({ k }: { k: string }) {
+  const d = DISHES[k]
+  return (
+    <section className="half half--visuel">
+      <div className="bv__photo" style={{ backgroundImage: `url(${montdorPhoto2})` }} />
+      <div className="bv__shade" />
+      <Deco />
+      <div className="bv__txt">
+        <span className="orn"><i />{d.eyebrow}<i /></span>
+        <h3 className="dv__name">{d.name}</h3>
+        <span className="script dv__phrase">{d.phrase}</span>
+        {d.price != null && <span className="bv__price gold">{price(d.price)} €</span>}
+        {d.priceLabel && <span className="bv__hours">{d.priceLabel}</span>}
+      </div>
+    </section>
+  )
+}
+function DishCarte({ k }: { k: string }) {
+  const d = DISHES[k]
+  return (
+    <section className="half half--carte">
+      <Deco />
+      <header className="bc__head">
+        <span className="orn"><i />{d.eyebrow}<i /></span>
+        <h3 className="dc__name">{d.name}</h3>
+        <span className="bc__hours">{d.priceLabel}</span>
+      </header>
+      <p className="bc__intro">{d.phrase}</p>
+      <ol className="bc__list">
+        {(d.parts ?? []).map((x, i) => (
+          <li key={x} style={{ animationDelay: `${0.6 + i * 0.15}s` }}>
+            <span className="bc__n"><em>{['I', 'II', 'III', 'IV', 'V', 'VI'][i]}</em></span>
+            <span className="bc__t">{x}</span>
+          </li>
+        ))}
+      </ol>
+      <footer className="bc__foot">
+        <span className="bc__rule" />
+        <span className="bc__price"><small>{d.priceLabel}</small>{d.price != null && <b className="gold">{price(d.price)} €</b>}</span>
+        <span className="bc__rule" />
+      </footer>
+    </section>
+  )
+}
 function DishPhoto({ k }: { k: string }) {
   const d = DISHES[k]
   return (
@@ -490,6 +535,8 @@ function panelOf(id: string, side: number) {
   if (id === 'brunch') return <BrunchPanel key={side} side={side} />
   if (id === 'brunchCarte') return <BrunchCarte key={side} side={side} />
   if (id.startsWith('dish:')) return <DishHalf key={side} k={id.slice(5)} />
+  if (id.startsWith('dishPhoto:')) return <DishPhotoHalf key={side} k={id.slice(10)} />
+  if (id.startsWith('dishCarte:')) return <DishCarte key={side} k={id.slice(10)} />
   if (id.startsWith('brunchCat')) return <BrunchCat key={side} k={Number(id.slice(9))} />
   if (id === 'brunchVisuel') return <BrunchVisuel key={side} side={side} />
   const L = LISTS[id]

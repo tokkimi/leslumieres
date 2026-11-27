@@ -687,3 +687,11 @@ img { display: block; }
 .dx__pr { flex-direction: column; align-items: flex-start; gap: 6px; }
 .dx__pr small { font-size: 22px; }
 .half--dish .dx__pr { align-items: center; }
+.dv__name { margin: 0; font-size: 84px; line-height: .95; font-weight: 900; text-transform: uppercase; letter-spacing: .02em; text-shadow: 0 10px 40px rgba(0, 0, 0, .7); }
+.dv__phrase { font-size: 52px; }
+.dc__name { margin: 6px 0 0; font-size: 80px; line-height: .95; font-weight: 900; text-transform: uppercase; letter-spacing: .03em; text-align: center; }
+.half--carte .bc__list li { grid-template-rows: auto; padding: 14px 0; }
+.half--carte .bc__n { grid-row: auto; }
+.dt--half .dt__plate { top: 40px; width: 600px; height: 470px; margin-right: -300px; }
+.half--dish .dx h2 { font-size: 62px; }
+.half--dish .dx { bottom: 30px; }
